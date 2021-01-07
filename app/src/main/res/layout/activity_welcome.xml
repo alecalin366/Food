@@ -5,7 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Onboarding.WelcomeActivity"
-    android:background="@drawable/welcome">
+    android:id="@+id/welcomeLayout">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/background"
+        android:layout_height="match_parent"
+        android:background="@drawable/welcome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -22,14 +32,15 @@
         app:layout_constraintVertical_bias="0.171" />
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:lottie_rawRes="@raw/animation"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button4"
+        android:id="@+id/next_button"
         android:layout_width="115dp"
         android:layout_height="42dp"
         android:background="@drawable/rounded_button_light"
@@ -44,6 +55,14 @@
         android:text="Next"
         android:textSize="15dp"
         android:fontFamily="@font/segoe_ui"/>
+
+<!--    <com.cuberto.liquid_swipe.LiquidPager-->
+<!--        android:id="@+id/pager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
