@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Food</string>
+    <string name="bun_venit">BUN VENIT!</string>
+    <string name="descopera">DESCOPERĂ</string>
+    <string name="sari_peste">Sari peste</string>
+    <string name="logare">Logare</string>
+    <string name="textlogin">textLogin</string>
+    <string name="email">Email</string>
+    <string name="parola">Parola</string>
+    <string name="linkregister">linkRegister</string>
+    <string name="link">link</string>
+    <string name="string_link" />
+    <string name="nume">Nume</string>
+</resources>
