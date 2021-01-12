@@ -29,9 +29,7 @@ public class StartupActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setExitTransition(new Explode());
         setContentView(R.layout.activity_startup3);
 
         btnNext = (AppCompatButton) findViewById(R.id.next_button3);
