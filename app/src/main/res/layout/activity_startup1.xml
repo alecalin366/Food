@@ -32,7 +32,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next_button"
+        android:id="@+id/next_button1"
         android:layout_width="115dp"
         android:layout_height="42dp"
         android:background="@drawable/rounded_button_light"
@@ -49,7 +49,7 @@
         android:fontFamily="@font/segoe_ui"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/skipBtn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sari_peste"

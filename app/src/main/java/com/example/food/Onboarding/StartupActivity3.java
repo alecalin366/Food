@@ -13,11 +13,18 @@ import android.transition.Explode;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class StartupActivity3 extends AppCompatActivity {
     private static final String TAG = "StartupActivity3";
 
     AppCompatButton btnNext;
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +34,13 @@ public class StartupActivity3 extends AppCompatActivity {
         getWindow().setExitTransition(new Explode());
         setContentView(R.layout.activity_startup3);
 
-        btnNext = (AppCompatButton) findViewById(R.id.next_button);
+        btnNext = (AppCompatButton) findViewById(R.id.next_button3);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartupActivity3.this, LoginActivity.class);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(StartupActivity3.this).toBundle());
+                Intent intent5 = new Intent(StartupActivity3.this, LoginActivity.class);
+                startActivity(intent5);
             }
         });
     }

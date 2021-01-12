@@ -42,7 +42,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next_button"
+        android:id="@+id/next_button3"
         android:layout_width="115dp"
         android:layout_height="42dp"
         android:background="@drawable/rounded_button_light"
@@ -58,19 +58,5 @@
         android:textSize="15dp"
         android:fontFamily="@font/segoe_ui"/>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sari_peste"
-        android:textSize="15dp"
-        android:fontFamily="@font/segoe_ui"
-        android:textColor="@color/purple2_DARK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.963" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
