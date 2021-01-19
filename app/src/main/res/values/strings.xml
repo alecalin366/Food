@@ -11,4 +11,9 @@
     <string name="link">link</string>
     <string name="string_link" />
     <string name="nume">Nume</string>
+    <string name="inregistreaza">Inregistreaza-te</string>
+
+    <!--    &lt;!&ndash; Firebase messages &ndash;&gt;-->
+<!--    <string name="auth_failed">Failed to Authenticate</string>-->
+<!--    <string name="auth_success">Authentication Success</string>-->
 </resources>
