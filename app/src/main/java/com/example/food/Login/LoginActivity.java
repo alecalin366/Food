@@ -72,8 +72,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: attempting to log in.");
 
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
+                String email = mEmail.getText().toString().trim();
+                String password = mPassword.getText().toString().trim();
 
 
                 if (isStringNull(email) || isStringNull(password)) {
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if(!task.isSuccessful()) {
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Nu ai reusit sa te autentifici",
+                                        Toast.makeText(LoginActivity.this,  "Login unsuccessful: " + task.getException().getMessage(),
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
 

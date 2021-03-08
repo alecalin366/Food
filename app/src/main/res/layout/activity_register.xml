@@ -8,11 +8,11 @@
     android:background="@drawable/login">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
+        android:id="@+id/btnRegister"
         android:layout_width="286dp"
         android:layout_height="52dp"
         android:background="@drawable/buton_logare"
-        android:text="@string/logare"
+        android:text="@string/inregistreaza"
         android:textColor="@color/white"
         android:fontFamily="@font/segoe_ui"
         android:textSize="17sp"
@@ -45,7 +45,7 @@
         android:hint="@string/nume"
         android:inputType="textPersonName"
         android:paddingStart="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintBottom_toTopOf="@+id/password_field"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -69,7 +69,7 @@
         app:layout_constraintVertical_bias="0.771" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/password_field"
         android:layout_width="286dp"
         android:layout_height="52dp"
         android:autofillHints=""
@@ -78,7 +78,7 @@
         android:hint="@string/parola"
         android:inputType="textPassword"
         android:paddingStart="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,11 +89,11 @@
         android:id="@+id/imageView4"
         android:layout_width="19dp"
         android:layout_height="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/password_field"
+        app:layout_constraintEnd_toEndOf="@+id/password_field"
         app:layout_constraintHorizontal_bias="0.022"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintStart_toStartOf="@+id/password_field"
+        app:layout_constraintTop_toTopOf="@+id/password_field"
         app:layout_constraintVertical_bias="0.444"
         app:srcCompat="@drawable/iconita_lock" />
 
