@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupFirebaseAuth();
 
-        //mAuth.signOut();
+        mAuth.signOut();
     }
 
     /*
