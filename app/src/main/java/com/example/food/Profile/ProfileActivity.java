@@ -12,13 +12,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.instagram.R;
+import com.example.food.R;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
     private static final  int NUM_GRID_COLUMNS = 3;
-    private Context mContext = com.example.instagram.Profile.ProfileActivity.this;
+    private Context mContext = ProfileActivity.this;
 
     private ProgressBar mProgressBar;
     private ImageView profilePhoto;
@@ -42,10 +42,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void init(){
         Log.d(TAG, "init: inflating" + getString(R.string.profile_fragment));
 
-        com.example.instagram.Profile.ProfileFragment fragment = new com.example.instagram.Profile.ProfileFragment();
-        FragmentTransaction transaction = com.example.instagram.Profile.ProfileActivity.this.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.commit();
+//
+//        ProfileFragment fragment = new ProfileFragment();
+//        FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.container, fragment);
+//        transaction.commit();
     }
 
 //    private void tempGridSetup(){

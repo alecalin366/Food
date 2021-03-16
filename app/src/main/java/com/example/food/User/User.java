@@ -1,4 +1,4 @@
-package com.example.food.Utils;
+package com.example.food.User;
 
 public class User {
 
@@ -14,10 +14,7 @@ public class User {
         this.username = username;
     }
 
-    public User() {
-
-    }
-
+    public User() {}
 
     public String getUser_id() {
         return user_id;
@@ -50,7 +47,6 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     @Override
     public String toString() {

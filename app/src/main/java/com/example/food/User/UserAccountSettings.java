@@ -1,4 +1,4 @@
-package com.example.food.Utils;
+package com.example.food.User;
 
 public class UserAccountSettings {
 

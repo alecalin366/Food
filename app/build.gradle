@@ -45,6 +45,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
+    //design library for coordinator layout and toolbars
+    implementation 'com.google.android.material:material:1.2.1'
+
+    //For circle imagle
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //universal image loader
+    //implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.github.nostra13:Android-Universal-Image-Loader:f6a9615868482672c3630cb7db6dcf43391e80de'
 }
 
 apply plugin: 'com.google.gms.google-services'

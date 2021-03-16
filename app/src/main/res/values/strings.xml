@@ -13,9 +13,23 @@
     <string name="nume">Nume</string>
     <string name="inregistreaza">Inregistreaza-te</string>
 
-    <!--    &lt;!&ndash; Firebase messages &ndash;&gt;-->
-<!--    <string name="auth_failed">Failed to Authenticate</string>-->
-<!--    <string name="auth_success">Authentication Success</string>-->
+    <string name="calling_activity">calling_activity</string>
+    <string name="profile_activity">profile_activity</string>
+    <string name="edit_profile_fragment">Edit Profile</string>
+    <string name="sign_out_fragment">Sign Out</string>
+    <string name="profile_fragment">Profile</string>
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
+    <string name="string_open_camera">Open Camera</string>
+    <string name="string_next">Next</string>
+
+    <!-- dialog names -->
+    <string name="confirm_password_dialog">ConfirmPaswordDialog</string>
+
+    <!-- Firebase messages-->
+    <string name="auth_failed">Failed to authenticate</string>
+    <string name="auth_success"> Authentication success</string>
+
     <!-- Firebase database fields -->
     <string name="dbname_users">users</string>
     <string name="dbname_user_account_settings">user_account_settings</string>

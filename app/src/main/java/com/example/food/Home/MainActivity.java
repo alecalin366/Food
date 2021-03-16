@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.food.Login.LoginActivity;
 import com.example.food.R;
@@ -14,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int ACTIVITY_NUM = 0; //pentru a stii mai jos care dintre item sa le highligh-uiasca cand dam click pe ele
 
     //firebase
     private FirebaseAuth mAuth;
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupFirebaseAuth();
 
-        mAuth.signOut();
+        //mAuth.signOut();
     }
 
     /*
