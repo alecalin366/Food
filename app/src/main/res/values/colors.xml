@@ -11,5 +11,12 @@
     <color name="link_blue">#005ce6</color>
 
 
+    <color name="colorPrimary">#63566D</color>
+    <color name="colorPrimaryDark">#30264A</color>
+    <color name="colorAccent">#C5ACDA</color>
+
+
+
+
 
 </resources>
