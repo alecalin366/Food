@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:id="@+id/tvConfirmSignout"
+            android:text="Are you sure you want to sign out ?"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:id="@+id/btnConfirmSignout"
+            android:layout_below="@+id/tvConfirmSignout"
+            android:background="@drawable/buton_follow"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTint="@color/purple1_DARK"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/progressBar"
+        android:layout_alignRight="@+id/progressBar"
+        android:layout_alignBottom="@+id/progressBar"
+        android:layout_marginLeft="42dp"
+        android:layout_marginRight="-42dp"
+        android:layout_marginBottom="-22dp"
+        android:text="Signing out ..."
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:id="@+id/tvSigningOut"/>
+
+
+</RelativeLayout>

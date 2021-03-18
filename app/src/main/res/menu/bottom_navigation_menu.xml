@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/ic_house"
+        android:id="@+id/ic_proba"
         android:icon="@drawable/ic_house"
         android:title="Home"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-
-
+        app:cnb_unselectedColor="@color/black"
         >
     </item>
 

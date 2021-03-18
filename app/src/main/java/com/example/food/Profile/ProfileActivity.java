@@ -42,11 +42,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void init(){
         Log.d(TAG, "init: inflating" + getString(R.string.profile_fragment));
 
-//
-//        ProfileFragment fragment = new ProfileFragment();
-//        FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.container, fragment);
-//        transaction.commit();
+
+        ProfileFragment fragment = new ProfileFragment();
+        FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.commit();
     }
 
 //    private void tempGridSetup(){

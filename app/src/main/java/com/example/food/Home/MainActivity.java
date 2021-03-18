@@ -16,9 +16,11 @@ import com.example.food.Profile.ProfileFragment;
 import com.example.food.R;
 import com.example.food.Search.SearchFragment;
 import com.example.food.ShopActivity.ShopFragment;
+import com.example.food.Utils.UniversalImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -36,17 +38,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupFirebaseAuth();
+        initImageLoader();
 
         chipNavigationBar = findViewById(R.id.navBar);
 
-        chipNavigationBar.setItemSelected(R.id.ic_house, true);
+        chipNavigationBar.setItemSelected(R.id.ic_proba, true);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
                 switch (i) {
-                    case R.id.ic_house:
+                    case R.id.ic_proba:
                         fragment = new HomeFragment();
                         break;
                     case R.id.ic_search:
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         //mAuth.signOut();
+    }
+
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
     /*

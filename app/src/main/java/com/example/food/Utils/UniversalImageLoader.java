@@ -21,8 +21,8 @@ public class UniversalImageLoader {
     private static final int defaultImage = R.drawable.ic_android ;
     private Context mContext;
 
-    public UniversalImageLoader(Context mContext) {
-        this.mContext = mContext;
+    public UniversalImageLoader(Context context) {
+        mContext = context;
     }
 
     public ImageLoaderConfiguration getConfig(){
@@ -31,6 +31,7 @@ public class UniversalImageLoader {
                 .showImageOnLoading(defaultImage)
                 .showImageForEmptyUri(defaultImage)
                 .showImageOnFail(defaultImage)
+                .considerExifParams(true)
                 .cacheOnDisk(true).cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
