@@ -7,8 +7,7 @@
         android:title="Home"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        app:cnb_unselectedColor="@color/black"
-        >
+        app:cnb_unselectedColor="#1E0922">
     </item>
 
     <item
@@ -16,7 +15,8 @@
         android:icon="@drawable/ic_search"
         android:title="Search"
         app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff">
+        app:cnb_textColor="#ffffff"
+        app:cnb_unselectedColor="#1E0922">
     </item>
 
     <item
@@ -24,7 +24,8 @@
         android:icon="@drawable/ic_circle"
         android:title="Chart"
         app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff">
+        app:cnb_textColor="#ffffff"
+        app:cnb_unselectedColor="#1E0922">
     </item>
 
     <item
@@ -32,7 +33,8 @@
         android:icon="@drawable/ic_alert"
         android:title="Likes"
         app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff">
+        app:cnb_textColor="#ffffff"
+        app:cnb_unselectedColor="#1E0922">
     </item>
 
     <item
@@ -40,7 +42,8 @@
         android:icon="@drawable/ic_android"
         android:title="Profile"
         app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff">
+        app:cnb_textColor="#ffffff"
+        app:cnb_unselectedColor="#1E0922">
     </item>
 
 </menu>

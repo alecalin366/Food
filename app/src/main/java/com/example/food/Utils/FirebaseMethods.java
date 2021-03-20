@@ -75,7 +75,7 @@ public class FirebaseMethods {
         }
 
         if(phoneNumber != 0) {
-            myRef.child(mContext.getString(R.string.dbname_users))
+            myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.field_phone_number))
                     .setValue(phoneNumber);
@@ -191,7 +191,8 @@ public class FirebaseMethods {
                 0,
                 profile_photo,
                 StringManipulation.condenseUsername(username),
-                website
+                website,
+                userID
         );
 
         myRef.child(mContext.getString(R.string.dbname_user_account_settings))
@@ -215,7 +216,8 @@ public class FirebaseMethods {
             //user account settings node
             if (ds.getKey().equals(mContext.getString(R.string.dbname_user_account_settings))) {
                 Log.d(TAG, "getUserAccountSettings: datasnapshot" + ds);
-
+                Log.d(TAG, "USER ID ************************************" + userID);
+                Log.d(TAG, "USER ID.child ************************************" +ds.child(userID));
                 try {
                     settings.setDisplay_name(
                             ds.child(userID)
@@ -260,7 +262,7 @@ public class FirebaseMethods {
                 } catch (NullPointerException e) {
                     Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
                 }
-                Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + settings.toString());
+                Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + settings.toString());
 
             }
             //users node

@@ -28,7 +28,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private static final String TAG = "AccountSettingsActivity";
     private static final int ACTIVITY_NUM = 4;
     private Context mContext;
-    private SectionsStatePagerAdapter pagerAdapter;
+    public SectionsStatePagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
     @Override
@@ -72,7 +72,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     //responsible for navigating to the fragment
-    private void setViewPager(int fragmentNumber)
+    public void setViewPager(int fragmentNumber)
     {
         mRelativeLayout.setVisibility(View.GONE);
         Log.d(TAG, "setViewPager: navigating to fragment #:" + fragmentNumber);

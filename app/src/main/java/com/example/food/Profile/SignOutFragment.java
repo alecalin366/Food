@@ -32,7 +32,7 @@ public class SignOutFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signout, container, false);
         tvSignout = (TextView) view.findViewById(R.id.tvConfirmSignout);
         tvSigningOut = (TextView) view.findViewById(R.id.tvSigningOut);

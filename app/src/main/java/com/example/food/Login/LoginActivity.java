@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+    private static final Boolean CHECK_IF_VERIFIED = false;
     private ProgressBar mProgressBar;
     private EditText mEmail, mPassword;
 
@@ -106,14 +107,16 @@ public class LoginActivity extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         try{
-                                            if(user.isEmailVerified()){
-                                                Log.d(TAG, "onComplete: success. Email is verified");
-                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                startActivity(intent);
-                                            }else {
-                                                Toast.makeText(LoginActivity.this, "Email-ul nu este verificat \n Te rog, verifica-ti casuta de email ", Toast.LENGTH_SHORT).show();
-                                                mProgressBar.setVisibility(View.GONE);
-                                                mAuth.signOut();
+                                            if(CHECK_IF_VERIFIED){
+                                                if(user.isEmailVerified()){
+                                                    Log.d(TAG, "onComplete: success. Email is verified");
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                }else {
+                                                    Toast.makeText(LoginActivity.this, "Email-ul nu este verificat \n Te rog, verifica-ti casuta de email ", Toast.LENGTH_SHORT).show();
+                                                    mProgressBar.setVisibility(View.GONE);
+                                                    mAuth.signOut();
+                                                }
                                             }
                                         }catch (NullPointerException e){
                                             Log.d(TAG, "onComplete: NullPointerException: " + e.getMessage());

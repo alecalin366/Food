@@ -9,8 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_photo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="161dp"
+        android:layout_height="161dp"
         android:layout_centerVertical="true"
         app:civ_border_color="@color/black"
         app:civ_border_width="2dp"
@@ -88,43 +88,42 @@
         android:id="@+id/tvPosts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/segoe_ui"
         android:text="250"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintHorizontal_bias="0.295"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintTop_toBottomOf="@id/website" />
 
     <TextView
         android:id="@+id/textPosts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/segoe_ui"
         android:text="Posts"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvPosts"
+        app:layout_constraintEnd_toEndOf="@id/tvPosts"
         app:layout_constraintTop_toBottomOf="@+id/tvPosts" />
 
     <TextView
         android:id="@+id/tvFollowers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/segoe_ui"
         android:text="300"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.471" />
+        app:layout_constraintTop_toBottomOf="@id/website" />
 
     <TextView
         android:id="@+id/textFollowers"
@@ -135,36 +134,34 @@
         android:text="Followers"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/textFollowing"
-        app:layout_constraintHorizontal_bias="0.606"
-        app:layout_constraintStart_toEndOf="@+id/textPosts"
+        app:layout_constraintStart_toStartOf="@id/tvFollowers"
+        app:layout_constraintEnd_toEndOf="@id/tvFollowers"
         app:layout_constraintTop_toBottomOf="@+id/tvFollowers" />
 
     <TextView
         android:id="@+id/tvFollowing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="128dp"
         android:fontFamily="@font/segoe_ui"
         android:text="400"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.471" />
+        app:layout_constraintTop_toBottomOf="@id/website" />
 
     <TextView
         android:id="@+id/textFollowing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="100dp"
         android:fontFamily="@font/segoe_ui"
         android:text="Following"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvFollowing"
+        app:layout_constraintEnd_toEndOf="@id/tvFollowing"
         app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
 
     <TextView
@@ -172,16 +169,17 @@
         android:layout_width="198dp"
         android:layout_height="22dp"
         android:background="@drawable/text_user_pass"
+        android:fontFamily="@font/segoe_ui"
         android:text="Edit your profile"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFollowers"
-        app:layout_constraintVertical_bias="0.054"
-        android:fontFamily="@font/segoe_ui"/>
+        app:layout_constraintVertical_bias="0.104" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buton_mesaj"
@@ -236,4 +234,3 @@
     </GridView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
