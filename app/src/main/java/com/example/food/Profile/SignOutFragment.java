@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.food.Login.LoginActivity;
+import com.example.food.Onboarding.WelcomeActivity;
 import com.example.food.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,7 +82,7 @@ public class SignOutFragment extends Fragment {
                     Log.d(TAG, "onAuthStateChanged: signed out");
 
                     Log.d(TAG, "onAuthStateChanged: navigating back to login screen");
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getActivity(), WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // folosit atunci cand dam sign out si ne duce pe pagina de login.(daca dam inapoi, ne ducea iar in APP)
                     startActivity(intent);
                 }

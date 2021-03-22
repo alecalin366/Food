@@ -157,6 +157,7 @@ public class EditProfileFragment extends Fragment implements
             public void onClick(View v) {
                 Log.d(TAG, "onClick: attempting to save changes.");
                 saveProfileSettings();
+                Toast.makeText(getActivity(), "account setting saved", Toast.LENGTH_SHORT).show();
             }
         });
 

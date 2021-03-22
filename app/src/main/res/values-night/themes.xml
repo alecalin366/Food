@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Food" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Food" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+        <!-- Primary brand color. -->
 <!--        <item name="colorPrimary">@color/purple_200</item>-->
 <!--        <item name="colorPrimary">#5F4C94</item>-->
 <!--        <item name="purple2_DARK">#30264A</item>-->
@@ -14,9 +14,9 @@
 <!--        <item name="black">#FF000000</item>-->
 <!--        <item name="white">#FFFFFFFF</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+<!--        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>-->
         <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
     </style>
     <!--    button-->
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">

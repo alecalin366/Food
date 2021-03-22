@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         try{
-                                            if(CHECK_IF_VERIFIED){
+                                            //if(CHECK_IF_VERIFIED){
                                                 if(user.isEmailVerified()){
                                                     Log.d(TAG, "onComplete: success. Email is verified");
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     mProgressBar.setVisibility(View.GONE);
                                                     mAuth.signOut();
                                                 }
-                                            }
+                                            //}
                                         }catch (NullPointerException e){
                                             Log.d(TAG, "onComplete: NullPointerException: " + e.getMessage());
                                         }

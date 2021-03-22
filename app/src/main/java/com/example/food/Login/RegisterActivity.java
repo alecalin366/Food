@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.example.food.Home.MainActivity;
+import com.example.food.Profile.ProfileFragment;
 import com.example.food.R;
 import com.example.food.User.User;
 import com.example.food.User.UserAccountSettings;
@@ -44,12 +46,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
-
     private String email,password, username;
     private EditText mEmail, mPassword, mUsername;
     private ProgressBar mProgressBar;
     private AppCompatButton btnRegister;
     //google register
+//    private TextView name_google;
+//    private CircleImageView photo_google;
 //    private SignInButton signInButton;
 //    private GoogleSignInClient mGoogleSignInClient;
 //    private int RC_SIGN_IN = 1;
@@ -68,7 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         firebaseMethods = new FirebaseMethods(RegisterActivity.this);
-        //signInButton = findViewById(R.id.buttonGoogle);
+//        photo_google = (CircleImageView) findViewById(R.id.profile_photo);
+//        name_google = (TextView) findViewById(R.id.display_name);
+//        signInButton = findViewById(R.id.buttonGoogle);
         mAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "onCreate: started");
 
@@ -76,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         setupFirebaseAuth();
         init();
 
-//        //----------------------google-------------------------------
+        //----------------------google-------------------------------
 //        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestIdToken(getString(R.string.default_web_client_id))
 //                .requestEmail()
@@ -92,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//    }
+   }
 //
 //    private void signIn(){
 //        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -130,8 +135,10 @@ public class RegisterActivity extends AppCompatActivity {
 //                                Toast.makeText(RegisterActivity.this, "Successful", Toast.LENGTH_SHORT).show();
 //                                // Sign in success, update UI with the signed-in user's information
 //                                Log.d(TAG, "signInWithCredential:success");
-//                                FirebaseUser user = mAuth.getCurrentUser();
-//                                updateUI(user);
+////                                FirebaseUser user = mAuth.getCurrentUser();
+////                                updateUI(user);
+//                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+//                                startActivity(intent);
 //                            } else {
 //                                // If sign in fails, display a message to the user.
 //                                Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -150,20 +157,17 @@ public class RegisterActivity extends AppCompatActivity {
 //        //btnSignOut.setVisibility(View.VISIBLE);
 //        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
 //        if(account !=  null){
-////            UniversalImageLoader.setImage(account.getPhotoUrl().toString(), mProfilePhoto, null, "");
-////            mDisplayName.setText(account.getDisplayName());
-////            mEmail.setText(account.getEmail());
 //            String personName = account.getDisplayName();
-//            String personGivenName = account.getGivenName();
-//            String personFamilyName = account.getFamilyName();
 //            String personEmail = account.getEmail();
-//            String personId = account.getId();
 //            Uri personPhoto = account.getPhotoUrl();
 //
-//           // Toast.makeText(RegisterActivity.this,mDisplayName. + mEmail ,Toast.LENGTH_SHORT).show();
+//            name_google.setText(personName);
+//            photo_google.setImageURI(personPhoto);
+//
+//            Toast.makeText(RegisterActivity.this,personName + personEmail ,Toast.LENGTH_SHORT).show();
 //        }
-
-    }
+//
+//    }
 
 
     private void init(){
