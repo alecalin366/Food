@@ -2,35 +2,27 @@ package com.example.food.Profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 
-import com.example.food.Login.LoginActivity;
 import com.example.food.R;
 //import com.example.food.Utils.BottomNavigationViewHelper;
 import com.example.food.Utils.FirebaseMethods;
 import com.example.food.Utils.UniversalImageLoader;
 import com.example.food.User.User;
-import com.example.food.User.UserAccountSettings;
 import com.example.food.User.UserSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,8 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 //import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.net.ContentHandler;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -114,7 +104,7 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase databse: " + userSettings.toString());
 
         //User user = userSettings.getUser();
-        UserAccountSettings settings = userSettings.getSettings();
+        User settings = userSettings.getUserSettings();
 
         UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
 

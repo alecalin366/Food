@@ -1,6 +1,5 @@
 package com.example.food.Profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.food.Utils.ConfirmPasswordDialog;
-import com.example.food.Home.MainActivity;
-import com.example.food.Login.LoginActivity;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
 import com.example.food.User.User;
-import com.example.food.User.UserAccountSettings;
 import com.example.food.User.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,7 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import com.example.food.Utils.UniversalImageLoader;
 
@@ -177,11 +172,11 @@ public class EditProfileFragment extends Fragment implements
         final long phoneNumber = Long.parseLong(mPhoneNumber.getText().toString());
 
         //case1: if the user made a change to their username
-        if(!mUserSettings.getUser().getUsername().equals(username)){ //compare what it is in text field
+        if(!mUserSettings.getUserSettings().getUsername().equals(username)){ //compare what it is in text field
             checkIfUsernameExists(username);
         }
         //case2: if the user made a change to their email
-        if(!mUserSettings.getUser().getEmail().equals(email)){
+        if(!mUserSettings.getUserSettings().getEmail().equals(email)){
 
 
             // step1) Reauthenticate
@@ -198,19 +193,19 @@ public class EditProfileFragment extends Fragment implements
         /**
          * change the rest of the settings that do not require uniqueness
          */
-        if(!mUserSettings.getSettings().getDisplay_name().equals(displayName)){
+        if(!mUserSettings.getUserSettings().getDisplay_name().equals(displayName)){
             //update displayname
             mFirebaseMethods.updateUserAccountSettings(displayName, null, null, 0);
         }
-        if(!mUserSettings.getSettings().getWebsite().equals(website)){
+        if(!mUserSettings.getUserSettings().getWebsite().equals(website)){
             //update website
             mFirebaseMethods.updateUserAccountSettings(null, website, null, 0);
         }
-        if(!mUserSettings.getSettings().getDescription().equals(description)){
+        if(!mUserSettings.getUserSettings().getDescription().equals(description)){
             //update description
             mFirebaseMethods.updateUserAccountSettings(null, null, description, 0);
         }
-        if(mUserSettings.getUser().getPhone_number() != phoneNumber){
+        if(mUserSettings.getUserSettings().getPhone_number() != phoneNumber){
             //update phoneNumber
             mFirebaseMethods.updateUserAccountSettings(null, null, null, phoneNumber);
         }
@@ -257,19 +252,19 @@ public class EditProfileFragment extends Fragment implements
 
     private void setProfileWidgets(UserSettings userSettings){
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUser().getEmail());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUser().getPhone_number());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUserSettings().getEmail());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUserSettings().getPhone_number());
 
         mUserSettings = userSettings;
         //User user = userSettings.getUser();
-        UserAccountSettings settings = userSettings.getSettings();
+        User settings = userSettings.getUserSettings();
         UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
         mDisplayName.setText(settings.getDisplay_name());
         mUsername.setText(settings.getUsername());
         mWebsite.setText(settings.getWebsite());
         mDescription.setText(settings.getDescription());
-        mEmail.setText(userSettings.getUser().getEmail());
-        mPhoneNumber.setText(String.valueOf(userSettings.getUser().getPhone_number()));
+        mEmail.setText(userSettings.getUserSettings().getEmail());
+        mPhoneNumber.setText(String.valueOf(userSettings.getUserSettings().getPhone_number()));
     }
 
      /*
