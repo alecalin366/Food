@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Profile.ProfileFragment"
-    android:background="@drawable/main_activity">
+    android:background="@drawable/bkk">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_photo"
@@ -234,5 +234,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textFollowers">
 
     </GridView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

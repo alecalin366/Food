@@ -2,20 +2,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/navBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/purple2_LIGHT"
+        app:cnb_menuResource="@menu/bottom_navigation_menu"
+        app:cnb_unselectedColor="#1E0922"
+        />
 
-        <com.ismaeldivita.chipnavigation.ChipNavigationBar
-            android:id="@+id/navBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/purple2_LIGHT"
-            app:cnb_menuResource="@menu/bottom_navigation_menu"
-            app:cnb_unselectedColor="#1E0922"/>
-
-    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navBar"/>
 
 </merge>

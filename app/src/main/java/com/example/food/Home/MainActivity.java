@@ -3,6 +3,8 @@ package com.example.food.Home;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         chipNavigationBar = findViewById(R.id.navBar);
 
         chipNavigationBar.setItemSelected(R.id.ic_proba, true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+        HomeFragment frag = new HomeFragment();
+        FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.commit();
+
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
