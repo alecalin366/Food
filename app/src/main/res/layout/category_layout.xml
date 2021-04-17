@@ -8,7 +8,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_categorySweet"
+        android:id="@+id/category_cardView"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_margin="10dp"
@@ -23,13 +23,13 @@
         app:layout_constraintVertical_bias="0.315">
 
         <ImageView
-            android:id="@+id/image_sweet"
+            android:id="@+id/category_imageView"
             android:layout_width="120dp"
             android:layout_height="120dp"
             app:srcCompat="@drawable/category_sweet" />
 
         <TextView
-            android:id="@+id/text_sweet"
+            android:id="@+id/category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
