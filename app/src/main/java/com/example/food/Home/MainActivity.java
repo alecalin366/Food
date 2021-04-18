@@ -38,13 +38,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        chipNavigationBar = (ChipNavigationBar) findViewById(R.id.navBar);
 
         setupFirebaseAuth();
-        initImageLoader();
 
+        initImageLoader();
+        setupNavBar();
+
+        //mAuth.signOut();
+    }
+
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+    }
+
+
+
+    public void setupNavBar(){
         chipNavigationBar = findViewById(R.id.navBar);
 
-        chipNavigationBar.setItemSelected(R.id.ic_proba, true);
+        chipNavigationBar.setItemSelected(R.id.ic_home, true);
         HomeFragment frag = new HomeFragment();
         FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
@@ -55,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(int i) {
                 switch (i) {
-                    case R.id.ic_proba:
+                    case R.id.ic_home:
                         fragment = new HomeFragment();
                         break;
                     case R.id.ic_search:
@@ -77,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        //mAuth.signOut();
-    }
-
-    private void initImageLoader(){
-        UniversalImageLoader universalImageLoader = new UniversalImageLoader(this);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
     /*
