@@ -16,6 +16,7 @@ import com.example.food.Likes.LikesFragment;
 import com.example.food.Login.LoginActivity;
 import com.example.food.Profile.ProfileFragment;
 import com.example.food.R;
+import com.example.food.Recipe.RecipeFragment;
 import com.example.food.Search.SearchFragment;
 import com.example.food.ShopActivity.ShopFragment;
 import com.example.food.Utils.UniversalImageLoader;
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.ic_search:
                         fragment = new SearchFragment();
+                        break;
+                    case R.id.ic_recipe:
+                        fragment = new RecipeFragment();
                         break;
                     case R.id.ic_circle:
                         fragment = new ShopFragment();
