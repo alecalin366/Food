@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 
 import com.example.food.Likes.LikesFragment;
 import com.example.food.Login.LoginActivity;
+import com.example.food.Onboarding.WelcomeActivity;
 import com.example.food.Profile.ProfileFragment;
 import com.example.food.R;
 import com.example.food.Recipe.RecipeFragment;
@@ -41,12 +43,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         chipNavigationBar = (ChipNavigationBar) findViewById(R.id.navBar);
 
-        setupFirebaseAuth();
+        SharedPreferences prefs = getSharedPreferences("Food", MODE_PRIVATE);
 
-        initImageLoader();
-        setupNavBar();
-
-        //mAuth.signOut();
+        boolean firstInstall  = prefs.getBoolean("FirstInstall", true);
+        if(!firstInstall){
+            setupFirebaseAuth();
+            initImageLoader();
+            setupNavBar();
+        }
+        else {
+            Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void initImageLoader(){
@@ -112,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if(user == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
     }
     /**

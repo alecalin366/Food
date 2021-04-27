@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.R;
 import com.example.food.User.User;
@@ -52,10 +53,8 @@ public class FirebaseMethods {
         myRef = mFirebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-        if (mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null)
             userID = mAuth.getCurrentUser().getUid();
-        }
     }
 
     public void updateDisplayName(String displayName) {
@@ -148,49 +147,33 @@ public class FirebaseMethods {
 
     }
 
-//    public boolean checkIfUsernameExists(String username, DataSnapshot dataSnapshot){
-//        Log.d(TAG, "checkIfUsernameExists: checking if" + username +"already exists");
-//
-//        User user = new User();
-//
-//        for(DataSnapshot ds : dataSnapshot.child(userID).getChildren()){ //iterate nodes from firebase(user_account & user)
-//            Log.d(TAG, "checkIfUsernameExists: datasnapshot " + ds);
-//
-//            user.setUsername(ds.getValue(User.class).getUsername());
-//            Log.d(TAG, "checkIfUsernameExists: username " + user.getUsername());
-//
-//            if(StringManipulation.expandUsername(user.getUsername()).equals(username)){
-//                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + user.getUsername());
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-    /**
-     * Register a new email and password to Firebase Authentication
-     **/
-    public void registerNewEmail(final String email, String password, final String username, final String phoneNumber) {
+    public void registerNewEmail(final String email, String password, final String username, final String phoneNumber, ICompleteListener listener) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete: " + task.isSuccessful());
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
+                            sendVerificationEmail(new ICompleteListener() {
+                                @Override
+                                public void OnComplete(boolean isSuccessfulCompleted) {
+                                    listener.OnComplete(isSuccessfulCompleted);
+                                }
+                            });
+                            userID = mAuth.getCurrentUser().getUid();
+                            Log.d(TAG, "onComplete: authstate changed" + userID);
+                        }
+                        else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
-                        } else if (task.isSuccessful()) {
-                            sendVerificationEmail();
-
-                            userID = mAuth.getCurrentUser().getUid();
-                            Log.d(TAG, "onComplete: authstate changed" + userID);
+                            listener.OnComplete(false);
                         }
                     }
                 });
     }
 
-    public void sendVerificationEmail() {
+    public void sendVerificationEmail(ICompleteListener listener) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
@@ -198,6 +181,7 @@ public class FirebaseMethods {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            listener.OnComplete(task.isSuccessful());
                             if (task.isSuccessful()) {
                                 Toast.makeText(mContext, "email verification sent", Toast.LENGTH_SHORT).show();
                             } else {
@@ -209,22 +193,15 @@ public class FirebaseMethods {
     }
 
     //add info to the users and user_account_settings nodes
-    public void addNewUser(String email, String username, String phoneNumber, String profile_photo) {
+    public void addNewUser(String email, String username, String phoneNumber, String profile_photo, ICompleteListener listener) {
         User user = new User(userID, phoneNumber, email, StringManipulation.condenseUsername(username), username, profile_photo);
 
         db.collection("Users").document(userID).set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: ");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.OnComplete(task.isSuccessful());
+                    }});
     }
 
     public void RetrieveUserSettings(IGetUserSettings userSettings) {

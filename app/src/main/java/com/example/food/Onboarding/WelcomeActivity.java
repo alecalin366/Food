@@ -14,6 +14,7 @@ import com.example.food.R;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Explode;
@@ -43,6 +44,10 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
+
+        SharedPreferences.Editor prefs = getSharedPreferences("Food", MODE_PRIVATE).edit();
+                prefs.putBoolean("FirstInstall",false);
+                prefs.apply();
 
         btnNext = (AppCompatButton) findViewById(R.id.next_button_welcome);
 

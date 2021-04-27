@@ -103,8 +103,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                     } else {
                                         Log.d(TAG, "signInWithEmail: successful login");
-                                        Toast.makeText(LoginActivity.this, "auth success",
-                                                Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         try{
                                             //if(CHECK_IF_VERIFIED){
@@ -138,14 +136,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //If the user is logged in then navigate to HomeActivity and call "finish"
-        if(mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
     }
 
     private void forgotPass(){
