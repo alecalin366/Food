@@ -170,7 +170,7 @@ public class FirebaseMethods {
     /**
      * Register a new email and password to Firebase Authentication
      **/
-    public void registerNewEmail(final String email, String password, final String username) {
+    public void registerNewEmail(final String email, String password, final String username, final String phoneNumber) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -209,8 +209,8 @@ public class FirebaseMethods {
     }
 
     //add info to the users and user_account_settings nodes
-    public void addNewUser(String email, String username, String profile_photo) {
-        User user = new User(userID, "", email, StringManipulation.condenseUsername(username), username, profile_photo);
+    public void addNewUser(String email, String username, String phoneNumber, String profile_photo) {
+        User user = new User(userID, phoneNumber, email, StringManipulation.condenseUsername(username), username, profile_photo);
 
         db.collection("Users").document(userID).set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -227,13 +227,6 @@ public class FirebaseMethods {
                 });
     }
 
-    /**
-     * Retreive the accout settinigs for the user currlently logged in
-     * Database:user"_account_settings node
-     *
-     * @param
-     * @return
-     */
     public void RetrieveUserSettings(IGetUserSettings userSettings) {
         Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase");
 

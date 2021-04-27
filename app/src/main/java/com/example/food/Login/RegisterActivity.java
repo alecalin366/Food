@@ -25,16 +25,10 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
-    private String email,password, username;
-    private EditText mEmail, mPassword, mUsername;
+    private String email,password, username, phoneNumber;
+    private EditText mEmail, mPassword, mUsername, mPhoneNumber;
     private ProgressBar mProgressBar;
     private AppCompatButton btnRegister;
-    //google register
-//    private TextView name_google;
-//    private CircleImageView photo_google;
-//    private SignInButton signInButton;
-//    private GoogleSignInClient mGoogleSignInClient;
-//    private int RC_SIGN_IN = 1;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -50,104 +44,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         firebaseMethods = new FirebaseMethods(RegisterActivity.this);
-//        photo_google = (CircleImageView) findViewById(R.id.profile_photo);
-//        name_google = (TextView) findViewById(R.id.display_name);
-//        signInButton = findViewById(R.id.buttonGoogle);
         mAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "onCreate: started");
 
         initWidgets();
         setupFirebaseAuth();
         init();
-
-        //----------------------google-------------------------------
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//
-//
-//        signInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signIn();
-//            }
-//        });
-//
-   }
-//
-//    private void signIn(){
-//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-//        startActivityForResult(signInIntent, RC_SIGN_IN);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == RC_SIGN_IN){
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            if(task.isSuccessful()) {
-//                try {
-//                    GoogleSignInAccount acc = task.getResult(ApiException.class);
-//                    Toast.makeText(RegisterActivity.this, "Signed In Successfully", Toast.LENGTH_SHORT).show();
-//                    firebaseAuthWithGoogle(acc.getIdToken());
-//                } catch (ApiException e) {
-//                    Toast.makeText(RegisterActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
-//                    firebaseAuthWithGoogle(null);
-//                }
-//            }else{
-//                Toast.makeText(RegisterActivity.this,"Eroare" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-//
-//    private void firebaseAuthWithGoogle(String idToken) {
-//        if (idToken != null) {
-//            AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-//            mAuth.signInWithCredential(credential)
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//                                Toast.makeText(RegisterActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-//                                // Sign in success, update UI with the signed-in user's information
-//                                Log.d(TAG, "signInWithCredential:success");
-////                                FirebaseUser user = mAuth.getCurrentUser();
-////                                updateUI(user);
-//                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-//                                startActivity(intent);
-//                            } else {
-//                                // If sign in fails, display a message to the user.
-//                                Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                                Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-//                                updateUI(null);
-//                            }
-//                        }
-//                    });
-//        }
-//        else{
-//            Toast.makeText(RegisterActivity.this, "acc failed", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private void updateUI(FirebaseUser fUser){
-//        //btnSignOut.setVisibility(View.VISIBLE);
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-//        if(account !=  null){
-//            String personName = account.getDisplayName();
-//            String personEmail = account.getEmail();
-//            Uri personPhoto = account.getPhotoUrl();
-//
-//            name_google.setText(personName);
-//            photo_google.setImageURI(personPhoto);
-//
-//            Toast.makeText(RegisterActivity.this,personName + personEmail ,Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-
+    }
 
     private void init(){
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -156,19 +59,20 @@ public class RegisterActivity extends AppCompatActivity {
                 email = mEmail.getText().toString();
                 username = mUsername.getText().toString();
                 password = mPassword.getText().toString();
+                phoneNumber = mPhoneNumber.getText().toString();
 
-                if(checkInputs(email, username, password)){
+                if(checkInputs(email, username, password, phoneNumber)){
                     mProgressBar.setVisibility(View.VISIBLE);
 
-                    firebaseMethods.registerNewEmail(email, password, username);
+                    firebaseMethods.registerNewEmail(email, password, username, phoneNumber);
                 }
             }
         });
     }
 
-    private boolean checkInputs(String email, String username, String password){
+    private boolean checkInputs(String email, String username, String password, String phoneNumber){
         Log.d(TAG, "checkkInputs: checking inputs for null value");
-        if(email.equals("") || username.equals("") || password.equals("")){
+        if(email.equals("") || username.equals("") || password.equals("") || phoneNumber.equals("")){
             Toast.makeText(RegisterActivity.this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -180,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email_field);
         mPassword = (EditText) findViewById(R.id.password_field);
         mUsername = (EditText) findViewById(R.id.name_field);
+        mPhoneNumber = (EditText) findViewById(R.id.phone_field);
         btnRegister = (AppCompatButton) findViewById(R.id.btnRegister);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -228,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mUsername = username + append;
 
                 //add new user to the database
-                firebaseMethods.addNewUser(email, mUsername, "");
+                firebaseMethods.addNewUser(email, mUsername, phoneNumber, "");
 
                 Toast.makeText(RegisterActivity.this, "Signup succesful.Sending verification email", Toast.LENGTH_SHORT).show();
 
