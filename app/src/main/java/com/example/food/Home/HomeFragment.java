@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.Category;
 import com.example.food.Profile.AccountSettingsActivity;
 import com.example.food.R;
@@ -40,7 +41,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -104,16 +109,11 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void setProfileWidgets(UserSettings userSettings){
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase databse: " + userSettings.toString());
+    private void setProfileWidgets(User user){
+        UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
 
-        //User user = userSettings.getUser();
-        User settings = userSettings.getUserSettings();
-
-        UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
-
-        mDisplayName.setText(settings.getDisplay_name());
-        mUsername.setText(settings.getUsername());
+        mDisplayName.setText(user.getDisplay_name());
+        mUsername.setText(user.getUsername());
         //mProgressBar.setVisibility(View.GONE);
     }
 
@@ -163,19 +163,13 @@ public class HomeFragment extends Fragment {
             }
         };
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //retrieve user info from database
-                setProfileWidgets(mFirebaseMethods.getUserSettings(snapshot));
-                //retrieve image for the user in question
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
+                mFirebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
+                    @Override
+                    public void getUserSettings(User userSettings) {
+                        setProfileWidgets(userSettings);
+                    }
+                });
     }
 
     @Override

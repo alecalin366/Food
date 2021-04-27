@@ -1,15 +1,19 @@
 package com.example.food.Utils;
 
+import android.app.usage.NetworkStats;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.R;
 import com.example.food.User.User;
 import com.example.food.User.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +21,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
@@ -28,88 +40,111 @@ public class FirebaseMethods {
     private String userID;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private FirebaseFirestore db;
+    DocumentReference userRef;
+    FirebaseAuth firebaseAuth;
 
     public FirebaseMethods(Context context) {
         mAuth = FirebaseAuth.getInstance();
         mContext = context;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        db = FirebaseFirestore.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
         if (mAuth.getCurrentUser() != null) {
             userID = mAuth.getCurrentUser().getUid();
         }
     }
 
-    /**
-     * Update 'user_account_settings' node for the current user
-     * @param displayName
-     * @param website
-     * @param description
-     * @param phoneNumber
-     */
-    public void updateUserAccountSettings(String displayName, String website, String description, long phoneNumber){
+    public void updateDisplayName(String displayName) {
 
         Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
 
-        if(displayName != null){
-            myRef.child(mContext.getString(R.string.dbname_users))
-                    .child(userID)
-                    .child(mContext.getString(R.string.field_display_name))
-                    .setValue(displayName);
-        }
+
+        userRef = db.collection("Users")
+                .document(userID);
+
+        userRef.update("display_name", displayName
+        ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Alexandra onComplete: update is succesful");
+                } else {
+                    Log.d(TAG, "Alexandra onComplete: update failed ");
+                }
+
+            }
+        });
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+
+        Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
 
 
-        if(website != null) {
-            myRef.child(mContext.getString(R.string.dbname_users))
-                    .child(userID)
-                    .child(mContext.getString(R.string.field_website))
-                    .setValue(website);
-        }
+        userRef = db.collection("Users")
+                .document(userID);
 
-        if(description != null) {
-            myRef.child(mContext.getString(R.string.dbname_users))
-                    .child(userID)
-                    .child(mContext.getString(R.string.field_description))
-                    .setValue(description);
-        }
+        userRef.update("phone_number", phoneNumber
+        ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "onComplete: update is succesful");
+                } else {
+                    Log.d(TAG, "onComplete: update failed ");
+                }
 
-        if(phoneNumber != 0) {
-            myRef.child(mContext.getString(R.string.dbname_users))
-                    .child(userID)
-                    .child(mContext.getString(R.string.field_phone_number))
-                    .setValue(phoneNumber);
-        }
+            }
+        });
     }
 
     /**
-     * update username in the 'users' node and 'user_account_settings' node
+     * update username in the 'users'
+     *
      * @param username
      */
-    public void updateUsername(String username){
+    public void updateUsername(String username) {
         Log.d(TAG, "updateUsername: upadting username to: " + username);
 
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(userID)
-                .child(mContext.getString(R.string.field_username))
-                .setValue(username);
+        userRef = db.collection("Users")
+                .document(mAuth.getUid());
 
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(userID)
-                .child(mContext.getString(R.string.field_username))
-                .setValue(username);
+        userRef.update("username", username
+        ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Alexandra onComplete: update is succesful");
+                } else {
+                    Log.d(TAG, "Alexandra onComplete: update failed ");
+                }
+
+            }
+        });
+
     }
 
-    /**
-     * update the email in the 'user's' node
-     * @param email
-     */
-    public void updateEmail(String email){
+    public void updateEmail(String email) {
         Log.d(TAG, "updateEmail: upadting email to: " + email);
 
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(userID)
-                .child(mContext.getString(R.string.field_email))
-                .setValue(email);
+        userRef = db.collection("Users")
+                .document(mAuth.getUid());
+
+        userRef.update("email", email
+        ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Alexandra onComplete: update is succesful");
+                } else {
+                    Log.d(TAG, "Alexandra onComplete: update failed ");
+                }
+            }
+        });
 
     }
 
@@ -145,8 +180,7 @@ public class FirebaseMethods {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        } else if (task.isSuccessful()){
-                            //send verification email
+                        } else if (task.isSuccessful()) {
                             sendVerificationEmail();
 
                             userID = mAuth.getCurrentUser().getUid();
@@ -156,17 +190,17 @@ public class FirebaseMethods {
                 });
     }
 
-    public void sendVerificationEmail(){
+    public void sendVerificationEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(user != null){
+        if (user != null) {
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
 
-                            }else {
+                            } else {
                                 Toast.makeText(mContext, "Couldn't send email verification", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -175,142 +209,59 @@ public class FirebaseMethods {
     }
 
     //add info to the users and user_account_settings nodes
-    public void addNewUser(String email, String username, String description, String website, String profile_photo){
-        User user = new User(userID, 1, email, StringManipulation.condenseUsername(username));
+    public void addNewUser(String email, String username, String profile_photo) {
+        User user = new User(userID, "", email, StringManipulation.condenseUsername(username), username, profile_photo);
 
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(userID)
-                .setValue(user);
-
-        User settings = new User(
-                description,
-                username,
-                0,
-                0,
-                0,
-                profile_photo,
-                StringManipulation.condenseUsername(username),
-                website,
-                userID
-        );
-
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(userID)
-                .setValue(settings);
+        db.collection("Users").document(userID).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 
     /**
      * Retreive the accout settinigs for the user currlently logged in
      * Database:user"_account_settings node
-     * @param dataSnapshot
+     *
+     * @param
      * @return
      */
-    public UserSettings getUserSettings(DataSnapshot dataSnapshot){
+    public void RetrieveUserSettings(IGetUserSettings userSettings) {
         Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase");
 
-        User settings = new User();
 
-        for(DataSnapshot ds : dataSnapshot.getChildren()) {
-            //user  node
-            if (ds.getKey().equals(mContext.getString(R.string.dbname_users))) {
-                Log.d(TAG, "getUserAccountSettings: datasnapshot" + ds);
-                Log.d(TAG, "USER ID ************************************" + userID);
-                Log.d(TAG, "USER ID.child ************************************" +ds.child(userID));
-                try {
-                    settings.setDisplay_name(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getDisplay_name()
-                    );
-                    settings.setUsername(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getUsername()
-                    );
-                    settings.setWebsite(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getWebsite()
-                    );
-                    settings.setDescription(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getDescription()
-                    );
-                    settings.setProfile_photo(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getProfile_photo()
-                    );
-                    settings.setPosts(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getPosts()
-                    );
-                    settings.setFollowing(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getFollowing()
-                    );
-                    settings.setFollowers(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getFollowers()
-                    );
-                    settings.setUsername(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getUsername()
-                    );
-                    settings.setEmail(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getEmail()
-                    );
-                    settings.setPhone_number(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getPhone_number()
-                    );
-                    settings.setUser_id(
-                            ds.child(userID)
-                                    .getValue(User.class)
-                                    .getUser_id()
-                    );
-                } catch (NullPointerException e) {
-                    Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
-                }
-                Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + settings.toString());
+        try {
+            userRef = db.collection("Users")
+                    .document(firebaseAuth.getCurrentUser().getUid());
 
-            }
-            //users node
-//            if (ds.getKey().equals(mContext.getString(R.string.dbname_users))) {
-//                Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds);
-//
-//                user.setUsername(
-//                        ds.child(userID)
-//                                .getValue(User.class)
-//                                .getUsername()
-//                );
-//                user.setEmail(
-//                        ds.child(userID)
-//                                .getValue(User.class)
-//                                .getEmail()
-//                );
-//                user.setPhone_number(
-//                        ds.child(userID)
-//                                .getValue(User.class)
-//                                .getPhone_number()
-//                );
-//                user.setUser_id(
-//                        ds.child(userID)
-//                                .getValue(User.class)
-//                                .getUser_id()
-//                );
-//
-//                Log.d(TAG, "getUserAccountSettings: retrieved users information: " + user.toString());
-//            }
+            userRef.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            User user = documentSnapshot.toObject(User.class);
+
+                            userSettings.getUserSettings(user);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "onFailure: failed to fetch data");
+                        }
+                    });
+        } catch (NullPointerException e) {
+            Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
         }
-        return new UserSettings(settings);
+        Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userSettings.toString());
+
     }
 }

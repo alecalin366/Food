@@ -8,20 +8,19 @@
     android:background="@drawable/user_profile">
 
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_photo"
-        android:layout_width="113dp"
-        android:layout_height="108dp"
+        android:layout_width="128dp"
+        android:layout_height="122dp"
         android:layout_centerVertical="true"
         app:civ_border_color="@color/black"
         app:civ_border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:layout_constraintVertical_bias="0.016" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/display_name"
@@ -33,10 +32,10 @@
         android:textSize="21sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_photo"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.018" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buton_mesaj"

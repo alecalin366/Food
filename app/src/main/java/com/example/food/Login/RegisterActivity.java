@@ -222,12 +222,13 @@ public class RegisterActivity extends AppCompatActivity {
                         append = myRef.push().getKey().substring(3,10);
                         Log.d(TAG, "onDataChange: username already exists.Appending random string to name: " + append);
                     }
+                    Log.d(TAG, "checkIfUsernameExists: DIND't FOUND A MATCH!!!!!!!!!: " + singleSnapshot.getValue(User.class).getUsername());
                 }
                 String mUsername = "";
                 mUsername = username + append;
 
                 //add new user to the database
-                firebaseMethods.addNewUser(email, mUsername, "", "", "" );
+                firebaseMethods.addNewUser(email, mUsername, "");
 
                 Toast.makeText(RegisterActivity.this, "Signup succesful.Sending verification email", Toast.LENGTH_SHORT).show();
 

@@ -1,5 +1,6 @@
 package com.example.food.Profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Utils.ConfirmPasswordDialog;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
@@ -34,6 +36,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import com.example.food.Utils.UniversalImageLoader;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -111,12 +118,12 @@ public class EditProfileFragment extends Fragment implements
     private String userID;
 
     //EditProfile Fragment widgets
-    private EditText mDisplayName, mUsername, mWebsite, mDescription, mEmail, mPhoneNumber;
+    private EditText mDisplayName, mUsername, mEmail, mPhoneNumber;
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
 
     //var
-    private UserSettings mUserSettings;
+    private User mUser;
 
     @Nullable
     @Override
@@ -125,8 +132,6 @@ public class EditProfileFragment extends Fragment implements
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         mDisplayName = (EditText) view.findViewById(R.id.display_name);
         mUsername = (EditText) view.findViewById(R.id.username);
-        mWebsite = (EditText) view.findViewById(R.id.website);
-        mDescription = (EditText) view.findViewById(R.id.description);
         mEmail = (EditText) view.findViewById(R.id.email);
         mPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
         mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
@@ -166,105 +171,96 @@ public class EditProfileFragment extends Fragment implements
     private void saveProfileSettings(){
         final String displayName = mDisplayName.getText().toString();
         final String username = mUsername.getText().toString();
-        final String website = mWebsite.getText().toString();
-        final String description = mDescription.getText().toString();
         final String email = mEmail.getText().toString();
-        final long phoneNumber = Long.parseLong(mPhoneNumber.getText().toString());
+        final String phoneNumber = mPhoneNumber.getText().toString();
+        if(email == null || email.isEmpty()){
+            Toast.makeText(getContext(), "add an email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(displayName == null || displayName.isEmpty()){
+            Toast.makeText(getContext(), "displayName is empty or null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(username == null || username.isEmpty()){
+            Toast.makeText(getContext(), "username is empty or null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
 
         //case1: if the user made a change to their username
-        if(!mUserSettings.getUserSettings().getUsername().equals(username)){ //compare what it is in text field
-            checkIfUsernameExists(username);
-        }
-        //case2: if the user made a change to their email
-        if(!mUserSettings.getUserSettings().getEmail().equals(email)){
-
-
-            // step1) Reauthenticate
-            //          -Confirm the password and email
-            ConfirmPasswordDialog dialog = new ConfirmPasswordDialog();
-            dialog.show(getFragmentManager(), getString(R.string.confirm_password_dialog));
-            dialog.setTargetFragment(EditProfileFragment.this, 1);
-            // step2) check if the email already is registered
-            //          -'fetchProvidersForEmail(String email)'
-            // step3) change the email
-            //          -submit the new email to the database and authentication
+        if(!mUser.getUsername().equals(username)){ //compare what it is in text field
+            //checkIfUsernameExists(username);
+            mFirebaseMethods.updateUsername(username); // pana rezolv checkIfUsernameExists
+            Log.d(TAG, "saveProfileSettings: user");
         }
 
         /**
          * change the rest of the settings that do not require uniqueness
          */
-        if(!mUserSettings.getUserSettings().getDisplay_name().equals(displayName)){
+        if(!mUser.getDisplay_name().equals(displayName)){
             //update displayname
-            mFirebaseMethods.updateUserAccountSettings(displayName, null, null, 0);
+            mFirebaseMethods.updateDisplayName(displayName);
         }
-        if(!mUserSettings.getUserSettings().getWebsite().equals(website)){
-            //update website
-            mFirebaseMethods.updateUserAccountSettings(null, website, null, 0);
-        }
-        if(!mUserSettings.getUserSettings().getDescription().equals(description)){
-            //update description
-            mFirebaseMethods.updateUserAccountSettings(null, null, description, 0);
-        }
-        if(mUserSettings.getUserSettings().getPhone_number() != phoneNumber){
+        if(mUser.getPhone_number().equals(phoneNumber)){
             //update phoneNumber
-            mFirebaseMethods.updateUserAccountSettings(null, null, null, phoneNumber);
+            mFirebaseMethods.updatePhoneNumber(phoneNumber);
         }
     }
 
 
     /**
      * Check is @param username already exists in the database
-     * @param username
+     //* @param username
      */
-    private void checkIfUsernameExists(final String username) {
-        Log.d(TAG, "checkIfUsernameExists: Checking if  " + username + " already exists.");
+//    private void checkIfUsernameExists(final String username) {
+//        Log.d(TAG, "checkIfUsernameExists: Checking if  " + username + " already exists.");
+//
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//        Query query = reference
+//                .child(getString(R.string.dbname_users))
+//                .orderByChild(getString(R.string.field_username))
+//                .equalTo(username);
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                if(!dataSnapshot.exists()){
+//                    //add the username
+//                    mFirebaseMethods.updateUsername(username);
+//                    Toast.makeText(getActivity(), "saved username.", Toast.LENGTH_SHORT).show();
+//
+//                }
+//                for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
+//                    if (singleSnapshot.exists()){
+//                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + singleSnapshot.getValue(User.class).getUsername());
+//                        Toast.makeText(getActivity(), "That username already exists.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query = reference
-                .child(getString(R.string.dbname_users))
-                .orderByChild(getString(R.string.field_username))
-                .equalTo(username);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(!dataSnapshot.exists()){
-                    //add the username
-                    mFirebaseMethods.updateUsername(username);
-                    Toast.makeText(getActivity(), "saved username.", Toast.LENGTH_SHORT).show();
-
-                }
-                for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
-                    if (singleSnapshot.exists()){
-                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + singleSnapshot.getValue(User.class).getUsername());
-                        Toast.makeText(getActivity(), "That username already exists.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 
-    private void setProfileWidgets(UserSettings userSettings){
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUserSettings().getEmail());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getUserSettings().getPhone_number());
+    private void setProfileWidgets(User user){
 
-        mUserSettings = userSettings;
-        //User user = userSettings.getUser();
-        User settings = userSettings.getUserSettings();
-        UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
-        mDisplayName.setText(settings.getDisplay_name());
-        mUsername.setText(settings.getUsername());
-        mWebsite.setText(settings.getWebsite());
-        mDescription.setText(settings.getDescription());
-        mEmail.setText(userSettings.getUserSettings().getEmail());
-        mPhoneNumber.setText(String.valueOf(userSettings.getUserSettings().getPhone_number()));
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.toString());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.getEmail());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.getPhone_number());
+
+        UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
+        mDisplayName.setText(user.getDisplay_name());
+        mUsername.setText(user.getUsername());
+        mEmail.setText(user.getEmail());
+        mPhoneNumber.setText(user.getPhone_number());
     }
 
      /*
@@ -296,19 +292,17 @@ public class EditProfileFragment extends Fragment implements
             }
         };
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //retrieve user info from database
-                setProfileWidgets(mFirebaseMethods.getUserSettings(snapshot));
-                //retrieve image for the user in question
-            }
 
+        mFirebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
             @Override
-            public void onCancelled(DatabaseError error) {
-
+            public void getUserSettings(User userSettings) {
+                mUser = userSettings;
+                setProfileWidgets(userSettings);
             }
         });
+                //retrieve image for the user in question
+
+
     }
 
     @Override

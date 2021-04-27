@@ -87,80 +87,10 @@
 
             </RelativeLayout>
 
-            <!--website section-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout2"
-                android:background="@drawable/grey_border_bottom"
-                android:id="@+id/relLayout3"
-                android:layout_marginTop="15dp">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_website"
-                    android:layout_centerVertical="true"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/website"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="40dp"
-                    android:background="@null"
-                    android:inputType="textNoSuggestions"
-                    android:hint="website"
-                    android:fontFamily="@font/segoe_ui"/>
-
-            </RelativeLayout>
-
-            <!--description section-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/relLayout3"
-                android:background="@drawable/grey_border_bottom"
-                android:id="@+id/relLayout4"
-                android:layout_marginTop="15dp">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_description"
-                    android:layout_centerVertical="true"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/description"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="40dp"
-                    android:background="@null"
-                    android:inputType="textNoSuggestions"
-                    android:hint="description"
-                    android:fontFamily="@font/segoe_ui"/>
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="316dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout4"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="66dp"
-                android:background="@drawable/grey_border_bottom"
-                android:text="PRIVATE INFORMATIONS"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:id="@+id/textPrivateInfo"
-                android:fontFamily="@font/segoe_ui_bold"/>
-
-            <!--email section-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/textPrivateInfo"
                 android:background="@drawable/grey_border_bottom"
                 android:id="@+id/relLayout5"
                 android:layout_marginTop="15dp">

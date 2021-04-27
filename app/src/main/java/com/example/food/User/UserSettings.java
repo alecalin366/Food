@@ -3,7 +3,6 @@ package com.example.food.User;
 public class UserSettings {
 
     private User userSettings;
-    //private UserAccountSettings settings;
 
     public UserSettings(User userSettings) {
         this.userSettings = userSettings;
