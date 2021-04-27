@@ -45,10 +45,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         firebaseMethods = new FirebaseMethods(RegisterActivity.this);
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
         Log.d(TAG, "onCreate: started");
 
         initWidgets();
-        setupFirebaseAuth();
+        //setupFirebaseAuth();
         init();
     }
 

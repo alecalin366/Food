@@ -178,7 +178,7 @@ public class FirebaseMethods {
                         Log.d(TAG, "createUserWithEmail:onComplete: " + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(mContext, R.string.auth_failed,
+                            Toast.makeText(mContext, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
                             sendVerificationEmail();
@@ -199,7 +199,7 @@ public class FirebaseMethods {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-
+                                Toast.makeText(mContext, "email verification sent", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(mContext, "Couldn't send email verification", Toast.LENGTH_SHORT).show();
                             }
