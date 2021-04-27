@@ -188,10 +188,6 @@ public class EditProfileFragment extends Fragment implements
             return;
         }
 
-
-
-
-        //case1: if the user made a change to their username
         if(!mUser.getUsername().equals(username)){ //compare what it is in text field
             //checkIfUsernameExists(username);
             mFirebaseMethods.updateUsername(username); // pana rezolv checkIfUsernameExists
@@ -205,7 +201,7 @@ public class EditProfileFragment extends Fragment implements
             //update displayname
             mFirebaseMethods.updateDisplayName(displayName);
         }
-        if(mUser.getPhone_number().equals(phoneNumber)){
+        if(!mUser.getPhone_number().equals(phoneNumber)){
             //update phoneNumber
             mFirebaseMethods.updatePhoneNumber(phoneNumber);
         }
