@@ -1,0 +1,509 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_recipe"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="317dp"
+                android:layout_height="175dp"
+                android:id="@+id/profile_photo"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/recipe_photo"
+                android:layout_centerHorizontal="true" />
+
+            <!--Nume reteta-->
+            <RelativeLayout
+                android:id="@+id/relLayout1"
+                android:layout_width="350dp"
+                android:layout_height="47dp"
+                android:layout_below="@+id/profile_photo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/recipe_box">
+
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:fontFamily="@font/segoe_ui"
+                    android:hint="Nume reteta"
+                    android:inputType="textNoSuggestions" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout2"
+                android:layout_width="350dp"
+                android:layout_height="47dp"
+                android:layout_below="@+id/relLayout1"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/recipe_box"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:layout_width="59dp"
+                    android:layout_height="16dp"
+                    android:layout_alignStart="@+id/category"
+                    android:layout_alignTop="@+id/category"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="268dp"
+                    android:layout_marginTop="-13dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@drawable/ic_choose" />
+
+                <EditText
+                    android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:fontFamily="@font/segoe_ui"
+                    android:hint="Categorie"
+                    android:inputType="textNoSuggestions" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout3"
+                android:layout_width="350dp"
+                android:layout_height="47dp"
+                android:layout_below="@+id/relLayout2"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/recipe_box"
+                android:layout_centerHorizontal="true">
+
+                <EditText
+                    android:id="@+id/timp_preparare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:fontFamily="@font/segoe_ui"
+                    android:hint="Timp de preparare"
+                    android:inputType="textNoSuggestions" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout4"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/relLayout3"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/recipe_description"
+                android:layout_centerHorizontal="true">
+
+                <EditText
+                    android:id="@+id/descriere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:fontFamily="@font/segoe_ui"
+                    android:hint="Descrie-ti modul de preparare"
+                    android:inputType="textNoSuggestions" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout4"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/ingrediente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:textColor="@color/purple2_DARK"
+                    android:text="Ingrediente"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:textSize="15dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout5"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="20dp">
+
+                <Button
+                    android:layout_width="190dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/recipe_box"
+                    android:text="Adauga ingredinete"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/purple2_DARK">
+
+                </Button>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout6"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/macro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:textColor="@color/purple2_DARK"
+                    android:text="Macronutrienti"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:textSize="15dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout7"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/calorii"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/recipe_box"
+                        android:layout_weight="1"
+                        android:text="Calorii"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="9dp"
+                        android:textColor="@color/purple2_DARK"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/cantitate_calorii"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/recipe_box"
+                        android:hint="Cantitate"
+                        android:paddingLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp">
+
+                    </EditText>
+
+                    <FrameLayout
+                        android:layout_width="49dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinner_team"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp">
+
+                        </androidx.appcompat.widget.AppCompatSpinner>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout8"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/proteine"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/recipe_box"
+                        android:layout_weight="1"
+                        android:text="Proteine"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="9dp"
+                        android:textColor="@color/purple2_DARK"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/cantitate_proteine"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/recipe_box"
+                        android:hint="Cantitate"
+                        android:paddingLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp">
+
+                    </EditText>
+
+                    <FrameLayout
+                        android:layout_width="49dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinner_team1"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp">
+
+                        </androidx.appcompat.widget.AppCompatSpinner>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout9"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nume_carbo"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/recipe_box"
+                        android:layout_weight="1"
+                        android:text="Carbohidrati"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="9dp"
+                        android:textColor="@color/purple2_DARK"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/cantitate_carbo"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/recipe_box"
+                        android:hint="Cantitate"
+                        android:paddingLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp">
+
+                    </EditText>
+
+                    <FrameLayout
+                        android:layout_width="49dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinner_team2"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp">
+
+                        </androidx.appcompat.widget.AppCompatSpinner>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout10"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nume_grasimi"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/recipe_box"
+                        android:layout_weight="1"
+                        android:text="Grasimi"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="9dp"
+                        android:textColor="@color/purple2_DARK"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/cantitate_grasimi"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/recipe_box"
+                        android:hint="Cantitate"
+                        android:paddingLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp">
+
+                    </EditText>
+
+                    <FrameLayout
+                        android:layout_width="49dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinner_team3"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp">
+
+                        </androidx.appcompat.widget.AppCompatSpinner>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout11"
+                android:layout_marginTop="14dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/zahar"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/recipe_box"
+                        android:layout_weight="1"
+                        android:text="Zahar"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="9dp"
+                        android:textColor="@color/purple2_DARK"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/cantitate_zahar"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/recipe_box"
+                        android:hint="Cantitate"
+                        android:paddingLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp">
+
+                    </EditText>
+
+                    <FrameLayout
+                        android:layout_width="49dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinner_team4"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp">
+
+                        </androidx.appcompat.widget.AppCompatSpinner>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
+</merge>
