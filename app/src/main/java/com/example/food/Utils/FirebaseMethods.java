@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.R;
+import com.example.food.Recipe.Recipe;
+import com.example.food.Recipe.UserRecipe;
 import com.example.food.User.User;
 import com.example.food.User.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
@@ -207,5 +210,19 @@ public class FirebaseMethods {
         }
         Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userSettings.toString());
 
+    }
+
+    public void AddRecipe(Recipe recipe, ICompleteListener onCompleteListener)
+    {
+                String recipeUID = UUID.randomUUID().toString();
+                db.collection("Recipes").document(recipeUID).set(recipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                                onCompleteListener.OnComplete(task.isSuccessful());
+                            }
+        });
+
+                db.collection("UsersRecipes").document(mAuth.getCurrentUser().getUid())
+                               .collection("Recipes").document(recipeUID).set(new UserRecipe(recipeUID));
     }
 }

@@ -26,6 +26,7 @@ import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.Category;
 import com.example.food.Profile.AccountSettingsActivity;
 import com.example.food.R;
+import com.example.food.Recipe.AddRecipeActivity;
 import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.User.UserSettings;
@@ -63,6 +64,7 @@ public class HomeFragment extends Fragment {
 
     private Toolbar toolbar;
     private AppCompatButton profileMenu, chat;
+    private AppCompatButton _addRecipeButton;
     private ChipNavigationBar chipNavigationBar;
     private Context mContext;
 
@@ -86,80 +88,79 @@ public class HomeFragment extends Fragment {
         profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
         chat = (AppCompatButton) view.findViewById(R.id.buton_mesaj);
         chipNavigationBar = (ChipNavigationBar) view.findViewById(R.id.navBar);
+        _addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
         Log.d(TAG, "onCreateView: started");
 
         setupToolbar();
-
+        setupAddRecipeButton();
         setupFirebaseAuth();
-
-//        TextView editProfile = (TextView) view.findViewById(R.id.textEditProfile);
-//        editProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "onClick: navigating to " + mContext.getString(R.string.edit_profile_fragment));
-//                Intent intent = new Intent (getActivity(), AccountSettingsActivity.class);
-//                intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
-//                startActivity(intent);
-//            }
-//        });
 
         return view;
     }
 
-    private void setProfileWidgets(User user){
-        UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
-
-        mDisplayName.setText(user.getDisplay_name());
-        //mProgressBar.setVisibility(View.GONE);
-    }
-
-    /**
-     * Responsible for setting up the profile toolbar
-     */
-    private void setupToolbar() {
-
-        //((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
-
-        profileMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating to account settings");
-                Intent intent = new Intent(mContext, AccountSettingsActivity.class);
+    private void setupAddRecipeButton() {
+        _addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddRecipeActivity.class);
                 startActivity(intent);
             }
         });
     }
+
+            private void setProfileWidgets(User user){
+                UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
+
+                mDisplayName.setText(user.getDisplay_name());
+                //mProgressBar.setVisibility(View.GONE);
+            }
+
+            /**
+             * Responsible for setting up the profile toolbar
+             */
+            private void setupToolbar() {
+
+                //((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
+
+                profileMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: navigating to account settings");
+                        Intent intent = new Intent(mContext, AccountSettingsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
 
 
     /*
     ----------------------------Firebase------------------------------------------
      */
 
-    /**
-     * Setup the firebase auth object
-     */
-    private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: setting up firebase");
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+            /**
+             * Setup the firebase auth object
+             */
+            private void setupFirebaseAuth(){
+                Log.d(TAG, "setupFirebaseAuth: setting up firebase");
+                mAuth = FirebaseAuth.getInstance();
+                mFirebaseDatabase = FirebaseDatabase.getInstance();
+                myRef = mFirebaseDatabase.getReference();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                mAuthListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if(user != null){
-                    //User is signed in
-                    Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
-                } else {
-                    //User is signed out
-                    Log.d(TAG, "onAuthStateChanged: signed out");
-                }
-            }
-        };
+                        if(user != null){
+                            //User is signed in
+                            Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
+                        } else {
+                            //User is signed out
+                            Log.d(TAG, "onAuthStateChanged: signed out");
+                        }
+                    }
+                };
 
 
                 mFirebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
@@ -168,19 +169,19 @@ public class HomeFragment extends Fragment {
                         setProfileWidgets(userSettings);
                     }
                 });
-    }
+            }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+            @Override
+            public void onStart() {
+                super.onStart();
+                mAuth.addAuthStateListener(mAuthListener);
+            }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
+            @Override
+            public void onStop() {
+                super.onStop();
+                if(mAuthListener != null) {
+                    mAuth.removeAuthStateListener(mAuthListener);
+                }
+            }
 }
