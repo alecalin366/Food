@@ -101,32 +101,6 @@ public class FirebaseMethods {
         });
     }
 
-    /**
-     * update username in the 'users'
-     *
-     * @param username
-     */
-    public void updateUsername(String username) {
-        Log.d(TAG, "updateUsername: upadting username to: " + username);
-
-        userRef = db.collection("Users")
-                .document(mAuth.getUid());
-
-        userRef.update("username", username
-        ).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Alexandra onComplete: update is succesful");
-                } else {
-                    Log.d(TAG, "Alexandra onComplete: update failed ");
-                }
-
-            }
-        });
-
-    }
-
     public void updateEmail(String email) {
         Log.d(TAG, "updateEmail: upadting email to: " + email);
 
@@ -147,7 +121,7 @@ public class FirebaseMethods {
 
     }
 
-    public void registerNewEmail(final String email, String password, final String username, final String phoneNumber, ICompleteListener listener) {
+    public void registerNewEmail(final String email, String password, final String phoneNumber, ICompleteListener listener) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -193,8 +167,8 @@ public class FirebaseMethods {
     }
 
     //add info to the users and user_account_settings nodes
-    public void addNewUser(String email, String username, String phoneNumber, String profile_photo, ICompleteListener listener) {
-        User user = new User(userID, phoneNumber, email, StringManipulation.condenseUsername(username), username, profile_photo);
+    public void addNewUser(String email, String phoneNumber, String display_name, String profile_photo, ICompleteListener listener) {
+        User user = new User(userID, phoneNumber, email, display_name, profile_photo);
 
         db.collection("Users").document(userID).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

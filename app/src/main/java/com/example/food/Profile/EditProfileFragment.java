@@ -118,7 +118,7 @@ public class EditProfileFragment extends Fragment implements
     private String userID;
 
     //EditProfile Fragment widgets
-    private EditText mDisplayName, mUsername, mEmail, mPhoneNumber;
+    private EditText mDisplayName, mEmail, mPhoneNumber;
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
 
@@ -131,7 +131,6 @@ public class EditProfileFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         mDisplayName = (EditText) view.findViewById(R.id.display_name);
-        mUsername = (EditText) view.findViewById(R.id.username);
         mEmail = (EditText) view.findViewById(R.id.email);
         mPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
         mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
@@ -170,7 +169,6 @@ public class EditProfileFragment extends Fragment implements
      */
     private void saveProfileSettings(){
         final String displayName = mDisplayName.getText().toString();
-        final String username = mUsername.getText().toString();
         final String email = mEmail.getText().toString();
         final String phoneNumber = mPhoneNumber.getText().toString();
         if(email == null || email.isEmpty()){
@@ -181,17 +179,6 @@ public class EditProfileFragment extends Fragment implements
         if(displayName == null || displayName.isEmpty()){
             Toast.makeText(getContext(), "displayName is empty or null", Toast.LENGTH_SHORT).show();
             return;
-        }
-
-        if(username == null || username.isEmpty()){
-            Toast.makeText(getContext(), "username is empty or null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(!mUser.getUsername().equals(username)){ //compare what it is in text field
-            //checkIfUsernameExists(username);
-            mFirebaseMethods.updateUsername(username); // pana rezolv checkIfUsernameExists
-            Log.d(TAG, "saveProfileSettings: user");
         }
 
         /**
@@ -207,45 +194,6 @@ public class EditProfileFragment extends Fragment implements
         }
     }
 
-
-    /**
-     * Check is @param username already exists in the database
-     //* @param username
-     */
-//    private void checkIfUsernameExists(final String username) {
-//        Log.d(TAG, "checkIfUsernameExists: Checking if  " + username + " already exists.");
-//
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-//        Query query = reference
-//                .child(getString(R.string.dbname_users))
-//                .orderByChild(getString(R.string.field_username))
-//                .equalTo(username);
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                if(!dataSnapshot.exists()){
-//                    //add the username
-//                    mFirebaseMethods.updateUsername(username);
-//                    Toast.makeText(getActivity(), "saved username.", Toast.LENGTH_SHORT).show();
-//
-//                }
-//                for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
-//                    if (singleSnapshot.exists()){
-//                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + singleSnapshot.getValue(User.class).getUsername());
-//                        Toast.makeText(getActivity(), "That username already exists.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-
-
     private void setProfileWidgets(User user){
 
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.toString());
@@ -254,7 +202,6 @@ public class EditProfileFragment extends Fragment implements
 
         UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
         mDisplayName.setText(user.getDisplay_name());
-        mUsername.setText(user.getUsername());
         mEmail.setText(user.getEmail());
         mPhoneNumber.setText(user.getPhone_number());
     }

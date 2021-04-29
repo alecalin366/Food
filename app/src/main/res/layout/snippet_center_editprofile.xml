@@ -31,39 +31,11 @@
                 android:textSize="16sp"
                 android:fontFamily="@font/segoe_ui"/>
 
-            <!--username section-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/changeProfilePhoto"
-                android:layout_marginTop="80dp"
-                android:background="@drawable/grey_border_bottom"
-                android:id="@+id/relLayout1">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_username"
-                    android:layout_centerVertical="true"/>
-                
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/username"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="40dp"
-                    android:background="@null"
-                    android:inputType="textNoSuggestions"
-                    android:hint="username"
-                    android:fontFamily="@font/segoe_ui"/>
-
-            </RelativeLayout>
-
             <!--dispay name section-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/relLayout1"
+                android:layout_below="@+id/changeProfilePhoto"
                 android:background="@drawable/grey_border_bottom"
                 android:id="@+id/relLayout2"
                 android:layout_marginTop="15dp">

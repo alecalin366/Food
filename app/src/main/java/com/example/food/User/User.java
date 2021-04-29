@@ -5,15 +5,13 @@ public class User {
     private String user_id;
     private String phone_number;
     private String email;
-    private String username;
     private String display_name;
     private String profile_photo;
 
-    public User(String user_id, String phone_number, String email, String username,  String display_name, String profile_photo){
+    public User(String user_id, String phone_number, String email,String display_name, String profile_photo){
         this.user_id = user_id;
         this.phone_number = phone_number;
         this.email = email;
-        this.username = username;
         this.display_name = display_name;
         this.profile_photo = profile_photo;
     }
@@ -44,14 +42,6 @@ public class User {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getDisplay_name() {
         return display_name;
     }
@@ -75,7 +65,6 @@ public class User {
                 "user_id='" + user_id + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
                 ", display_name='" + display_name + '\'' +
                 ", profile_photo='" + profile_photo + '\'' +
                 '}';

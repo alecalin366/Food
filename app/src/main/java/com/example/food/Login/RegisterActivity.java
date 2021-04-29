@@ -27,8 +27,8 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
-    private String email,password, username, phoneNumber;
-    private EditText mEmail, mPassword, mUsername, mPhoneNumber;
+    private String email,password,phoneNumber, displayName;
+    private EditText mEmail, mPassword, mPhoneNumber, mDisplayName;
     private ProgressBar mProgressBar;
     private AppCompatButton btnRegister;
 
@@ -54,19 +54,19 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 email = mEmail.getText().toString();
-                username = mUsername.getText().toString();
                 password = mPassword.getText().toString();
                 phoneNumber = mPhoneNumber.getText().toString();
+                displayName = mDisplayName.getText().toString();
 
-                if(checkInputs(email, username, password, phoneNumber)){
+                if(checkInputs(email, password, phoneNumber, displayName)){
                     mProgressBar.setVisibility(View.VISIBLE);
-                    firebaseMethods.registerNewEmail(email, password, username, phoneNumber, new ICompleteListener() {
+                    firebaseMethods.registerNewEmail(email, password, phoneNumber, new ICompleteListener() {
                         @Override
                         public void OnComplete(boolean isSuccessfulCompleted) {
 
                             if(isSuccessfulCompleted)
                             {
-                                firebaseMethods.addNewUser(email,username,phoneNumber,"",new ICompleteListener()
+                                firebaseMethods.addNewUser(email,phoneNumber,displayName,"",new ICompleteListener()
                                 {
 
                                     @Override
@@ -89,9 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private boolean checkInputs(String email, String username, String password, String phoneNumber){
+    private boolean checkInputs(String email, String password, String phoneNumber, String displayName){
         Log.d(TAG, "checkkInputs: checking inputs for null value");
-        if(email.equals("") || username.equals("") || password.equals("") || phoneNumber.equals("")){
+        if(email.equals("") || password.equals("") || phoneNumber.equals("") || displayName.equals("")){
             Toast.makeText(RegisterActivity.this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -102,8 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "initWidgets: initializing widgets");
         mEmail = (EditText) findViewById(R.id.email_field);
         mPassword = (EditText) findViewById(R.id.password_field);
-        mUsername = (EditText) findViewById(R.id.name_field);
         mPhoneNumber = (EditText) findViewById(R.id.phone_field);
+        mDisplayName = (EditText) findViewById(R.id.name_field);
         btnRegister = (AppCompatButton) findViewById(R.id.btnRegister);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 

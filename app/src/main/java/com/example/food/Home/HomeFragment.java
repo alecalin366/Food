@@ -57,7 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    private TextView  mDisplayName, mUsername;
+    private TextView  mDisplayName;
     //private ProgressBar mProgressBar;
     private CircleImageView mProfilePhoto;
 
@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mDisplayName = (TextView) view.findViewById(R.id.display_name);
-        mUsername = (TextView) view.findViewById(R.id.username);
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         //mProgressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
         toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
@@ -113,7 +112,6 @@ public class HomeFragment extends Fragment {
         UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
 
         mDisplayName.setText(user.getDisplay_name());
-        mUsername.setText(user.getUsername());
         //mProgressBar.setVisibility(View.GONE);
     }
 

@@ -30,7 +30,7 @@
                 android:background="@drawable/recipe_box">
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/nume_reteta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -102,8 +102,30 @@
             <RelativeLayout
                 android:id="@+id/relLayout4"
                 android:layout_width="350dp"
-                android:layout_height="100dp"
+                android:layout_height="47dp"
                 android:layout_below="@+id/relLayout3"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/recipe_box"
+                android:layout_centerHorizontal="true">
+
+                <EditText
+                    android:id="@+id/nr_portii"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@null"
+                    android:fontFamily="@font/segoe_ui"
+                    android:hint="Numar portii"
+                    android:inputType="textNoSuggestions" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relLayout5"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/relLayout4"
                 android:layout_marginTop="14dp"
                 android:background="@drawable/recipe_description"
                 android:layout_centerHorizontal="true">
@@ -122,10 +144,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout5"
+                android:id="@+id/relLayout6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout4"
+                android:layout_below="@+id/relLayout5"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -144,10 +166,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout6"
+                android:id="@+id/relLayout7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout5"
+                android:layout_below="@+id/relLayout6"
                 android:layout_marginTop="14dp"
                 android:layout_marginLeft="20dp">
 
@@ -164,10 +186,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout7"
+                android:id="@+id/relLayout8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout6"
+                android:layout_below="@+id/relLayout7"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -176,20 +198,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
                     android:background="@null"
-                    android:textColor="@color/purple2_DARK"
-                    android:text="Macronutrienti"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:textSize="15dp"/>
+                    android:text="Macronutrienti"
+                    android:textColor="@color/purple2_DARK"
+                    android:textSize="15dp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout8"
+                android:id="@+id/relLayout9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout7"
+                android:layout_below="@+id/relLayout8"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -248,10 +269,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout9"
+                android:id="@+id/relLayout10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout8"
+                android:layout_below="@+id/relLayout9"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -310,10 +331,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout10"
+                android:id="@+id/relLayout11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout9"
+                android:layout_below="@+id/relLayout10"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -372,10 +393,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout11"
+                android:id="@+id/relLayout12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout10"
+                android:layout_below="@+id/relLayout11"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -434,10 +455,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relLayout12"
+                android:id="@+id/relLayout13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relLayout11"
+                android:layout_below="@+id/relLayout12"
                 android:layout_marginTop="14dp"
                 android:layout_centerHorizontal="true">
 
@@ -492,18 +513,7 @@
                     </FrameLayout>
 
                 </LinearLayout>
-
             </RelativeLayout>
-
-
-
-
-
         </RelativeLayout>
-
-
-
-
     </ScrollView>
-
 </merge>
