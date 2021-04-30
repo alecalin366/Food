@@ -64,7 +64,7 @@
                     android:layout_marginBottom="3dp"
                     android:src="@drawable/ic_choose" />
 
-                <EditText
+                <TextView
                     android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,7 +72,8 @@
                     android:layout_marginStart="20dp"
                     android:background="@null"
                     android:fontFamily="@font/segoe_ui"
-                    android:hint="Categorie"
+                    android:textSize="18sp"
+                    android:text="Categorie"
                     android:inputType="textNoSuggestions" />
 
             </RelativeLayout>
@@ -173,15 +174,24 @@
                 android:layout_marginTop="14dp"
                 android:layout_marginLeft="20dp">
 
-                <Button
-                    android:layout_width="190dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/recipe_box"
-                    android:text="Adauga ingredinete"
-                    android:fontFamily="@font/segoe_ui"
-                    android:textColor="@color/purple2_DARK">
+                <LinearLayout
+                    android:id="@+id/layout_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                </Button>
+                    <Button
+                        android:id="@+id/add_ingredient_button"
+                        android:layout_width="190dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/recipe_box"
+                        android:text="Adauga ingredinete"
+                        android:fontFamily="@font/segoe_ui"
+                        android:textColor="@color/purple2_DARK">
+
+                    </Button>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
