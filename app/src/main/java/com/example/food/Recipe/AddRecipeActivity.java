@@ -1,6 +1,8 @@
 package com.example.food.Recipe;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -8,10 +10,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.R;
+import com.example.food.SelectPhotos.SelectPhotoActivity;
 import com.example.food.Utils.FirebaseMethods;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private ImageView _saveImage;
+    private ImageView backArrow;
+    private ImageView photo;
     private FirebaseMethods mFirebaseMethods;
 
     @Override
@@ -23,11 +28,14 @@ public class AddRecipeActivity extends AppCompatActivity {
          
         FindViews();
         SetupSaveImage();
+        SetupChoosePhoto();
+        setupBackButton();
     }
  
     private void FindViews()
      {
          _saveImage = findViewById(R.id.saveChanges);
+         photo = findViewById(R.id.profile_photo);
          //TODO ale find all objects
      }
  
@@ -40,6 +48,27 @@ public class AddRecipeActivity extends AppCompatActivity {
              }
          });
      }
+
+     private void setupBackButton(){
+         backArrow = (ImageView) findViewById(R.id.backArrow);
+         backArrow.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 finish();
+             }
+         });
+     }
+
+    private void SetupChoosePhoto()
+    {
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddRecipeActivity.this, SelectPhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
      private void SaveRecipe()
      {

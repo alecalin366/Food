@@ -2,8 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.food">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -12,10 +15,12 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Food">
-        <activity android:name=".ShopActivity.ShopActivity"/>
+        <activity android:name=".SelectPhotos.SelectPhotoActivity"></activity>
+        <activity android:name=".ShopActivity.ShopActivity" />
+        <activity android:name=".Recipe.AddRecipeActivity" />
         <activity android:name=".Likes.LikesActivity" />
         <activity android:name=".Search.SearchActivity" />
-        <activity android:name=".Profile.AccountSettingsActivity"/>
+        <activity android:name=".Profile.AccountSettingsActivity" />
         <activity android:name=".Login.RegisterActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Onboarding.StartupActivity1" />

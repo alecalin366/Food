@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
 
     private Toolbar toolbar;
     private AppCompatButton profileMenu, chat;
-    private AppCompatButton _addRecipeButton;
+    private AppCompatButton addRecipeButton;
     private ChipNavigationBar chipNavigationBar;
     private Context mContext;
 
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
         chat = (AppCompatButton) view.findViewById(R.id.buton_mesaj);
         chipNavigationBar = (ChipNavigationBar) view.findViewById(R.id.navBar);
-        _addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
+        addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
         Log.d(TAG, "onCreateView: started");
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupAddRecipeButton() {
-        _addRecipeButton.setOnClickListener(new View.OnClickListener() {
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddRecipeActivity.class);
                 startActivity(intent);
