@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category_cardView"
+        android:layout_width="289dp"
+        android:layout_height="234dp"
+        android:layout_margin="10dp"
+        app:cardElevation="2dp"
+
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.315">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/recipe_photo"
+                android:layout_width="289dp"
+                android:layout_height="193dp"
+                android:src="@drawable/food"
+                android:contentDescription="@string/poza_eteta" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/textbox_recipe">
+
+                <TextView
+                    android:id="@+id/titlu_recipe"
+                    android:layout_width="289dp"
+                    android:layout_height="24dp"
+                    android:text="@string/salata_de_legume"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/autor_recipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="17dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="@string/creat_de_alexandra_calin"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
