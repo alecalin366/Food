@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,6 +23,14 @@ import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.R;
 import com.example.food.SelectPhotos.SelectPhotoActivity;
 import com.example.food.Utils.FirebaseMethods;
+import com.example.food.Utils.UniversalImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,17 +38,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class AddRecipeActivity extends AppCompatActivity {
+    private static final String TAG = "NextActivity";
     private ImageView _save, backArrow, photo;
     TextView category;
     private EditText name, preparation_time, serving_size, description, calorii, proteine, carbo, grasimi;
     boolean[] selectedCategory;
     ArrayList<Integer> categoryList = new ArrayList<>();
     String[] categoryArray = {"Desert", "Vegan", "Sosuri"};
-    private FirebaseMethods mFirebaseMethods;
+
 
     LinearLayout layoutList;
     Button buttonAddIngredient;
     List<String> measurementsList = new ArrayList<>();
+
+    //firebase
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private FirebaseMethods mFirebaseMethods;
+
+    private String mAppend = "file:/";
 
 
     @Override
@@ -55,6 +74,8 @@ public class AddRecipeActivity extends AppCompatActivity {
         SetupSave();
         SetupChoosePhoto();
         setupBackButton();
+        setImage();
+        setupFirebaseAuth();
     }
 
     private void SetupAddIngredientButton(){
@@ -190,7 +211,6 @@ public class AddRecipeActivity extends AppCompatActivity {
          _save.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
                  SaveRecipe();
              }
          });
@@ -216,6 +236,12 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void setImage(){
+        Intent intent = getIntent();
+        ImageView image = (ImageView) findViewById(R.id.profile_photo);
+        UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.selected_image)), image, null, mAppend);
+    }
+
      private void SaveRecipe()
      {
          //verfici sa fie adaugate toate campurile
@@ -236,4 +262,64 @@ public class AddRecipeActivity extends AppCompatActivity {
              }
          });
      }
+
+      /*
+    ------------------------------------ Firebase ---------------------------------------------
+     */
+
+    /**
+     * Setup the firebase auth object
+     */
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 }

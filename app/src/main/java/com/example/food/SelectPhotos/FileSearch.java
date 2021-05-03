@@ -10,9 +10,9 @@ public class FileSearch {
      * @param directory
      * @return
      */
-    public static ArrayList<String> getDirectoryPaths(String directory){
+    public static ArrayList<String> getDirectoryPaths(File directory){
         ArrayList<String> pathArray = new ArrayList<>();
-        File file = new File(directory);
+        File file = new File(String.valueOf(directory));
         File[] listfiles = file.listFiles();
         if(listfiles != null)
         {

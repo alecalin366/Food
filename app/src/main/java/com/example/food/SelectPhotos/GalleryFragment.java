@@ -1,8 +1,10 @@
 package com.example.food.SelectPhotos;
 
 
+import android.content.Intent;
 import  android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.food.R;
+import com.example.food.Recipe.AddRecipeActivity;
 import com.example.food.SelectPhotos.FilePaths;
 import com.example.food.SelectPhotos.FileSearch;
 import com.example.food.SelectPhotos.GridImageAdapter;
@@ -27,6 +30,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class GalleryFragment extends Fragment {
     private static final String TAG = "GalleryFragment";
@@ -44,6 +49,7 @@ public class GalleryFragment extends Fragment {
     //vars
     private ArrayList<String> directories;
     private String mAppend = "file:/";
+    private String mSelectedImage;
 
     @Nullable
     @Override
@@ -86,6 +92,9 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
+                Intent intent = new Intent(getContext(), AddRecipeActivity.class);
+                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                startActivity(intent);
             }
         });
     }
@@ -94,9 +103,17 @@ public class GalleryFragment extends Fragment {
         FilePaths filePaths = new FilePaths();
 
         //check for other folders indide "/storage/emulated/0/pictures"
-        if(FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
-            directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
+        if(FileSearch.getDirectoryPaths(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)) != null){
+            directories = FileSearch.getDirectoryPaths(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
         }
+
+//        ArrayList<String> directoryNames = new ArrayList<>();
+//        for(int i = 1; i < directories.size()+1; i++){
+//
+//            int index = directories.get(i).lastIndexOf("/");
+//            String string = directories.get(i).substring(index);
+//            directoryNames.add(string);
+//        }
 
         directories.add(filePaths.CAMERA);
 
@@ -125,6 +142,8 @@ public class GalleryFragment extends Fragment {
         Log.d(TAG, "setupGridView: directory chosen: " + selectedDirectory);
         final ArrayList<String> imgURLs = FileSearch.getFilePaths(selectedDirectory);
 
+        Collections.reverse(imgURLs);
+
         //set the grid column width
         int gridWidth = getResources().getDisplayMetrics().widthPixels;
         int imageWidth = gridWidth/NUM_GRID_COLUMNS;
@@ -137,6 +156,7 @@ public class GalleryFragment extends Fragment {
         //set the first image to be displayed when the activity fragment view is inflated
         if(imgURLs.size()!= 0) {
             setImage(imgURLs.get(0), galleryImage, mAppend);
+            mSelectedImage = imgURLs.get(0);
         }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,6 +165,7 @@ public class GalleryFragment extends Fragment {
                 Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
 
                 setImage(imgURLs.get(position), galleryImage, mAppend);
+                mSelectedImage = imgURLs.get(position);
             }
         });
 
