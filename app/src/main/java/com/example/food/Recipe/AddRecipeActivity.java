@@ -40,8 +40,9 @@ import java.util.List;
 public class AddRecipeActivity extends AppCompatActivity {
     private static final String TAG = "NextActivity";
     private ImageView _save, backArrow, photo;
-    TextView category;
-    private EditText name, preparation_time, serving_size, description, calorii, proteine, carbo, grasimi;
+    private TextView category;
+    private EditText mRecipeName, mPreparationTime, mServingSize, mDescription, mCalorii, mProteine, mCarbo, mGrasimi;
+
     boolean[] selectedCategory;
     ArrayList<Integer> categoryList = new ArrayList<>();
     String[] categoryArray = {"Desert", "Vegan", "Sosuri"};
@@ -50,6 +51,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     LinearLayout layoutList;
     Button buttonAddIngredient;
     List<String> measurementsList = new ArrayList<>();
+    ArrayList<Ingredients> ingredientsList = new ArrayList<>();
 
     //firebase
     private FirebaseAuth mAuth;
@@ -78,6 +80,25 @@ public class AddRecipeActivity extends AppCompatActivity {
         setupFirebaseAuth();
     }
 
+    private void FindViews()
+    {
+        category = findViewById(R.id.category);
+        _save = findViewById(R.id.saveChanges);
+        backArrow = findViewById(R.id.backArrow);
+        photo = findViewById(R.id.profile_photo);
+        mRecipeName = findViewById(R.id.nume_reteta);
+        mPreparationTime = findViewById(R.id.timp_preparare);
+        mServingSize = findViewById(R.id.nr_portii);
+        mDescription = findViewById(R.id.descriere);
+        mCalorii = findViewById(R.id.cantitate_calorii);
+        mProteine = findViewById(R.id.cantitate_proteine);
+        mCarbo = findViewById(R.id.cantitate_carbo);
+        mGrasimi = findViewById(R.id.cantitate_grasimi);
+        layoutList = findViewById(R.id.layout_list);
+        buttonAddIngredient = findViewById(R.id.add_ingredient_button);
+        //TODO ale find all objects
+    }
+
     private void SetupAddIngredientButton(){
         buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +120,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private void addView(){
         View ingredientView = getLayoutInflater().inflate(R.layout.add_row_ingredients, null, false);
 
-        EditText numeIngredient = (EditText) ingredientView.findViewById(R.id.nume_ingredient);
-        EditText cantitateIngredient = (EditText) ingredientView.findViewById(R.id.cantitate_ingredient);
         AppCompatSpinner spinnerMeasurements = (AppCompatSpinner) ingredientView.findViewById(R.id.spinner_measurements);
         ImageView removeIngr = (ImageView) ingredientView.findViewById(R.id.image_remove);
 
@@ -120,6 +139,8 @@ public class AddRecipeActivity extends AppCompatActivity {
     private void removeView(View view){
         layoutList.removeView(view);
     }
+
+    //============================CATEGORY===============================//
 
     private void initializeSelectedCategory(){
         selectedCategory = new boolean[categoryArray.length];
@@ -187,31 +208,13 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     }
  
-    private void FindViews()
-     {
-         category = findViewById(R.id.category);
-         _save = findViewById(R.id.saveChanges);
-         backArrow = findViewById(R.id.backArrow);
-         photo = findViewById(R.id.profile_photo);
-         name = findViewById(R.id.nume_reteta);
-         preparation_time = findViewById(R.id.timp_preparare);
-         serving_size = findViewById(R.id.nr_portii);
-         description = findViewById(R.id.descriere);
-         calorii = findViewById(R.id.cantitate_calorii);
-         proteine = findViewById(R.id.cantitate_proteine);
-         carbo = findViewById(R.id.cantitate_carbo);
-         grasimi = findViewById(R.id.cantitate_grasimi);
-         layoutList = findViewById(R.id.layout_list);
-         buttonAddIngredient = findViewById(R.id.add_ingredient_button);
-         //TODO ale find all objects
-     }
- 
      private void SetupSave()
      {
          _save.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  SaveRecipe();
+                 finish();
              }
          });
      }
@@ -242,13 +245,119 @@ public class AddRecipeActivity extends AppCompatActivity {
         UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.selected_image)), image, null, mAppend);
     }
 
+    private boolean checkIngredients() {
+        ingredientsList.clear();
+        boolean result = true;
+
+        for(int i=0;i<layoutList.getChildCount();i++){
+
+            View ingredientView = layoutList.getChildAt(i);
+
+            EditText numeIngredient = (EditText) ingredientView.findViewById(R.id.nume_ingredient);
+            EditText cantitateIngredient = (EditText) ingredientView.findViewById(R.id.cantitate_ingredient);
+            AppCompatSpinner spinnerMeasurements = (AppCompatSpinner) ingredientView.findViewById(R.id.spinner_measurements);
+
+            Ingredients ingredients = new Ingredients();
+
+            if(!numeIngredient.getText().toString().equals("")){
+                ingredients.setName_ingredient(numeIngredient.getText().toString());
+            }else {
+                result = false;
+                break;
+            }
+
+            if(!cantitateIngredient.getText().toString().equals("")){
+                ingredients.setQuantity(cantitateIngredient.getText().toString());
+            }else {
+                result = false;
+                break;
+            }
+
+            if(spinnerMeasurements.getSelectedItemPosition()!=0){
+                ingredients.setMeasurements(measurementsList.get(spinnerMeasurements.getSelectedItemPosition()));
+            }else {
+                result = false;
+                break;
+            }
+
+            ingredientsList.add(ingredients);
+
+        }
+
+        if(ingredientsList.size()==0){
+            result = false;
+            Toast.makeText(this, "Add Ingredients First!", Toast.LENGTH_SHORT).show();
+        }else if(!result){
+            Toast.makeText(this, "Enter All Details Correctly!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return result;
+    }
+
      private void SaveRecipe()
      {
-         //verfici sa fie adaugate toate campurile
-         //TODO construiesti un obiect de tipul reteta...
-         //string name = nameText.Text;
-         //Reteta reteta = new Reteta(nume,categorii);
-         Recipe testRecipe = new Recipe("Cartofi prajiti");//la misto
+         final String recipeName = mRecipeName.getText().toString();
+         final String description = mDescription.getText().toString();
+         final String preparationTime = mPreparationTime.getText().toString();
+         final String servingSize = mServingSize.getText().toString();
+         final String calorii = mCalorii.getText().toString();
+         final String proteine = mProteine.getText().toString();
+         final String carbo = mCarbo.getText().toString();
+         final String grasimi = mGrasimi.getText().toString();
+         final String category = categoryList.toString();
+         final String ingredients = ingredientsList.toString();
+
+         if(!checkIngredients() || ingredients == null || ingredients.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
+         }
+
+         if(recipeName == null || recipeName.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga titlu", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(description == null || description.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga descriere", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(preparationTime == null || preparationTime.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga preparationTime", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(servingSize == null || servingSize.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga servingSize", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(calorii == null || calorii.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga calorii", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(proteine == null || proteine.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga proteine", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(carbo == null || carbo.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga carbo", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(grasimi == null || grasimi.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga grasimi", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         if(category == null || category.isEmpty()){
+             Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
+             return;
+         }
+         Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
+         Recipe testRecipe = new Recipe(recipeName, category, description, preparationTime, servingSize, macro, ingredients);
          mFirebaseMethods.AddRecipe(testRecipe, new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {
