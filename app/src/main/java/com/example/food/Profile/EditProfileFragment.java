@@ -232,9 +232,6 @@ public class EditProfileFragment extends Fragment implements
                 setProfileWidgets(userSettings);
             }
         });
-                //retrieve image for the user in question
-
-
     }
 
     @Override

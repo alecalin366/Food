@@ -44,7 +44,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private EditText mRecipeName, mPreparationTime, mServingSize, mDescription, mCalorii, mProteine, mCarbo, mGrasimi;
 
     boolean[] selectedCategory;
-    ArrayList<Integer> categoryList = new ArrayList<>();
+    ArrayList<String> categoryList = new ArrayList<>();
     String[] categoryArray = {"Desert", "Vegan", "Sosuri"};
 
 
@@ -132,7 +132,6 @@ public class AddRecipeActivity extends AppCompatActivity {
                 removeView(ingredientView);
             }
         });
-
         layoutList.addView(ingredientView);
     }
 
@@ -163,7 +162,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if(isChecked){
                     //When checkbox selected, add position in cateogryList
-                    categoryList.add(which);
+                    categoryList.add(categoryArray[which]);
                     Collections.sort(categoryList);
                 } else {
                     //When checkbox unselected, remove position in cateogryList
@@ -177,7 +176,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for( int j=0; j < categoryList.size(); j++){
-                    stringBuilder.append(categoryArray[categoryList.get(j)]);
+                    stringBuilder.append(categoryList.get(j));
                     if(j != categoryList.size()-1){
                         stringBuilder.append(", ");
                     }
@@ -246,10 +245,9 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private boolean checkIngredients() {
-        ingredientsList.clear();
         boolean result = true;
 
-        for(int i=0;i<layoutList.getChildCount();i++){
+        for(int i=1;i<layoutList.getChildCount();i++){
 
             View ingredientView = layoutList.getChildAt(i);
 
@@ -257,31 +255,12 @@ public class AddRecipeActivity extends AppCompatActivity {
             EditText cantitateIngredient = (EditText) ingredientView.findViewById(R.id.cantitate_ingredient);
             AppCompatSpinner spinnerMeasurements = (AppCompatSpinner) ingredientView.findViewById(R.id.spinner_measurements);
 
-            Ingredients ingredients = new Ingredients();
+            String nume = numeIngredient.getText().toString();
+            String cantitate = cantitateIngredient.getText().toString();
+            String spinner = measurementsList.get(spinnerMeasurements.getSelectedItemPosition());
+            Ingredients ingredient = new Ingredients(nume, cantitate, spinner);
 
-            if(!numeIngredient.getText().toString().equals("")){
-                ingredients.setName_ingredient(numeIngredient.getText().toString());
-            }else {
-                result = false;
-                break;
-            }
-
-            if(!cantitateIngredient.getText().toString().equals("")){
-                ingredients.setQuantity(cantitateIngredient.getText().toString());
-            }else {
-                result = false;
-                break;
-            }
-
-            if(spinnerMeasurements.getSelectedItemPosition()!=0){
-                ingredients.setMeasurements(measurementsList.get(spinnerMeasurements.getSelectedItemPosition()));
-            }else {
-                result = false;
-                break;
-            }
-
-            ingredientsList.add(ingredients);
-
+            ingredientsList.add(ingredient);
         }
 
         if(ingredientsList.size()==0){
@@ -306,9 +285,10 @@ public class AddRecipeActivity extends AppCompatActivity {
          final String carbo = mCarbo.getText().toString();
          final String grasimi = mGrasimi.getText().toString();
          final String category = categoryList.toString();
-         final String ingredients = ingredientsList.toString();
 
-         if(!checkIngredients() || ingredients == null || ingredients.isEmpty()){
+
+
+         if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
              Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
          }
 
@@ -357,7 +337,7 @@ public class AddRecipeActivity extends AppCompatActivity {
              return;
          }
          Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
-         Recipe testRecipe = new Recipe(recipeName, category, description, preparationTime, servingSize, macro, ingredients);
+         Recipe testRecipe = new Recipe(recipeName, category, description, preparationTime, servingSize,"", macro, ingredientsList);
          mFirebaseMethods.AddRecipe(testRecipe, new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {

@@ -96,7 +96,7 @@
                     android:background="@null"
                     android:fontFamily="@font/segoe_ui"
                     android:hint="Timp de preparare"
-                    android:inputType="textNoSuggestions" />
+                    android:inputType="number" />
 
             </RelativeLayout>
 
@@ -118,7 +118,7 @@
                     android:background="@null"
                     android:fontFamily="@font/segoe_ui"
                     android:hint="Numar portii"
-                    android:inputType="textNoSuggestions" />
+                    android:inputType="number" />
 
             </RelativeLayout>
 
@@ -183,10 +183,10 @@
                     <Button
                         android:id="@+id/add_ingredient_button"
                         android:layout_width="190dp"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/recipe_box"
-                        android:text="Adauga ingredinete"
                         android:fontFamily="@font/segoe_ui"
+                        android:text="Adauga ingredinete"
                         android:textColor="@color/purple2_DARK">
 
                     </Button>
@@ -257,7 +257,8 @@
                         android:hint="Cantitate"
                         android:paddingLeft="30dp"
                         android:textColor="@color/black"
-                        android:textSize="14sp">
+                        android:textSize="14sp"
+                        android:inputType="number">
 
                     </EditText>
 
@@ -307,7 +308,8 @@
                         android:hint="Cantitate"
                         android:paddingLeft="30dp"
                         android:textColor="@color/black"
-                        android:textSize="14sp">
+                        android:textSize="14sp"
+                        android:inputType="number">
 
                     </EditText>
 
@@ -356,7 +358,8 @@
                         android:hint="Cantitate"
                         android:paddingLeft="30dp"
                         android:textColor="@color/black"
-                        android:textSize="14sp">
+                        android:textSize="14sp"
+                        android:inputType="number">
 
                     </EditText>
 
@@ -405,7 +408,8 @@
                         android:hint="Cantitate"
                         android:paddingLeft="30dp"
                         android:textColor="@color/black"
-                        android:textSize="14sp">
+                        android:textSize="14sp"
+                        android:inputType="number">
 
                     </EditText>
 

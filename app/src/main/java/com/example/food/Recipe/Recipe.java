@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
-    public String name, category, description;
+    public String name, category, description, photo;
     public String preparationTime, servingSize;
     Macronutrient macro;
-    String ingredients;
+    List<Ingredients> ingredients = new ArrayList<>();
 
     public Recipe(){}
 
-    public Recipe(String name, String category, String description, String preparationTime, String servingSize, Macronutrient macro,String ingredients){
+    public Recipe(String name, String category, String description, String preparationTime, String servingSize,String photo, Macronutrient macro,List<Ingredients> ingredients){
         this.name=name;
         this.category = category;
         this.description=description;
         this.preparationTime = preparationTime;
         this.servingSize = servingSize;
+        this.photo = photo;
         this.macro = macro;
         this.ingredients = ingredients;
     }
@@ -61,6 +62,14 @@ public class Recipe {
         this.servingSize = servingSize;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public Macronutrient getMacro() {
         return macro;
     }
@@ -69,11 +78,11 @@ public class Recipe {
         this.macro = macro;
     }
 
-    public String getIngredients() {
+    public List<Ingredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(String  ingredients) {
+    public void setIngredients(List<Ingredients>  ingredients) {
         this.ingredients = ingredients;
     }
 }

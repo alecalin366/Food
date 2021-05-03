@@ -32,7 +32,8 @@
         android:hint="Cantitate"
         android:paddingLeft="5dp"
         android:textColor="@color/black"
-        android:textSize="14sp">
+        android:textSize="14sp"
+        android:inputType="number">
 
     </EditText>
 
