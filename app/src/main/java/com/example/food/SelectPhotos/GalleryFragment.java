@@ -39,6 +39,7 @@ public class GalleryFragment extends Fragment {
     //constants
     private static final int NUM_GRID_COLUMNS = 3;
 
+
     private ImageView shareClose;
     private TextView nextScreen;
     private GridView gridView;
@@ -154,9 +155,13 @@ public class GalleryFragment extends Fragment {
         gridView.setAdapter(adapter);
 
         //set the first image to be displayed when the activity fragment view is inflated
-        if(imgURLs.size()!= 0) {
-            setImage(imgURLs.get(0), galleryImage, mAppend);
-            mSelectedImage = imgURLs.get(0);
+        try{
+            if (imgURLs != null && imgURLs.size()>=1) {
+                setImage(imgURLs.get(0), galleryImage, mAppend);
+                mSelectedImage = imgURLs.get(0);
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            Log.e(TAG, "setupGridView: ArrayIndexOutOfBoundsException: " +e.getMessage() );
         }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

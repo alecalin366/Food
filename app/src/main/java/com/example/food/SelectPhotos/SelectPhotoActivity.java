@@ -30,6 +30,11 @@ public class SelectPhotoActivity extends AppCompatActivity {
 
     }
 
+    public int getTask(){
+        Log.d(TAG, "getTask: TASK: " + getIntent().getFlags());
+        return getIntent().getFlags();
+    }
+
     private void setupSelectionPhotos(){
         if (checkPermissionsArray(Permissions.PERMISSIONS)) {
             setupViewPager();
