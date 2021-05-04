@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.food.Interfaces.ICompleteListener;
+import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Recipe.Recipe;
 import com.example.food.Recipe.UserRecipe;
@@ -201,20 +202,51 @@ public class FirebaseMethods {
             Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
         }
         Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userSettings.toString());
-
     }
 
     public void AddRecipe(Recipe recipe, ICompleteListener onCompleteListener)
     {
-                String recipeUID = UUID.randomUUID().toString();
-                db.collection("Recipes").document(recipeUID).set(recipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+        String recipeUID = UUID.randomUUID().toString();
+
+        db.collection("Recipes").document(recipeUID).set(recipe).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                                onCompleteListener.OnComplete(task.isSuccessful());
-                            }
+                onCompleteListener.OnComplete(task.isSuccessful());
+            }
         });
 
-                db.collection("UsersRecipes").document(mAuth.getCurrentUser().getUid())
-                               .collection("Recipes").document(recipeUID).set(new UserRecipe(recipeUID));
+        db.collection("UsersRecipes").document(mAuth.getCurrentUser().getUid())
+                .collection("Recipes")
+                .document(recipeUID).set(new UserRecipe(recipeUID));
+    }
+
+    public void FetchRecipeData(IGetRecipeData recipeData) {
+        Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase");
+
+
+        try {
+            userRef = db.collection("UsersRecipes")
+                    .document(firebaseAuth.getCurrentUser().getUid()).collection("Recipes").document();
+
+            userRef.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Recipe recipe = documentSnapshot.toObject(Recipe.class);
+
+                            recipeData.getRecipeData(recipe);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "onFailure: failed to fetch data");
+                        }
+                    });
+        } catch (NullPointerException e) {
+            Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
+        }
+        Log.e(TAG, "getUserAccountSettings: retrieved recipe information: " + recipeData.toString());
     }
 }

@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,17 +17,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetUserSettings;
+import com.example.food.Models.Category;
 import com.example.food.Profile.AccountSettingsActivity;
 import com.example.food.R;
 import com.example.food.Recipe.AddRecipeActivity;
+import com.example.food.Recipe.Recipe;
+import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
+import com.example.food.RecyclerView.RecipeRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
 import com.example.food.Utils.UniversalImageLoader;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,7 +69,6 @@ public class HomeFragment extends Fragment {
 
         mDisplayName = (TextView) view.findViewById(R.id.display_name);
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
-        //mProgressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
         toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
         profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
         chat = (AppCompatButton) view.findViewById(R.id.buton_mesaj);

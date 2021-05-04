@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.food.Models.Category;
 import com.example.food.R;
 import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
+import com.example.food.RecyclerView.RecipeRecyclerViewAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -25,6 +26,7 @@ public class RecipeFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private RecyclerView recyclerView;
     private CategoryRecyclerViewAdapter adapterCategory;
+    private RecipeRecyclerViewAdapter adapterRecipe;
 
 
     @Override
@@ -34,6 +36,7 @@ public class RecipeFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         CategoryRecyclerViewSetup(view);
+        RecipeRecyclerViewSetup(view);
 
         return view;
     }
@@ -54,15 +57,33 @@ public class RecipeFragment extends Fragment {
 
     }
 
+    public void RecipeRecyclerViewSetup(View view){
+        //Query
+        Query query = firebaseFirestore.collection("Recipes").orderBy("description");
+
+        FirestoreRecyclerOptions<Recipe> options = new FirestoreRecyclerOptions.Builder<Recipe>()
+                .setQuery(query, Recipe.class)
+                .build();
+
+        adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), options);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_recipe);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapterRecipe);
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         adapterCategory.startListening();
+        adapterRecipe.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         adapterCategory.stopListening();
+        adapterRecipe.startListening();
     }
 }
