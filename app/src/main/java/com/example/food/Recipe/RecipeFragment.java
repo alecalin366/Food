@@ -59,14 +59,14 @@ public class RecipeFragment extends Fragment {
 
     public void RecipeRecyclerViewSetup(View view){
         //Query
-        Query query = firebaseFirestore.collection("Recipes").orderBy("description");
+        Query query = firebaseFirestore.collection("Recipes").orderBy("name"); //TREBUIE DUPA DATA
 
         FirestoreRecyclerOptions<Recipe> options = new FirestoreRecyclerOptions.Builder<Recipe>()
                 .setQuery(query, Recipe.class)
                 .build();
 
         adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), options);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_recipe);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterRecipe);

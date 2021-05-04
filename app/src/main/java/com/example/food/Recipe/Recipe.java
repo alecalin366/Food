@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
+    private String user_id;
     public String name, category, description, photo;
     public String preparationTime, servingSize;
     Macronutrient macro;
@@ -11,7 +12,8 @@ public class Recipe {
 
     public Recipe(){}
 
-    public Recipe(String name, String category, String description, String preparationTime, String servingSize,String photo, Macronutrient macro,List<Ingredients> ingredients){
+    public Recipe(String user_id, String name, String category, String description, String preparationTime, String servingSize,String photo, Macronutrient macro,List<Ingredients> ingredients){
+        this.user_id = user_id;
         this.name=name;
         this.category = category;
         this.description=description;
@@ -84,5 +86,13 @@ public class Recipe {
 
     public void setIngredients(List<Ingredients>  ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

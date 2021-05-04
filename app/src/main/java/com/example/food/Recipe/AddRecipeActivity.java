@@ -39,6 +39,7 @@ import java.util.List;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private static final String TAG = "NextActivity";
+    private String userID;
     private ImageView _save, backArrow, photo;
     private TextView category;
     private EditText mRecipeName, mPreparationTime, mServingSize, mDescription, mCalorii, mProteine, mCarbo, mGrasimi;
@@ -285,6 +286,8 @@ public class AddRecipeActivity extends AppCompatActivity {
          final String carbo = mCarbo.getText().toString();
          final String grasimi = mGrasimi.getText().toString();
          final String category = categoryList.toString();
+         userID = mAuth.getCurrentUser().getUid();
+
 
 
 
@@ -337,7 +340,8 @@ public class AddRecipeActivity extends AppCompatActivity {
              return;
          }
          Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
-         Recipe testRecipe = new Recipe(recipeName, category, description, preparationTime, servingSize,"", macro, ingredientsList);
+         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize,"", macro, ingredientsList);
          mFirebaseMethods.AddRecipe(testRecipe, new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {
