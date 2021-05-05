@@ -24,7 +24,6 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.R;
-import com.example.food.SelectPhotos.SelectPhotoActivity;
 import com.example.food.Utils.FirebaseMethods;
 import com.example.food.Utils.UniversalImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +33,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,6 +68,8 @@ public class AddRecipeActivity extends AppCompatActivity {
     private FirebaseMethods mFirebaseMethods;
 
     private String mAppend = "file:/";
+
+    private final String SAMPLE_CROPPED_IMG_NAME = "SampleCropImg";
 
 
     @Override
@@ -235,7 +240,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddRecipeActivity.this, SelectPhotoActivity.class);
                 selectImage(AddRecipeActivity.this);
             }
         });
@@ -288,6 +292,8 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private boolean checkIngredients() {
         boolean result = true;
