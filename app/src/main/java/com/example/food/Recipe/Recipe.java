@@ -9,6 +9,7 @@ public class Recipe {
     public String preparationTime, servingSize;
     Macronutrient macro;
     List<Ingredients> ingredients = new ArrayList<>();
+    long miliseconds;
 
     public Recipe(){}
 
@@ -22,6 +23,7 @@ public class Recipe {
         this.photo = photo;
         this.macro = macro;
         this.ingredients = ingredients;
+        this.miliseconds = System.currentTimeMillis();
     }
 
     public String getName() {
@@ -94,5 +96,13 @@ public class Recipe {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public long getMiliseconds() {
+        return miliseconds;
+    }
+
+    public void setMiliseconds(long miliseconds) {
+        this.miliseconds = miliseconds;
     }
 }

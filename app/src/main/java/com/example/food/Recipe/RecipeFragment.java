@@ -15,6 +15,7 @@ import com.example.food.R;
 import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
 import com.example.food.RecyclerView.RecipeRecyclerViewAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -59,7 +60,7 @@ public class RecipeFragment extends Fragment {
 
     public void RecipeRecyclerViewSetup(View view){
         //Query
-        Query query = firebaseFirestore.collection("Recipes").orderBy("name"); //TREBUIE DUPA DATA
+        Query query = firebaseFirestore.collection("Recipes").whereEqualTo("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).orderBy("miliseconds", Query.Direction.DESCENDING); //TREBUIE DUPA DATA
 
         FirestoreRecyclerOptions<Recipe> options = new FirestoreRecyclerOptions.Builder<Recipe>()
                 .setQuery(query, Recipe.class)

@@ -17,6 +17,8 @@ import com.example.food.Recipe.Recipe;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.Date;
+
 public class RecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, RecipeRecyclerViewAdapter.RecipeViewHolder>{
 
     private Context mContext;
@@ -35,6 +37,7 @@ public class RecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position, @NonNull Recipe model) {
            holder.titlu_recipe.setText(model.getName());
+           holder.date.setText(new Date(model.getMiliseconds()).toString());
 
         Glide.with(holder.recipe_photo.getContext())
                 .load(model.getPhoto())
@@ -52,12 +55,13 @@ public class RecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, 
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
         private ImageView recipe_photo;
-        private TextView titlu_recipe;
+        private TextView titlu_recipe, date;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             recipe_photo = itemView.findViewById(R.id.recipe_photo);
             titlu_recipe = itemView.findViewById(R.id.titlu_recipe);
+            date = itemView.findViewById(R.id.date);
         }
     }
 
