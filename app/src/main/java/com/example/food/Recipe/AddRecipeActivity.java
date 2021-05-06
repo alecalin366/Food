@@ -1,5 +1,6 @@
 package com.example.food.Recipe;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,11 @@ import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
 import com.example.food.Utils.UniversalImageLoader;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +40,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
@@ -41,7 +52,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private static final String TAG = "NextActivity";
@@ -66,19 +79,26 @@ public class AddRecipeActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
+    private StorageReference objectStorageReference;
+    FirebaseFirestore objectFirebaseFirestore;
 
     private String mAppend = "file:/";
 
     private final String SAMPLE_CROPPED_IMG_NAME = "SampleCropImg";
+
+    Uri imageLocationPath;
 
 
     @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_recipe_layout);
-         
+
         mFirebaseMethods = new FirebaseMethods(this);
-         
+
+        objectStorageReference = FirebaseStorage.getInstance().getReference("RecipeFolder"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+        objectFirebaseFirestore = FirebaseFirestore.getInstance();
+
         FindViews();
         initializeSelectedCategory();
         SetupAddIngredientButton();
@@ -86,6 +106,71 @@ public class AddRecipeActivity extends AppCompatActivity {
         SetupChoosePhoto();
         setupBackButton();
         setupFirebaseAuth();
+    }
+
+    public void uploadImage(){
+        try{
+            if(!mRecipeName.getText().toString().isEmpty()){
+                String nameOfImage = mRecipeName.getText().toString()+"."+getExtension(imageLocationPath);
+                StorageReference imageRef = objectStorageReference.child(nameOfImage);
+
+                UploadTask objectUploadTask = imageRef.putFile(imageLocationPath);
+                objectUploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if(!task.isSuccessful()){
+                            throw  task.getException();
+                        }
+                        return imageRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if(task.isSuccessful()){
+                            Map<String, String> objectMap = new HashMap<>();
+                            objectMap.put("photo", task.getResult().toString());
+
+                            objectFirebaseFirestore.collection("Recipes").document()
+                                    .set(objectMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(AddRecipeActivity.this, "image is uploaded", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(AddRecipeActivity.this, "failed to uploaded image", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }else if (!task.isSuccessful()){
+                            Toast.makeText(AddRecipeActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+            else{
+                Toast.makeText(this, "imageLocationPath is null/recipeName must be fill", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getExtension(Uri uri){
+        try{
+            ContentResolver objectContentResolver = getContentResolver();
+            MimeTypeMap objectMimeTypeMap = MimeTypeMap.getSingleton();
+
+            return objectMimeTypeMap.getExtensionFromMimeType(objectContentResolver.getType(uri));
+
+        } catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return null;
     }
 
     private void FindViews()
@@ -338,7 +423,7 @@ public class AddRecipeActivity extends AppCompatActivity {
          final String category = categoryList.toString();
          userID = mAuth.getCurrentUser().getUid();
 
-
+         uploadImage();
 
 
          if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
@@ -391,7 +476,7 @@ public class AddRecipeActivity extends AppCompatActivity {
          }
          Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
          FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize,"", macro, ingredientsList);
+         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, "", macro, ingredientsList);
          mFirebaseMethods.AddRecipe(testRecipe, new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {
