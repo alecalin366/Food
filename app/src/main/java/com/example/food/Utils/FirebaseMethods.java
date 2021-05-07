@@ -106,6 +106,28 @@ public class FirebaseMethods {
         });
     }
 
+    public void UpdateProfilePhoto(String photo) {
+
+        Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
+
+
+        userRef = db.collection("Users")
+                .document(userID);
+
+        userRef.update("profile_photo", photo
+        ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "onComplete: update is succesful");
+                } else {
+                    Log.d(TAG, "onComplete: update failed ");
+                }
+
+            }
+        });
+    }
+
     public void updateEmail(String email) {
         Log.d(TAG, "updateEmail: upadting email to: " + email);
 
@@ -231,6 +253,36 @@ public class FirebaseMethods {
     public void UploadImage(String receipeId, Bitmap bitmap, IGetStringListener listener)
     {
         StorageReference riversRef = firebaseStorage.getReference().child(receipeId);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageByteArray = baos.toByteArray();
+        UploadTask task = riversRef.putBytes(imageByteArray);
+        task.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            listener.GetString(url);
+                            Log.d("TESTLOG",url);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            listener.GetString("");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void UploadProfileImage(String userId, Bitmap bitmap, IGetStringListener listener)
+    {
+        StorageReference riversRef = firebaseStorage.getReference().child("profilePhoto/"+userId);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageByteArray = baos.toByteArray();

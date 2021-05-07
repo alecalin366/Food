@@ -1,6 +1,14 @@
 package com.example.food.Profile;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
+import com.example.food.Recipe.AddRecipeActivity;
 import com.example.food.Utils.ConfirmPasswordDialog;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
@@ -31,7 +41,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.example.food.Utils.UniversalImageLoader;
 
+import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends Fragment implements
         ConfirmPasswordDialog.OnConfirmPasswordListener{
@@ -111,6 +126,8 @@ public class EditProfileFragment extends Fragment implements
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
 
+    private Bitmap ReceipeBitmap;
+
     //var
     private User mUser;
 
@@ -127,6 +144,7 @@ public class EditProfileFragment extends Fragment implements
 
 
         //setProfileImage();
+        SetupChoosePhoto();
         setupFirebaseAuth();
 
         //back arrow for navigating back to ProfileActivity
@@ -181,6 +199,24 @@ public class EditProfileFragment extends Fragment implements
             //update phoneNumber
             mFirebaseMethods.updatePhoneNumber(phoneNumber);
         }
+
+        if(ReceipeBitmap != null)
+        {
+            mFirebaseMethods.UploadProfileImage(mAuth.getCurrentUser().getUid(), ReceipeBitmap, new IGetStringListener() {
+                @Override
+                public void GetString(String photoUrl) {
+                    if(!photoUrl.isEmpty())
+                    {
+                        mFirebaseMethods.UpdateProfilePhoto(photoUrl);
+                    }
+                    else Log.d(TAG, "onComplete: upload profile failed ");
+                }
+            });
+        }
+        else
+        {
+            mFirebaseMethods.UpdateProfilePhoto("");
+        }
     }
 
     private void setProfileWidgets(User user){
@@ -193,6 +229,89 @@ public class EditProfileFragment extends Fragment implements
         mDisplayName.setText(user.getDisplay_name());
         mEmail.setText(user.getEmail());
         mPhoneNumber.setText(user.getPhone_number());
+    }
+
+    private void SetupChoosePhoto()
+    {
+        mProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage(getContext());
+            }
+        });
+    }
+
+    private void selectImage(Context context) {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        //camera
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        ReceipeBitmap = selectedImage;
+                        mProfilePhoto.setImageBitmap(selectedImage);
+                    }
+
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        //galerie
+                        Uri selectedimageUri = data.getData();
+                        mProfilePhoto.setImageURI(selectedimageUri);
+
+                        try {
+                            ReceipeBitmap = GetBitmapFromUri(selectedimageUri);
+                        } catch (IOException e) {
+                            Log.d("Error",e.getMessage());
+                        }
+                    }
+            }
+        }
+    }
+
+    public Bitmap GetBitmapFromUri(Uri imageUri) throws IOException {
+        Bitmap bitmap;
+        if(Build.VERSION.SDK_INT < 28)
+        {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+        }
+        else
+        {
+            ImageDecoder.Source source = ImageDecoder.createSource(
+                    getActivity().getContentResolver(),imageUri);
+            bitmap = ImageDecoder.decodeBitmap(source);
+        }
+
+        return bitmap;
     }
 
      /*

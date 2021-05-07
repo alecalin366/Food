@@ -82,8 +82,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
-    private StorageReference objectStorageReference;
-    FirebaseFirestore objectFirebaseFirestore;
 
 
     @Override
@@ -92,9 +90,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         setContentView(R.layout.add_recipe_layout);
 
         mFirebaseMethods = new FirebaseMethods(this);
-
-        objectStorageReference = FirebaseStorage.getInstance().getReference("RecipeFolder"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
-        objectFirebaseFirestore = FirebaseFirestore.getInstance();
 
         FindViews();
         initializeSelectedCategory();
