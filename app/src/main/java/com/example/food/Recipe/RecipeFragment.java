@@ -60,7 +60,7 @@ public class RecipeFragment extends Fragment {
 
     public void RecipeRecyclerViewSetup(View view){
         //Query
-        Query query = firebaseFirestore.collection("Recipes").whereEqualTo("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).orderBy("miliseconds", Query.Direction.DESCENDING); //TREBUIE DUPA DATA
+        Query query = firebaseFirestore.collection("Recipes").orderBy("miliseconds", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Recipe> options = new FirestoreRecyclerOptions.Builder<Recipe>()
                 .setQuery(query, Recipe.class)

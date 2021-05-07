@@ -111,20 +111,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         setupFirebaseAuth();
     }
 
-    private String getExtension(Uri uri){
-        try{
-            ContentResolver objectContentResolver = getContentResolver();
-            MimeTypeMap objectMimeTypeMap = MimeTypeMap.getSingleton();
-
-            return objectMimeTypeMap.getExtensionFromMimeType(objectContentResolver.getType(uri));
-
-        } catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        return null;
-    }
-
     private void FindViews()
     {
         category = findViewById(R.id.category);

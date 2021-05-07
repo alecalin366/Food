@@ -57,9 +57,13 @@ public class HomeFragment extends Fragment {
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseFirestore firebaseFirestore;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
+    private RecyclerView recyclerView;
+    private RecipeRecyclerViewAdapter adapterRecipe;
+    private TextView _warningText;
 
 
 
@@ -71,18 +75,51 @@ public class HomeFragment extends Fragment {
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
         profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
-        chat = (AppCompatButton) view.findViewById(R.id.buton_mesaj);
         chipNavigationBar = (ChipNavigationBar) view.findViewById(R.id.navBar);
         addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
+        recyclerView = view.findViewById(R.id.recyclerView);
+        _warningText = view.findViewById(R.id.warning_text);
         Log.d(TAG, "onCreateView: started");
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
 
         setupToolbar();
         setupAddRecipeButton();
         setupFirebaseAuth();
-
+        RecipeRecyclerViewSetup(view);
         return view;
+    }
+
+    public void RecipeRecyclerViewSetup(View view){
+        //Query
+        Query query = firebaseFirestore.collection("Recipes").whereEqualTo("user_id",
+                FirebaseAuth.getInstance().getCurrentUser().getUid()).orderBy("miliseconds", Query.Direction.DESCENDING); //TREBUIE DUPA DATA
+
+        FirestoreRecyclerOptions<Recipe> options = new FirestoreRecyclerOptions.Builder<Recipe>()
+                .setQuery(query, Recipe.class)
+                .build();
+
+        adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), options);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapterRecipe);
+        adapterRecipe.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                if(itemCount != 0)
+                {
+                    _warningText.setVisibility(View.INVISIBLE);
+                }
+                super.onItemRangeInserted(positionStart, itemCount);
+            }
+
+        });
+        adapterRecipe.startListening();
+
     }
 
     private void setupAddRecipeButton() {

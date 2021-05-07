@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,28 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/search"
-        android:ems="10"
         android:inputType="textPersonName"
-        android:paddingLeft="50dp"
-        android:text="Cauta retete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.436"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/search_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintHorizontal_bias="0.031"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
-        app:layout_constraintVertical_bias="0.42000002" />
+        android:hint="Cauta retete"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/search_icon"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/header_title"
@@ -41,17 +25,18 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/segoe_ui_bold"
         android:text="Categorii"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:textColor="@color/purple2_DARK"
         android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView_category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_below="@id/editTextTextPersonName" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_category"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -67,31 +52,27 @@
     <TextView
         android:id="@+id/header_title2"
         android:layout_width="wrap_content"
+        android:layout_below="@id/recyclerView_category"
         android:layout_height="wrap_content"
         android:fontFamily="@font/segoe_ui_bold"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:text="Toate retetele"
         android:textColor="@color/purple2_DARK"
         android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView_recipe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_category"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_recipe"
+        android:layout_below="@id/header_title2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
         android:layout_height="270dp"
         android:clipToPadding="false"
         android:paddingEnd="5dp"
         android:paddingBottom="10dp"
-        android:scrollbarStyle="outsideOverlay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.864" />
+        />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

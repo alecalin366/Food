@@ -1,6 +1,7 @@
 package com.example.food.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.food.R;
+import com.example.food.Recipe.DetailedRecipe;
 import com.example.food.Recipe.Recipe;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -39,14 +43,21 @@ public class RecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, 
            holder.titlu_recipe.setText(model.getName());
            holder.date.setText(new Date(model.getMiliseconds()).toString());
 
-        Glide.with(holder.recipe_photo.getContext())
-                .load(model.getPhoto())
-                .into(holder.recipe_photo);
+        if(!model.photo.isEmpty())
+        {
+            Picasso.get()
+                    .load(model.photo)
+                    .placeholder(R.drawable.ic_android)
+                    .error(R.drawable.ic_android)
+                    .into(holder.recipe_photo);
+        }
 
         holder.recipe_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, model.getPhoto(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, DetailedRecipe.class);
+                intent.putExtra("recipe",new Gson().toJson(model));
+                mContext.startActivity(intent);
             }
         });
 
