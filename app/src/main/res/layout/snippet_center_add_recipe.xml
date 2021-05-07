@@ -96,7 +96,7 @@
                     android:layout_marginStart="20dp"
                     android:background="@null"
                     android:fontFamily="@font/segoe_ui"
-                    android:hint="Timp de preparare"
+                    android:hint="Timp de preparare (in minute)"
                     android:inputType="number" />
 
             </RelativeLayout>

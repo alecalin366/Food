@@ -47,8 +47,8 @@ public class RecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, 
         {
             Picasso.get()
                     .load(model.photo)
-                    .placeholder(R.drawable.ic_android)
-                    .error(R.drawable.ic_android)
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_error)
                     .into(holder.recipe_photo);
         }
 

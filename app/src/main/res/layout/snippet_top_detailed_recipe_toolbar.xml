@@ -23,7 +23,7 @@
                     android:id="@+id/backArrow"
                     android:src="@drawable/ic_backarrow"/>
 
-                <ImageView
+                <Button
                     android:id="@+id/favoriteButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -31,15 +31,16 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="64dp"
-                    android:src="@drawable/ic_alert" />
+                    android:background="@drawable/ic_alert" />
 
-                <ImageView
+                <Button
                     android:id="@+id/addToCart"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginStart="310dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_cart" />
+                    android:background="@drawable/ic_cart"
+                    android:paddingRight="20dp"/>
 
 
             </RelativeLayout>
