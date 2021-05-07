@@ -37,8 +37,8 @@
                     android:id="@+id/addToCart"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginStart="310dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="290dp"
+                    android:layout_marginEnd="30dp"
                     android:background="@drawable/ic_cart"
                     android:paddingRight="20dp"/>
 

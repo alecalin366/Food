@@ -218,7 +218,7 @@ public class EditProfileFragment extends Fragment implements
         }
         else
         {
-            mFirebaseMethods.UpdateProfilePhoto("");
+            Log.d(TAG, "onComplete: upload profile failed ");
         }
     }
 
