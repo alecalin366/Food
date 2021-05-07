@@ -460,7 +460,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void AddRecipe(String recipeUID,String recipeName,String category,String description,String preparationTime,String servingSize,String photoUrl,Macronutrient macro)
     {
-         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, "", macro, ingredientsList);
+         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, photoUrl, macro, ingredientsList);
         mFirebaseMethods.AddRecipe(testRecipe,recipeUID ,new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {
