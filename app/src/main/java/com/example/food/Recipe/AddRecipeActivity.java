@@ -85,12 +85,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private StorageReference objectStorageReference;
     FirebaseFirestore objectFirebaseFirestore;
 
-    private String mAppend = "file:/";
-
-    private final String SAMPLE_CROPPED_IMG_NAME = "SampleCropImg";
-
-    Uri imageLocationPath;
-
 
     @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -371,6 +365,10 @@ public class AddRecipeActivity extends AppCompatActivity {
 
 
         return result;
+    }
+
+    public List<Ingredients> getIngredientList(){
+        return ingredientsList;
     }
 
      private void SaveRecipe()

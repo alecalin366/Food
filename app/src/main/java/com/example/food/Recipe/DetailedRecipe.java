@@ -7,9 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food.R;
+import com.example.food.RecyclerView.IngredientMeasurementRecyclerViewAdapter;
+import com.example.food.RecyclerView.IngredientNameRecyclerViewAdapter;
+import com.example.food.RecyclerView.IngredientQuantityRecyclerViewAdapter;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -72,6 +76,17 @@ public class DetailedRecipe extends AppCompatActivity {
                     .into(photo);
         }
 
+        IngredientNameRecyclerViewAdapter recyclerAdapter = new IngredientNameRecyclerViewAdapter(recipe.ingredients);
+        ingr_name.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        ingr_name.setAdapter(recyclerAdapter);
+
+        IngredientQuantityRecyclerViewAdapter recyclerAdapter2 = new IngredientQuantityRecyclerViewAdapter(recipe.ingredients);
+        ingr_quntity.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        ingr_quntity.setAdapter(recyclerAdapter2);
+
+        IngredientMeasurementRecyclerViewAdapter recyclerAdapter3 = new IngredientMeasurementRecyclerViewAdapter(recipe.ingredients);
+        ingr_measure.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        ingr_measure.setAdapter(recyclerAdapter3);
 
         macro_calorii.setText(recipe.macro.getCalorii());
         macro_proteine.setText(recipe.macro.getProteine());

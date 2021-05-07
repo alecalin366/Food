@@ -25,7 +25,6 @@ import com.example.food.Profile.AccountSettingsActivity;
 import com.example.food.R;
 import com.example.food.Recipe.AddRecipeActivity;
 import com.example.food.Recipe.Recipe;
-import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
 import com.example.food.RecyclerView.RecipeRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
