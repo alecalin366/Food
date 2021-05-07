@@ -13,6 +13,8 @@ import com.example.food.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 
 public class DetailedRecipe extends AppCompatActivity {
     private Recipe recipe;
@@ -70,15 +72,11 @@ public class DetailedRecipe extends AppCompatActivity {
                     .into(photo);
         }
 
-//        String MacroCalorii = macro_calorii.getText().toString();
-//        MacroCalorii = recipe.macro.calorii;
-//        String MacroProteine = macro_proteine.getText().toString();
-//        MacroCalorii = recipe.macro.proteine;
-//        String MacroCarbo = macro_carbo.getText().toString();
-//        MacroCarbo = recipe.macro.carbo;
-//        String MacroGrasimi = macro_grasimi.getText().toString();
-//        MacroCarbo = recipe.macro.grasimi;
 
+        macro_calorii.setText(recipe.macro.getCalorii());
+        macro_proteine.setText(recipe.macro.getProteine());
+        macro_carbo.setText(recipe.macro.getCarbo());
+        macro_grasimi.setText(recipe.macro.getGrasimi());
     }
 
 }
