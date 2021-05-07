@@ -207,7 +207,10 @@ public class EditProfileFragment extends Fragment implements
                 public void GetString(String photoUrl) {
                     if(!photoUrl.isEmpty())
                     {
-                        mFirebaseMethods.UpdateProfilePhoto(photoUrl);
+                        if(!mUser.getProfile_photo().equals(photoUrl)){
+                            mFirebaseMethods.UpdateProfilePhoto(photoUrl);
+                        }
+
                     }
                     else Log.d(TAG, "onComplete: upload profile failed ");
                 }
