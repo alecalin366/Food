@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -21,13 +24,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.example.food.Interfaces.ICompleteListener;
+import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
-import com.example.food.Utils.UniversalImageLoader;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,24 +46,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private static final String TAG = "NextActivity";
+    private View _loadingView;
     private String userID;
     private ImageView _save, backArrow, photo;
     private TextView category;
     private EditText mRecipeName, mPreparationTime, mServingSize, mDescription, mCalorii, mProteine, mCarbo, mGrasimi;
+    private Bitmap ReceipeBitmap;
 
     boolean[] selectedCategory;
     ArrayList<String> categoryList = new ArrayList<>();
@@ -108,57 +111,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         setupFirebaseAuth();
     }
 
-    public void uploadImage(){
-        try{
-            if(!mRecipeName.getText().toString().isEmpty()){
-                String nameOfImage = mRecipeName.getText().toString()+"."+getExtension(imageLocationPath);
-                StorageReference imageRef = objectStorageReference.child(nameOfImage);
-
-                UploadTask objectUploadTask = imageRef.putFile(imageLocationPath);
-                objectUploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if(!task.isSuccessful()){
-                            throw  task.getException();
-                        }
-                        return imageRef.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if(task.isSuccessful()){
-                            Map<String, String> objectMap = new HashMap<>();
-                            objectMap.put("photo", task.getResult().toString());
-
-                            objectFirebaseFirestore.collection("Recipes").document()
-                                    .set(objectMap)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(AddRecipeActivity.this, "image is uploaded", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(AddRecipeActivity.this, "failed to uploaded image", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }else if (!task.isSuccessful()){
-                            Toast.makeText(AddRecipeActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-            else{
-                Toast.makeText(this, "imageLocationPath is null/recipeName must be fill", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private String getExtension(Uri uri){
         try{
             ContentResolver objectContentResolver = getContentResolver();
@@ -189,6 +141,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         mGrasimi = findViewById(R.id.cantitate_grasimi);
         layoutList = findViewById(R.id.layout_list);
         buttonAddIngredient = findViewById(R.id.add_ingredient_button);
+        _loadingView = findViewById(R.id.loadingView);
         //TODO ale find all objects
     }
 
@@ -306,7 +259,6 @@ public class AddRecipeActivity extends AppCompatActivity {
              @Override
              public void onClick(View view) {
                  SaveRecipe();
-                 finish();
              }
          });
      }
@@ -364,18 +316,43 @@ public class AddRecipeActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
+                        //camera
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        ReceipeBitmap = selectedImage;
                         photo.setImageBitmap(selectedImage);
                     }
 
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        photo.setImageURI(selectedImage);
+                        //galerie
+                        Uri selectedimageUri = data.getData();
+                        photo.setImageURI(selectedimageUri);
+
+                        try {
+                            ReceipeBitmap = GetBitmapFromUri(selectedimageUri);
+                        } catch (IOException e) {
+                            Log.d("Error",e.getMessage());
+                        }
                     }
             }
         }
+    }
+
+    public Bitmap GetBitmapFromUri(Uri imageUri) throws IOException {
+        Bitmap bitmap;
+        if(Build.VERSION.SDK_INT < 28)
+        {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+        }
+        else
+        {
+            ImageDecoder.Source source = ImageDecoder.createSource(
+                    this.getContentResolver(),imageUri);
+            bitmap = ImageDecoder.decodeBitmap(source);
+        }
+
+        return bitmap;
     }
 
 
@@ -422,9 +399,6 @@ public class AddRecipeActivity extends AppCompatActivity {
          final String grasimi = mGrasimi.getText().toString();
          final String category = categoryList.toString();
          userID = mAuth.getCurrentUser().getUid();
-
-         uploadImage();
-
 
          if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
              Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
@@ -476,8 +450,32 @@ public class AddRecipeActivity extends AppCompatActivity {
          }
          Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
          FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+         String recipeUID = UUID.randomUUID().toString();
+
+         _loadingView.setVisibility(View.VISIBLE);
+         if(ReceipeBitmap != null)
+         {
+             mFirebaseMethods.UploadImage(recipeUID, ReceipeBitmap, new IGetStringListener() {
+                 @Override
+                 public void GetString(String photoUrl) {
+                     if(!photoUrl.isEmpty())
+                     {
+                         AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,photoUrl,macro);
+                     }
+                     else finish();
+                 }
+             });
+         }
+         else
+         {
+             AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,"",macro);
+         }
+     }
+
+    private void AddRecipe(String recipeUID,String recipeName,String category,String description,String preparationTime,String servingSize,String photoUrl,Macronutrient macro)
+    {
          Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, "", macro, ingredientsList);
-         mFirebaseMethods.AddRecipe(testRecipe, new ICompleteListener() {
+        mFirebaseMethods.AddRecipe(testRecipe,recipeUID ,new ICompleteListener() {
              @Override
              public void OnComplete(boolean isSuccessfulCompleted) {
                  if(isSuccessfulCompleted)
@@ -487,6 +485,8 @@ public class AddRecipeActivity extends AppCompatActivity {
                  else {
                      Toast.makeText(getApplicationContext(),"Reteta nu a fost adaugata cu succes",Toast.LENGTH_LONG).show();
                  }
+                 _loadingView.setVisibility(View.GONE);
+                 finish();
              }
          });
      }

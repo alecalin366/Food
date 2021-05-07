@@ -1,6 +1,8 @@
 package com.example.food.Utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IGetRecipeData;
+import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Recipe.Recipe;
 import com.example.food.Recipe.UserRecipe;
@@ -24,7 +27,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 public class FirebaseMethods {
@@ -38,6 +45,7 @@ public class FirebaseMethods {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
     DocumentReference userRef;
     FirebaseAuth firebaseAuth;
 
@@ -47,6 +55,7 @@ public class FirebaseMethods {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         db = FirebaseFirestore.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        firebaseStorage = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null)
@@ -204,9 +213,8 @@ public class FirebaseMethods {
         Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userSettings.toString());
     }
 
-    public void AddRecipe(Recipe recipe, ICompleteListener onCompleteListener)
+    public void AddRecipe(Recipe recipe,String recipeUID, ICompleteListener onCompleteListener)
     {
-        String recipeUID = UUID.randomUUID().toString();
 
         db.collection("Recipes").document(recipeUID).set(recipe).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -220,33 +228,33 @@ public class FirebaseMethods {
                 .document(recipeUID).set(new UserRecipe(recipeUID));
     }
 
-    public void FetchRecipeData(IGetRecipeData recipeData) {
-        Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase");
-
-
-        try {
-            userRef = db.collection("UsersRecipes")
-                    .document(firebaseAuth.getCurrentUser().getUid()).collection("Recipes").document();
-
-            userRef.get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    public void UploadImage(String receipeId, Bitmap bitmap, IGetStringListener listener)
+    {
+        StorageReference riversRef = firebaseStorage.getReference().child(receipeId);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageByteArray = baos.toByteArray();
+        UploadTask task = riversRef.putBytes(imageByteArray);
+        task.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Recipe recipe = documentSnapshot.toObject(Recipe.class);
-
-                            recipeData.getRecipeData(recipe);
-
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            listener.GetString(url);
+                            Log.d("TESTLOG",url);
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "onFailure: failed to fetch data");
+                            listener.GetString("");
                         }
                     });
-        } catch (NullPointerException e) {
-            Log.d(TAG, "getUserAccountSettings: NULLPointerException: " + e.getMessage());
-        }
-        Log.e(TAG, "getUserAccountSettings: retrieved recipe information: " + recipeData.toString());
+                }
+            }
+        });
     }
 }
