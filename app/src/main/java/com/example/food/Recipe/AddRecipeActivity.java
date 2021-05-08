@@ -68,7 +68,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     boolean[] selectedCategory;
     ArrayList<String> categoryList = new ArrayList<>();
-    String[] categoryArray = {"Desert", "Vegan", "Sosuri"};
+    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks","Salads", "Indian", "Chinese", "Thai","Greek","Mexican", "Sweets", "Vegan","Pasta","Pizza", "Others"};
 
 
     LinearLayout layoutList;

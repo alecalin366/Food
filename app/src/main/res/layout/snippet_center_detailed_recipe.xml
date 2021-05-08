@@ -152,23 +152,13 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="40dp">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start">
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clipToPadding="false"
                             android:paddingEnd="5dp"
+                            android:layout_below="@+id/title_ingredients"
                             android:paddingBottom="10dp"
                             android:scrollbarStyle="outsideOverlay"
                             android:layout_gravity="start">
@@ -181,8 +171,8 @@
                             android:layout_height="wrap_content"
                             android:clipToPadding="false"
                             android:paddingEnd="3dp"
-                            android:layout_marginLeft="235dp"
-                            android:layout_toRightOf="@+id/recyclerView1"
+                            android:layout_below="@id/title_ingredients"
+                            android:layout_toStartOf="@+id/recyclerView3"
                             android:paddingBottom="10dp"
                             android:scrollbarStyle="outsideOverlay">
 
@@ -192,18 +182,15 @@
                             android:id="@+id/recyclerView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/title_ingredients"
                             android:clipToPadding="false"
-                            android:layout_toEndOf="@+id/recyclerView2"
+                            android:layout_alignParentEnd="true"
                             android:foregroundGravity="right"
                             android:paddingEnd="5dp"
                             android:paddingBottom="10dp"
                             android:scrollbarStyle="outsideOverlay">
 
                         </androidx.recyclerview.widget.RecyclerView>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
 
             </RelativeLayout>
 
@@ -236,7 +223,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/macronutrienti"
                 android:layout_below="@+id/Preparare">
@@ -251,18 +238,12 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
-                <LinearLayout
-                    android:id="@+id/linear1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@id/title_macro">
-
                     <TextView
                         android:id="@+id/calorii"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Calorii"
+                        android:layout_below="@id/title_macro"
                         android:fontFamily="@font/segoe_ui"
                         android:textColor="@color/white"
                         android:textSize="16sp"/>
@@ -272,26 +253,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="grame"
+                        android:layout_below="@+id/title_macro"
+                        android:layout_alignParentEnd="true"
                         android:fontFamily="@font/segoe_ui"
                         android:layout_gravity="right"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:paddingStart="200dp"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@id/linear1">
-
                     <TextView
                         android:id="@+id/proteine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Proteine"
+                        android:layout_below="@+id/calorii"
                         android:fontFamily="@font/segoe_ui"
                         android:textColor="@color/white"
                         android:textSize="16sp"/>
@@ -301,102 +276,92 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="grame"
+                        android:paddingEnd="3dp"
+                        android:layout_below="@+id/calorii"
+                        android:layout_toStartOf="@+id/g"
                         android:fontFamily="@font/segoe_ui"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:paddingStart="200dp"
-                        android:layout_gravity="end"/>
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="g"
+                        android:layout_below="@+id/calorii"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/g"
                         android:fontFamily="@font/segoe_ui"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="end"/>
+                        android:textSize="16sp" />
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear3"
+                <TextView
+                    android:id="@+id/carbo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@id/linear2">
+                    android:text="Carbohidrati"
+                    android:layout_below="@+id/proteine"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/Carbohidrati"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Carbohidrati"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/cantitate_carbo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="grame"
-                        android:paddingStart="200dp"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="end"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="g"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="end"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear4"
+                <TextView
+                    android:id="@+id/cantitate_carbo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@id/linear3">
+                    android:text="grame"
+                    android:paddingEnd="3dp"
+                    android:layout_below="@+id/proteine"
+                    android:layout_toStartOf="@+id/gr"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    />
 
-                    <TextView
-                        android:id="@+id/grasimi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Grasimi"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="g"
+                    android:layout_below="@+id/proteine"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/gr"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/cantitate_grasimi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="grame"
-                        android:paddingStart="200dp"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="end"/>
+                <TextView
+                    android:id="@+id/grasimi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grasimi"
+                    android:layout_below="@+id/carbo"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="g"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="end"/>
+                <TextView
+                    android:id="@+id/cantitate_grasimi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="grame"
+                    android:paddingEnd="3dp"
+                    android:layout_below="@+id/carbo"
+                    android:layout_toStartOf="@+id/grr"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    />
 
-                </LinearLayout>
-
-
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="g"
+                    android:layout_below="@+id/carbo"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/grr"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
