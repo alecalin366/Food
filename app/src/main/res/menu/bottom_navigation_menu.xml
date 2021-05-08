@@ -46,13 +46,4 @@
         app:cnb_unselectedColor="#1E0922">
     </item>
 
-    <item
-        android:id="@+id/ic_android"
-        android:icon="@drawable/ic_android"
-        android:title="Profile"
-        app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff"
-        app:cnb_unselectedColor="#1E0922">
-    </item>
-
 </menu>

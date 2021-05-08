@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/recipe_bk"
-            android:padding="25dp">
+            android:padding="20dp">
 
             <ImageView
                 android:layout_width="390dp"
@@ -159,30 +159,30 @@
                     android:layout_marginTop="40dp">
 
                     <RelativeLayout
-                        android:layout_width="374dp"
-                        android:layout_height="370dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="start">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start"
                             android:clipToPadding="false"
                             android:paddingEnd="5dp"
                             android:paddingBottom="10dp"
-                            android:scrollbarStyle="outsideOverlay">
+                            android:scrollbarStyle="outsideOverlay"
+                            android:layout_gravity="start">
 
                         </androidx.recyclerview.widget.RecyclerView>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView2"
-                            android:layout_width="55dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="213dp"
-                            android:layout_toRightOf="@+id/recyclerView1"
                             android:clipToPadding="false"
                             android:paddingEnd="3dp"
+                            android:layout_marginLeft="235dp"
+                            android:layout_toRightOf="@+id/recyclerView1"
                             android:paddingBottom="10dp"
                             android:scrollbarStyle="outsideOverlay">
 
@@ -192,8 +192,9 @@
                             android:id="@+id/recyclerView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/recyclerView2"
                             android:clipToPadding="false"
+                            android:layout_toEndOf="@+id/recyclerView2"
+                            android:foregroundGravity="right"
                             android:paddingEnd="5dp"
                             android:paddingBottom="10dp"
                             android:scrollbarStyle="outsideOverlay">

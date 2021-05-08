@@ -94,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.ic_alert:
                         fragment = new LikesFragment();
                         break;
-                    case R.id.ic_android:
-                        fragment = new ProfileFragment();
-                        break;
                 }
 
                 if (fragment != null) {
