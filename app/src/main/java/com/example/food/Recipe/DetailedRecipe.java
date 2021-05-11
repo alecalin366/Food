@@ -15,11 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food.Interfaces.IExistsListener;
 import com.example.food.Interfaces.IGetNumberListener;
+import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.R;
 import com.example.food.RecyclerView.IngredientRecyclerViewAdapter;
+import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DetailedRecipe extends AppCompatActivity {
@@ -31,7 +36,8 @@ public class DetailedRecipe extends AppCompatActivity {
     RecyclerView ingredientsRecyclerView;
     private FirebaseMethods _firebaseMethods;
     private ImageView _likeImage, _dislikeImage, _activeLikeImage, _activeDislikeImage;
-    private TextView _likesText,_dislikeText;
+    private TextView _likesText,_dislikeText, _ownerName;
+    private CircleImageView _ownerImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,7 @@ public class DetailedRecipe extends AppCompatActivity {
         _firebaseMethods = new FirebaseMethods(this);
 
         FindViews();
+        SetOwnerInfo();
         SetViewsFields();
         setupBackButton();
         UpdateLikeAndDislikeState();
@@ -83,6 +90,9 @@ public class DetailedRecipe extends AppCompatActivity {
         _loadingView = findViewById(R.id.loadingView);
         _likesText = findViewById(R.id.likesText);
         _dislikeText = findViewById(R.id.dislikesText);
+        _ownerImage =  findViewById(R.id.profile_photo);
+        _ownerName = findViewById(R.id.ownerName);
+
     }
 
     @SuppressLint("DefaultLocale")
@@ -114,6 +124,25 @@ public class DetailedRecipe extends AppCompatActivity {
 
     }
 
+    private void SetOwnerInfo()
+    {
+        _firebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
+            @Override
+            public void getUserSettings(User userSettings) {
+                if (!userSettings.getProfile_photo().isEmpty()) {
+                    Picasso.get()
+                            .load(userSettings.getProfile_photo())
+                            .placeholder(R.drawable.ic_people)
+                            .error(R.drawable.ic_error)
+                            .into(_ownerImage);
+                }
+                else{
+                    _ownerImage.setImageResource(R.drawable.ic_people);
+                }
+                _ownerName.setText(userSettings.getDisplay_name());
+            }
+        });
+    }
 
     private void UpdateLikeAndDislikeState() {
 
