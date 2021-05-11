@@ -142,12 +142,9 @@ public class EditProfileFragment extends Fragment implements
         mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-
-        //setProfileImage();
         SetupChoosePhoto();
         setupFirebaseAuth();
 
-        //back arrow for navigating back to ProfileActivity
         ImageView backArrow = (ImageView) view.findViewById(R.id.backArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,10 +167,6 @@ public class EditProfileFragment extends Fragment implements
         return view;
     }
 
-    /**
-     * Retrieves the data contained in the widgets and submits it to the database
-     * Before donig so it chekcs to make sure the username chosen is unqiue
-     */
     private void saveProfileSettings(){
         final String displayName = mDisplayName.getText().toString();
         final String email = mEmail.getText().toString();
@@ -188,9 +181,6 @@ public class EditProfileFragment extends Fragment implements
             return;
         }
 
-        /**
-         * change the rest of the settings that do not require uniqueness
-         */
         if(!mUser.getDisplay_name().equals(displayName)){
             //update displayname
             mFirebaseMethods.updateDisplayName(displayName);

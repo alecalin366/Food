@@ -5,25 +5,54 @@ import java.util.List;
 
 public class Recipe {
     private String user_id;
-    public String name, category, description, photo;
+    public String name, category, description, photo, recipeId;
     public String preparationTime, servingSize;
+    private int LikesCount,DislikesCount;
+
+    public int getLikesCount() {
+        return LikesCount;
+    }
+
+    public int getDislikesCount() {
+        return DislikesCount;
+    }
+
+    public void setDislikesCount(int dislikesCount) {
+        DislikesCount = dislikesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        LikesCount = likesCount;
+    }
+
     Macronutrient macro;
     List<Ingredients> ingredients = new ArrayList<>();
     long miliseconds;
 
-    public Recipe(){}
+    public Recipe() {
+    }
 
-    public Recipe(String user_id, String name, String category, String description, String preparationTime, String servingSize,String photo, Macronutrient macro,List<Ingredients> ingredients){
+    public Recipe(String user_id, String name, String category, String description, String preparationTime, String servingSize, String photo, String recipeId, Macronutrient macro, List<Ingredients> ingredients) {
         this.user_id = user_id;
-        this.name=name;
+        this.name = name;
         this.category = category;
-        this.description=description;
+        this.description = description;
         this.preparationTime = preparationTime;
         this.servingSize = servingSize;
         this.photo = photo;
         this.macro = macro;
         this.ingredients = ingredients;
         this.miliseconds = System.currentTimeMillis();
+        this.recipeId = recipeId;
+
+    }
+
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(String recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getName() {
@@ -86,7 +115,7 @@ public class Recipe {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredients>  ingredients) {
+    public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
     }
 

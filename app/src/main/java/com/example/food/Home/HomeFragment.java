@@ -71,11 +71,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mDisplayName = (TextView) view.findViewById(R.id.display_name);
-        mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
-        toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
-        profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
-        chipNavigationBar = (ChipNavigationBar) view.findViewById(R.id.navBar);
+        mDisplayName = view.findViewById(R.id.display_name);
+        mProfilePhoto = view.findViewById(R.id.profile_photo);
+        toolbar = view.findViewById(R.id.profileToolBar);
+        profileMenu = view.findViewById(R.id.buton_setari);
+        chipNavigationBar = view.findViewById(R.id.navBar);
         addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment {
 
         adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), options);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterRecipe);
         adapterRecipe.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -131,31 +131,23 @@ public class HomeFragment extends Fragment {
         });
     }
 
-            private void setProfileWidgets(User user){
-                UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
+    private void setProfileWidgets(User user){
+        UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
 
-                mDisplayName.setText(user.getDisplay_name());
-                //mProgressBar.setVisibility(View.GONE);
+        mDisplayName.setText(user.getDisplay_name());
+    }
+
+
+    private void setupToolbar() {
+        profileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to account settings");
+                Intent intent = new Intent(mContext, AccountSettingsActivity.class);
+                startActivity(intent);
             }
-
-            /**
-             * Responsible for setting up the profile toolbar
-             */
-            private void setupToolbar() {
-
-                //((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
-
-                profileMenu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "onClick: navigating to account settings");
-                        Intent intent = new Intent(mContext, AccountSettingsActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-
+        });
+    }
     /*
     ----------------------------Firebase------------------------------------------
      */

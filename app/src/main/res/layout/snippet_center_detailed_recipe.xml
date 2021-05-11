@@ -9,7 +9,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/recipe_bk"
-            android:padding="20dp">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:layout_width="390dp"
@@ -152,45 +153,19 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:paddingEnd="5dp"
-                            android:layout_below="@+id/title_ingredients"
-                            android:paddingBottom="10dp"
-                            android:scrollbarStyle="outsideOverlay"
-                            android:layout_gravity="start">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:layout_below="@+id/title_ingredients"
+                    android:layout_marginBottom="10dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:layout_gravity="start">
 
-                        </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:paddingEnd="3dp"
-                            android:layout_below="@id/title_ingredients"
-                            android:layout_toStartOf="@+id/recyclerView3"
-                            android:paddingBottom="10dp"
-                            android:scrollbarStyle="outsideOverlay">
 
-                        </androidx.recyclerview.widget.RecyclerView>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/title_ingredients"
-                            android:clipToPadding="false"
-                            android:layout_alignParentEnd="true"
-                            android:foregroundGravity="right"
-                            android:paddingEnd="5dp"
-                            android:paddingBottom="10dp"
-                            android:scrollbarStyle="outsideOverlay">
-
-                        </androidx.recyclerview.widget.RecyclerView>
 
             </RelativeLayout>
 
@@ -238,62 +213,62 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
-                    <TextView
-                        android:id="@+id/calorii"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calorii"
-                        android:layout_below="@id/title_macro"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/calorii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calorii"
+                    android:layout_below="@id/title_macro"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/cantitate_calorii"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="grame"
-                        android:layout_below="@+id/title_macro"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/segoe_ui"
-                        android:layout_gravity="right"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:paddingStart="200dp"/>
+                <TextView
+                    android:id="@+id/cantitate_calorii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="grame"
+                    android:layout_below="@+id/title_macro"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/segoe_ui"
+                    android:layout_gravity="right"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:paddingStart="200dp"/>
 
-                    <TextView
-                        android:id="@+id/proteine"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Proteine"
-                        android:layout_below="@+id/calorii"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/proteine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Proteine"
+                    android:layout_below="@+id/calorii"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/cantitate_proteine"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="grame"
-                        android:paddingEnd="3dp"
-                        android:layout_below="@+id/calorii"
-                        android:layout_toStartOf="@+id/g"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        />
+                <TextView
+                    android:id="@+id/cantitate_proteine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="grame"
+                    android:paddingEnd="3dp"
+                    android:layout_below="@+id/calorii"
+                    android:layout_toStartOf="@+id/g"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="g"
-                        android:layout_below="@+id/calorii"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/g"
-                        android:fontFamily="@font/segoe_ui"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="g"
+                    android:layout_below="@+id/calorii"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/g"
+                    android:fontFamily="@font/segoe_ui"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/carbo"
@@ -385,54 +360,82 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="40dp">
 
                     <LinearLayout
+                        android:id="@+id/likeView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="20dp">
 
                         <ImageView
+                            android:id="@+id/likeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_like"
+                            android:layout_marginTop="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/likeImage2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ic_like"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="10dp"
-                            android:layout_marginLeft="104dp"/>
-
+                            android:backgroundTint="@color/link_blue"
+                            app:tint="@color/link_blue"/>
                         <TextView
+                            android:id="@+id/likesText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/segoe_ui_bold"
                             android:text="Like"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:layout_marginTop="15dp"
-                            android:layout_marginLeft="104dp"/>
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/dislikeView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp">
 
                         <ImageView
+                            android:id="@+id/dislikeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_dislike"
+                            android:layout_marginTop="10dp"
+                            />
+                        <ImageView
+                            android:id="@+id/dislikeImage2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ic_dislike"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="10dp"
-                            android:layout_marginLeft="50dp"/>
-
+                            android:backgroundTint="@color/link_blue"
+                            app:tint="@color/link_blue" />
                         <TextView
+                            android:id="@+id/dislikesText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/segoe_ui_bold"
                             android:text="Dislike"
                             android:textColor="@color/white"
                             android:textSize="16sp"
-                            android:layout_marginLeft="40dp"
                             android:layout_marginTop="15dp"/>
 
                     </LinearLayout>
@@ -440,8 +443,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-
-
 
         </RelativeLayout>
 

@@ -85,7 +85,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
 
     @Override
-     protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_recipe_layout);
 
@@ -227,25 +227,25 @@ public class AddRecipeActivity extends AppCompatActivity {
         builder.show();
 
     }
- 
-     private void SetupSave()
-     {
-         _save.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 SaveRecipe();
-             }
-         });
-     }
 
-     private void setupBackButton(){
-         backArrow.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 finish();
-             }
-         });
-     }
+    private void SetupSave()
+    {
+        _save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SaveRecipe();
+            }
+        });
+    }
+
+    private void setupBackButton(){
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     private void SetupChoosePhoto()
     {
@@ -366,109 +366,109 @@ public class AddRecipeActivity extends AppCompatActivity {
         return ingredientsList;
     }
 
-     private void SaveRecipe()
-     {
-         final String recipeName = mRecipeName.getText().toString();
-         final String description = mDescription.getText().toString();
-         final String preparationTime = mPreparationTime.getText().toString();
-         final String servingSize = mServingSize.getText().toString();
-         final String calorii = mCalorii.getText().toString();
-         final String proteine = mProteine.getText().toString();
-         final String carbo = mCarbo.getText().toString();
-         final String grasimi = mGrasimi.getText().toString();
-         final String category = categoryList.toString();
-         userID = mAuth.getCurrentUser().getUid();
+    private void SaveRecipe()
+    {
+        final String recipeName = mRecipeName.getText().toString();
+        final String description = mDescription.getText().toString();
+        final String preparationTime = mPreparationTime.getText().toString();
+        final String servingSize = mServingSize.getText().toString();
+        final String calorii = mCalorii.getText().toString();
+        final String proteine = mProteine.getText().toString();
+        final String carbo = mCarbo.getText().toString();
+        final String grasimi = mGrasimi.getText().toString();
+        final String category = categoryList.toString();
+        userID = mAuth.getCurrentUser().getUid();
 
-         if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
-         }
+        if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
+        }
 
-         if(recipeName == null || recipeName.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga titlu", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(recipeName == null || recipeName.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga titlu", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(description == null || description.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga descriere", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(description == null || description.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga descriere", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(preparationTime == null || preparationTime.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga preparationTime", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(preparationTime == null || preparationTime.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga preparationTime", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(servingSize == null || servingSize.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga servingSize", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(servingSize == null || servingSize.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga servingSize", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(calorii == null || calorii.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga calorii", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(calorii == null || calorii.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga calorii", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(proteine == null || proteine.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga proteine", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(proteine == null || proteine.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga proteine", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(carbo == null || carbo.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga carbo", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(carbo == null || carbo.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga carbo", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(grasimi == null || grasimi.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga grasimi", Toast.LENGTH_SHORT).show();
-             return;
-         }
+        if(grasimi == null || grasimi.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga grasimi", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-         if(category == null || category.isEmpty()){
-             Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
-             return;
-         }
-         Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
-         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-         String recipeUID = UUID.randomUUID().toString();
+        if(category == null || category.isEmpty()){
+            Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String recipeUID = UUID.randomUUID().toString();
 
-         _loadingView.setVisibility(View.VISIBLE);
-         if(ReceipeBitmap != null)
-         {
-             mFirebaseMethods.UploadImage(recipeUID, ReceipeBitmap, new IGetStringListener() {
-                 @Override
-                 public void GetString(String photoUrl) {
-                     if(!photoUrl.isEmpty())
-                     {
-                         AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,photoUrl,macro);
-                     }
-                     else finish();
-                 }
-             });
-         }
-         else
-         {
-             AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,"",macro);
-         }
-     }
+        _loadingView.setVisibility(View.VISIBLE);
+        if(ReceipeBitmap != null)
+        {
+            mFirebaseMethods.UploadImage(recipeUID, ReceipeBitmap, new IGetStringListener() {
+                @Override
+                public void GetString(String photoUrl) {
+                    if(!photoUrl.isEmpty())
+                    {
+                        AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,photoUrl,macro);
+                    }
+                    else finish();
+                }
+            });
+        }
+        else
+        {
+            AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,"",macro);
+        }
+    }
 
     private void AddRecipe(String recipeUID,String recipeName,String category,String description,String preparationTime,String servingSize,String photoUrl,Macronutrient macro)
     {
-         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, photoUrl, macro, ingredientsList);
+        Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, photoUrl, recipeUID, macro, ingredientsList);
         mFirebaseMethods.AddRecipe(testRecipe,recipeUID ,new ICompleteListener() {
-             @Override
-             public void OnComplete(boolean isSuccessfulCompleted) {
-                 if(isSuccessfulCompleted)
-                 {
-                     Toast.makeText(getApplicationContext(),"Reteta a fost adaugata cu succes",Toast.LENGTH_LONG).show();
-                 }
-                 else {
-                     Toast.makeText(getApplicationContext(),"Reteta nu a fost adaugata cu succes",Toast.LENGTH_LONG).show();
-                 }
-                 _loadingView.setVisibility(View.GONE);
-                 finish();
-             }
-         });
-     }
+            @Override
+            public void OnComplete(boolean isSuccessfulCompleted) {
+                if(isSuccessfulCompleted)
+                {
+                    Toast.makeText(getApplicationContext(),"Reteta a fost adaugata cu succes",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Reteta nu a fost adaugata cu succes",Toast.LENGTH_LONG).show();
+                }
+                _loadingView.setVisibility(View.GONE);
+                finish();
+            }
+        });
+    }
 
       /*
     ------------------------------------ Firebase ---------------------------------------------

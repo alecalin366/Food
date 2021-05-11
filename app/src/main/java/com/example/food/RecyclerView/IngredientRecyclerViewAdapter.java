@@ -13,11 +13,11 @@ import com.example.food.Recipe.Ingredients;
 
 import java.util.List;
 
-public class IngredientMeasurementRecyclerViewAdapter extends RecyclerView.Adapter<IngredientMeasurementRecyclerViewAdapter.IngredientViewHolder> {
+public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.IngredientViewHolder> {
 
     List<Ingredients> mData;
 
-    public IngredientMeasurementRecyclerViewAdapter(List<Ingredients> mData){
+    public IngredientRecyclerViewAdapter(List<Ingredients> mData){
         this.mData = mData;
     }
     @NonNull
@@ -29,7 +29,8 @@ public class IngredientMeasurementRecyclerViewAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
-            holder.ingr_text.setText(mData.get(position).getMeasurements());
+        holder.ingr_text.setText(mData.get(position).getName_ingredient());
+        holder.ingr_value.setText(String.format("%s %s", mData.get(position).getQuantity(), mData.get(position).getMeasurements()));
     }
 
     @Override
@@ -38,11 +39,12 @@ public class IngredientMeasurementRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder{
-        private TextView ingr_text;
+        private TextView ingr_text,ingr_value;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             ingr_text = itemView.findViewById(R.id.Ingredients_text);
+            ingr_value = itemView.findViewById(R.id.Ingredients_value);
         }
     }
 }

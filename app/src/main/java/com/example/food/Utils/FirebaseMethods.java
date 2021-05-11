@@ -9,9 +9,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.food.Interfaces.ICompleteListener;
-import com.example.food.Interfaces.IGetRecipeData;
+import com.example.food.Interfaces.IExistsListener;
+import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
+import com.example.food.Models.LikeDislikeModel;
 import com.example.food.Recipe.Recipe;
 import com.example.food.Recipe.UserRecipe;
 import com.example.food.User.User;
@@ -27,12 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
@@ -163,8 +166,7 @@ public class FirebaseMethods {
                             });
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "onComplete: authstate changed" + userID);
-                        }
-                        else {
+                        } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
@@ -202,7 +204,8 @@ public class FirebaseMethods {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         listener.OnComplete(task.isSuccessful());
-                    }});
+                    }
+                });
     }
 
     public void RetrieveUserSettings(IGetUserSettings userSettings) {
@@ -235,8 +238,7 @@ public class FirebaseMethods {
         Log.e(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userSettings.toString());
     }
 
-    public void AddRecipe(Recipe recipe,String recipeUID, ICompleteListener onCompleteListener)
-    {
+    public void AddRecipe(Recipe recipe, String recipeUID, ICompleteListener onCompleteListener) {
 
         db.collection("Recipes").document(recipeUID).set(recipe).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -250,8 +252,7 @@ public class FirebaseMethods {
                 .document(recipeUID).set(new UserRecipe(recipeUID));
     }
 
-    public void UploadImage(String receipeId, Bitmap bitmap, IGetStringListener listener)
-    {
+    public void UploadImage(String receipeId, Bitmap bitmap, IGetStringListener listener) {
         StorageReference riversRef = firebaseStorage.getReference().child(receipeId);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -260,14 +261,13 @@ public class FirebaseMethods {
         task.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
                             listener.GetString(url);
-                            Log.d("TESTLOG",url);
+                            Log.d("TESTLOG", url);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -280,9 +280,8 @@ public class FirebaseMethods {
         });
     }
 
-    public void UploadProfileImage(String userId, Bitmap bitmap, IGetStringListener listener)
-    {
-        StorageReference riversRef = firebaseStorage.getReference().child("profilePhoto/"+userId);
+    public void UploadProfileImage(String userId, Bitmap bitmap, IGetStringListener listener) {
+        StorageReference riversRef = firebaseStorage.getReference().child("profilePhoto/" + userId);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageByteArray = baos.toByteArray();
@@ -290,14 +289,13 @@ public class FirebaseMethods {
         task.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
                             listener.GetString(url);
-                            Log.d("TESTLOG",url);
+                            Log.d("TESTLOG", url);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -308,5 +306,245 @@ public class FirebaseMethods {
                 }
             }
         });
+    }
+
+    public void LikeRecipe(String recipeId, ICompleteListener listener) {
+        RemoveLDislike(recipeId, new ICompleteListener() {
+            @Override
+            public void OnComplete(boolean isSuccessful) {
+                CheckIfILikedRecipe(recipeId, exists -> {
+                    if (exists) {
+                        RemoveLike(recipeId, isSuccessfulCompleted -> {
+                            listener.OnComplete(isSuccessfulCompleted);
+                        });
+                    } else {
+                        AddLikeToRecipe(recipeId, isSuccessfulCompleted -> {
+                            listener.OnComplete(isSuccessfulCompleted);
+                        });
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    public void CheckIfILikedRecipe(String recipeId, IExistsListener listener) {
+        String userID = mAuth.getCurrentUser().getUid();
+
+        db.collection("Recipes").document(recipeId).collection("Likes").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        AtomicBoolean found = new AtomicBoolean(false);
+                        task.getResult().getDocuments().forEach(documentSnapshot -> {
+                            LikeDislikeModel model = documentSnapshot.toObject(LikeDislikeModel.class);
+                            if (model.getUserID().equals(userID)) {
+                                listener.Exists(true);
+                                found.set(true);
+                                return;
+                            }
+
+                        });
+                        if (!found.get())
+                            listener.Exists(false);
+                    } else listener.Exists(false);
+                });
+    }
+
+    private void RemoveLike(String recipeId, ICompleteListener listener) {
+        String userID = mAuth.getCurrentUser().getUid();
+
+        db.collection("Recipes").document(recipeId).collection("Likes").document(userID).delete()
+                .addOnCompleteListener(task -> {
+                    UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                        @Override
+                        public void OnComplete(boolean isSuccessfulCompleted) {
+
+                            UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                                @Override
+                                public void OnComplete(boolean isSuccessfulCompleted) {
+                                    listener.OnComplete(task.isSuccessful());
+                                }
+                            });
+                        }
+                    });
+                });
+    }
+
+    private void AddLikeToRecipe(String recipeId, ICompleteListener listener) {
+        LikeDislikeModel likeDislikeModel = new LikeDislikeModel(userID);
+        db.collection("Recipes").document(recipeId).collection("Likes")
+                .document(userID).set(likeDislikeModel).addOnCompleteListener(task -> {
+
+            UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                @Override
+                public void OnComplete(boolean isSuccessfulCompleted) {
+
+                    UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                        @Override
+                        public void OnComplete(boolean isSuccessfulCompleted) {
+                            listener.OnComplete(task.isSuccessful());
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    public void DislikeRecipe(String recipeId, ICompleteListener listener) {
+        RemoveLike(recipeId, isSuccessful -> {
+
+            CheckIfIDislikedRecipe(recipeId, exists -> {
+                if (exists) {
+                    RemoveLDislike(recipeId, isSuccessfulCompleted -> {
+
+                        UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                            @Override
+                            public void OnComplete(boolean isSuccessfulCompleted) {
+
+                                UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                                    @Override
+                                    public void OnComplete(boolean isSuccessfulCompleted) {
+                                        listener.OnComplete(isSuccessfulCompleted);
+                                    }
+                                });
+                            }
+                        });
+
+                    });
+                } else {
+                    AddDislikeToRecipe(recipeId, isSuccessfulCompleted -> {
+
+                        UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                            @Override
+                            public void OnComplete(boolean isSuccessfulCompleted) {
+
+                                UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                                    @Override
+                                    public void OnComplete(boolean isSuccessfulCompleted) {
+                                        listener.OnComplete(isSuccessfulCompleted);
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
+
+    public void CheckIfIDislikedRecipe(String recipeId, IExistsListener listener) {
+        String userID = mAuth.getCurrentUser().getUid();
+
+        db.collection("Recipes").document(recipeId).collection("Dislikes").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        AtomicBoolean found = new AtomicBoolean(false);
+                        task.getResult().getDocuments().forEach(documentSnapshot -> {
+                            LikeDislikeModel model = documentSnapshot.toObject(LikeDislikeModel.class);
+                            if (model.getUserID().equals(userID)) {
+                                listener.Exists(true);
+                                found.set(true);
+                                return;
+                            }
+
+                        });
+                        if (!found.get())
+                            listener.Exists(false);
+                    } else listener.Exists(false);
+                });
+    }
+
+    private void RemoveLDislike(String recipeId, ICompleteListener listener) {
+        String userID = mAuth.getCurrentUser().getUid();
+
+        db.collection("Recipes").document(recipeId).collection("Dislikes").document(userID).delete()
+                .addOnCompleteListener(task -> {
+                    UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                        @Override
+                        public void OnComplete(boolean isSuccessfulCompleted) {
+
+                            UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                                @Override
+                                public void OnComplete(boolean isSuccessfulCompleted) {
+                                    listener.OnComplete(isSuccessfulCompleted);
+                                }
+                            });
+                        }
+                    });
+                });
+    }
+
+    private void AddDislikeToRecipe(String recipeId, ICompleteListener listener) {
+        LikeDislikeModel likeDislikeModel = new LikeDislikeModel(userID);
+        db.collection("Recipes").document(recipeId).collection("Dislikes")
+                .document(userID).set(likeDislikeModel).addOnCompleteListener(task -> {
+            UpdateRecipeLikesCount(recipeId, new ICompleteListener() {
+                @Override
+                public void OnComplete(boolean isSuccessfulCompleted) {
+
+                    UpdateRecipeDislikesCount(recipeId, new ICompleteListener() {
+                        @Override
+                        public void OnComplete(boolean isSuccessfulCompleted) {
+                            listener.OnComplete(isSuccessfulCompleted);
+                        }
+                    });
+                }
+
+            });
+        });
+    }
+
+    public void UpdateRecipeLikesCount(String recipeId, ICompleteListener listener) {
+        GetRecipeLikesCount(recipeId, new IGetNumberListener() {
+            @Override
+            public void getNumber(int numb) {
+                db.collection("Recipes").document(recipeId).update("LikesCount", numb).addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                listener.OnComplete(task.isSuccessful());
+                            }
+                        }
+                );
+            }
+        });
+    }
+
+    public void UpdateRecipeDislikesCount(String recipeId, ICompleteListener listener) {
+        GetRecipeDislikesCount(recipeId, new IGetNumberListener() {
+            @Override
+            public void getNumber(int numb) {
+                db.collection("Recipes").document(recipeId).update("DislikesCount", numb).addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                listener.OnComplete(task.isSuccessful());
+                            }
+                        }
+                );
+            }
+        });
+    }
+
+    public void GetRecipeLikesCount(String recipeId, IGetNumberListener listener) {
+        db.collection("Recipes").document(recipeId).collection("Likes").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        listener.getNumber(task.getResult().getDocuments().size());
+                    }
+                });
+    }
+
+    public void GetRecipeDislikesCount(String recipeId, IGetNumberListener listener) {
+        db.collection("Recipes").document(recipeId).collection("Dislikes").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        listener.getNumber(task.getResult().getDocuments().size());
+                    }
+                });
+
     }
 }

@@ -27,6 +27,19 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparentWhite"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+            <ProgressBar
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
