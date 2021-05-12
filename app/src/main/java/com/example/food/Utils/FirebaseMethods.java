@@ -208,13 +208,13 @@ public class FirebaseMethods {
                 });
     }
 
-    public void RetrieveUserSettings(IGetUserSettings userSettings) {
+    public void RetrieveUserSettings(String userId, IGetUserSettings userSettings) {
         Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase");
 
 
         try {
             userRef = db.collection("Users")
-                    .document(firebaseAuth.getCurrentUser().getUid());
+                    .document(userId);
 
             userRef.get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

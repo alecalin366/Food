@@ -126,7 +126,7 @@ public class DetailedRecipe extends AppCompatActivity {
 
     private void SetOwnerInfo()
     {
-        _firebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
+        _firebaseMethods.RetrieveUserSettings(recipe.getUser_id(), new IGetUserSettings() {
             @Override
             public void getUserSettings(User userSettings) {
                 if (!userSettings.getProfile_photo().isEmpty()) {

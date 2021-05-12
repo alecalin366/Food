@@ -7,28 +7,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.food.R;
 import com.example.food.Recipe.DetailedRecipe;
 import com.example.food.Recipe.Recipe;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder>{
+public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, FirebaseRecipeRecyclerViewAdapter.RecipeViewHolder>{
 
     private Context mContext;
-    public ArrayList<Recipe>  RecipeList;
-    public RecipeRecyclerViewAdapter(Context mContext, ArrayList<Recipe> list)
-    {
-        this.mContext = mContext;
-        RecipeList = list;
+    public FirebaseRecipeRecyclerViewAdapter(Context mContext, @NonNull FirestoreRecyclerOptions<Recipe> options) {
+        super(options);
+        this.mContext = mContext;;
     }
+
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,8 +39,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe model = RecipeList.get(position);
+    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position, @NonNull Recipe model) {
         holder.titlu_recipe.setText(model.getName());
         holder.date.setText(new Date(model.getMiliseconds()).toString());
 
@@ -59,12 +60,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                 mContext.startActivity(intent);
             }
         });
+
     }
 
-    @Override
-    public int getItemCount() {
-        return RecipeList.size();
-    }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
         private ImageView recipe_photo;
@@ -77,4 +75,5 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             date = itemView.findViewById(R.id.date);
         }
     }
+
 }

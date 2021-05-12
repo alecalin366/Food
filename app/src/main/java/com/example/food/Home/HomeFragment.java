@@ -25,6 +25,7 @@ import com.example.food.Profile.AccountSettingsActivity;
 import com.example.food.R;
 import com.example.food.Recipe.AddRecipeActivity;
 import com.example.food.Recipe.Recipe;
+import com.example.food.RecyclerView.FirebaseRecipeRecyclerViewAdapter;
 import com.example.food.RecyclerView.RecipeRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment {
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
     private RecyclerView recyclerView;
-    private RecipeRecyclerViewAdapter adapterRecipe;
+    private FirebaseRecipeRecyclerViewAdapter adapterRecipe;
     private TextView _warningText;
 
 
@@ -71,11 +72,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mDisplayName = view.findViewById(R.id.display_name);
-        mProfilePhoto = view.findViewById(R.id.profile_photo);
-        toolbar = view.findViewById(R.id.profileToolBar);
-        profileMenu = view.findViewById(R.id.buton_setari);
-        chipNavigationBar = view.findViewById(R.id.navBar);
+        mDisplayName = (TextView) view.findViewById(R.id.display_name);
+        mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
+        toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
+        profileMenu = (AppCompatButton) view.findViewById(R.id.buton_setari);
+        chipNavigationBar = (ChipNavigationBar) view.findViewById(R.id.navBar);
         addRecipeButton = view.findViewById(R.id.buton_adaugare_reteta);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
@@ -102,9 +103,9 @@ public class HomeFragment extends Fragment {
                 .setQuery(query, Recipe.class)
                 .build();
 
-        adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), options);
+        adapterRecipe = new FirebaseRecipeRecyclerViewAdapter(getContext(), options);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterRecipe);
         adapterRecipe.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -135,10 +136,16 @@ public class HomeFragment extends Fragment {
         UniversalImageLoader.setImage(user.getProfile_photo(), mProfilePhoto, null, "");
 
         mDisplayName.setText(user.getDisplay_name());
+        //mProgressBar.setVisibility(View.GONE);
     }
 
-
+    /**
+     * Responsible for setting up the profile toolbar
+     */
     private void setupToolbar() {
+
+        //((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
+
         profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,54 +155,56 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
     /*
     ----------------------------Firebase------------------------------------------
      */
 
-            /**
-             * Setup the firebase auth object
-             */
-            private void setupFirebaseAuth(){
-                Log.d(TAG, "setupFirebaseAuth: setting up firebase");
-                mAuth = FirebaseAuth.getInstance();
-                mFirebaseDatabase = FirebaseDatabase.getInstance();
-                myRef = mFirebaseDatabase.getReference();
+    /**
+     * Setup the firebase auth object
+     */
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase");
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
 
-                mAuthListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                        if(user != null){
-                            //User is signed in
-                            Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
-                        } else {
-                            //User is signed out
-                            Log.d(TAG, "onAuthStateChanged: signed out");
-                        }
-                    }
-                };
-
-
-                mFirebaseMethods.RetrieveUserSettings(new IGetUserSettings() {
-                    @Override
-                    public void getUserSettings(User userSettings) {
-                        setProfileWidgets(userSettings);
-                    }
-                });
-            }
-
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onStart() {
-                super.onStart();
-                mAuth.addAuthStateListener(mAuthListener);
-            }
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
 
-            @Override
-            public void onStop() {
-                super.onStop();
-                if(mAuthListener != null) {
-                    mAuth.removeAuthStateListener(mAuthListener);
+                if(user != null){
+                    //User is signed in
+                    Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
+                } else {
+                    //User is signed out
+                    Log.d(TAG, "onAuthStateChanged: signed out");
                 }
             }
+        };
+
+
+        mFirebaseMethods.RetrieveUserSettings(mAuth.getCurrentUser().getUid(), new IGetUserSettings() {
+            @Override
+            public void getUserSettings(User userSettings) {
+                setProfileWidgets(userSettings);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 }
