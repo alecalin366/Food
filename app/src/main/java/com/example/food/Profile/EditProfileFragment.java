@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Recipe.AddRecipeActivity;
@@ -49,7 +50,7 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends Fragment implements
-        ConfirmPasswordDialog.OnConfirmPasswordListener{
+        ConfirmPasswordDialog.OnConfirmPasswordListener {
 
     @Override
     public void onConfirmPassword(String password) {
@@ -65,20 +66,19 @@ public class EditProfileFragment extends Fragment implements
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "User re-authenticated.");
 
                             ///////////////////////check to see if the email is not already present in the database
-                            mAuth.fetchSignInMethodsForEmail (mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                            mAuth.fetchSignInMethodsForEmail(mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                    if(task.isSuccessful()){
-                                        try{
-                                            if(task.getResult().getSignInMethods().size() == 1){
+                                    if (task.isSuccessful()) {
+                                        try {
+                                            if (task.getResult().getSignInMethods().size() == 1) {
                                                 Log.d(TAG, "onComplete: that email is already in use.");
                                                 Toast.makeText(getActivity(), "That email is already in use", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else{
+                                            } else {
                                                 Log.d(TAG, "onComplete: That email is available.");
 
                                                 //////////////////////the email is available so update it
@@ -96,13 +96,13 @@ public class EditProfileFragment extends Fragment implements
                                                         });
 
                                             }
-                                        }catch (NullPointerException e){
-                                            Log.e(TAG, "onComplete: NullPointerException: "  +e.getMessage() );
+                                        } catch (NullPointerException e) {
+                                            Log.e(TAG, "onComplete: NullPointerException: " + e.getMessage());
                                         }
                                     }
                                 }
                             });
-                        }else{
+                        } else {
                             Log.d(TAG, "onComplete: re-authentication failed.");
                         }
 
@@ -125,7 +125,7 @@ public class EditProfileFragment extends Fragment implements
     private EditText mDisplayName, mEmail, mPhoneNumber;
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
-
+    private View _loadingView;
     private Bitmap ReceipeBitmap;
 
     //var
@@ -140,6 +140,7 @@ public class EditProfileFragment extends Fragment implements
         mEmail = (EditText) view.findViewById(R.id.email);
         mPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
         mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
+        _loadingView = view.findViewById(R.id.loadingView);
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
 
@@ -163,7 +164,6 @@ public class EditProfileFragment extends Fragment implements
             public void onClick(View v) {
                 Log.d(TAG, "onClick: attempting to save changes.");
                 saveProfileSettings();
-                Toast.makeText(getActivity(), "account setting saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -174,55 +174,49 @@ public class EditProfileFragment extends Fragment implements
      * Retrieves the data contained in the widgets and submits it to the database
      * Before donig so it chekcs to make sure the username chosen is unqiue
      */
-    private void saveProfileSettings(){
+    private void saveProfileSettings() {
         final String displayName = mDisplayName.getText().toString();
         final String email = mEmail.getText().toString();
         final String phoneNumber = mPhoneNumber.getText().toString();
-        if(email == null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             Toast.makeText(getContext(), "add an email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(displayName == null || displayName.isEmpty()){
+        if (displayName == null || displayName.isEmpty()) {
             Toast.makeText(getContext(), "displayName is empty or null", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        /**
-         * change the rest of the settings that do not require uniqueness
-         */
-        if(!mUser.getDisplay_name().equals(displayName)){
-            //update displayname
-            mFirebaseMethods.updateDisplayName(displayName);
-        }
-        if(!mUser.getPhone_number().equals(phoneNumber)){
-            //update phoneNumber
-            mFirebaseMethods.updatePhoneNumber(phoneNumber);
-        }
+        _loadingView.setVisibility(View.VISIBLE);
+        mFirebaseMethods.updateDisplayName(displayName);
+        mFirebaseMethods.updatePhoneNumber(phoneNumber);
 
-        if(ReceipeBitmap != null)
-        {
+
+        if (ReceipeBitmap != null) {
             mFirebaseMethods.UploadProfileImage(mAuth.getCurrentUser().getUid(), ReceipeBitmap, new IGetStringListener() {
                 @Override
                 public void GetString(String photoUrl) {
-                    if(!photoUrl.isEmpty())
-                    {
-                        if(!mUser.getProfile_photo().equals(photoUrl)){
-                            mFirebaseMethods.UpdateProfilePhoto(photoUrl);
+                    if (!photoUrl.isEmpty()) {
+                        if (!mUser.getProfile_photo().equals(photoUrl)) {
+                            mFirebaseMethods.UpdateProfilePhoto(photoUrl, new ICompleteListener() {
+                                @Override
+                                public void OnComplete(boolean isSuccessfulCompleted) {
+                                    Toast.makeText(getActivity(), "Account settings saved", Toast.LENGTH_SHORT).show();
+                                    getActivity().finish();
+                                }
+                            });
                         }
 
-                    }
-                    else Log.d(TAG, "onComplete: upload profile failed ");
+                    } else Log.d(TAG, "onComplete: upload profile failed ");
                 }
             });
-        }
-        else
-        {
+        } else {
             Log.d(TAG, "onComplete: upload profile failed ");
         }
     }
 
-    private void setProfileWidgets(User user){
+    private void setProfileWidgets(User user) {
 
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.toString());
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + user.getEmail());
@@ -234,8 +228,7 @@ public class EditProfileFragment extends Fragment implements
         mPhoneNumber.setText(user.getPhone_number());
     }
 
-    private void SetupChoosePhoto()
-    {
+    private void SetupChoosePhoto() {
         mProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,7 +287,7 @@ public class EditProfileFragment extends Fragment implements
                         try {
                             ReceipeBitmap = GetBitmapFromUri(selectedimageUri);
                         } catch (IOException e) {
-                            Log.d("Error",e.getMessage());
+                            Log.d("Error", e.getMessage());
                         }
                     }
             }
@@ -303,14 +296,11 @@ public class EditProfileFragment extends Fragment implements
 
     public Bitmap GetBitmapFromUri(Uri imageUri) throws IOException {
         Bitmap bitmap;
-        if(Build.VERSION.SDK_INT < 28)
-        {
+        if (Build.VERSION.SDK_INT < 28) {
             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-        }
-        else
-        {
+        } else {
             ImageDecoder.Source source = ImageDecoder.createSource(
-                    getActivity().getContentResolver(),imageUri);
+                    getActivity().getContentResolver(), imageUri);
             bitmap = ImageDecoder.decodeBitmap(source);
         }
 
@@ -324,7 +314,7 @@ public class EditProfileFragment extends Fragment implements
     /**
      * Setup the firebase auth object
      */
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -336,7 +326,7 @@ public class EditProfileFragment extends Fragment implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if(user != null){
+                if (user != null) {
                     //User is signed in
                     Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
                 } else {
@@ -365,7 +355,7 @@ public class EditProfileFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null) {
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

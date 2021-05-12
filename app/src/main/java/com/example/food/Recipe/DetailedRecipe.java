@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IExistsListener;
 import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetUserSettings;
@@ -21,6 +22,7 @@ import com.example.food.RecyclerView.IngredientRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
 import com.google.common.io.Resources;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -36,8 +38,12 @@ public class DetailedRecipe extends AppCompatActivity {
     RecyclerView ingredientsRecyclerView;
     private FirebaseMethods _firebaseMethods;
     private ImageView _likeImage, _dislikeImage, _activeLikeImage, _activeDislikeImage;
-    private TextView _likesText,_dislikeText, _ownerName;
+    private TextView _likesText, _dislikeText, _ownerName;
     private CircleImageView _ownerImage;
+    private View _editDeleteView;
+    private Button _deleteButton, _editButton;
+    private Boolean _shouldUpdate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +60,22 @@ public class DetailedRecipe extends AppCompatActivity {
         UpdateLikeAndDislikeState();
         SetLikeAndDislikeClickMethods();
         UpdateLikeAndDislikeState();
+        SetupEditAndDeleteButton();
+    }
+
+    @Override
+    protected void onResume() {
+
+        if (_shouldUpdate) {
+            _loadingView.setVisibility(View.VISIBLE);
+            _firebaseMethods.GetRecipe(recipe.getRecipeId(), recipeData -> {
+                recipe = recipeData;
+                SetViewsFields();
+                _shouldUpdate = false;
+                UpdateLikeAndDislikeState();
+            });
+        }
+        super.onResume();
     }
 
     public void setupBackButton() {
@@ -90,9 +112,11 @@ public class DetailedRecipe extends AppCompatActivity {
         _loadingView = findViewById(R.id.loadingView);
         _likesText = findViewById(R.id.likesText);
         _dislikeText = findViewById(R.id.dislikesText);
-        _ownerImage =  findViewById(R.id.profile_photo);
+        _ownerImage = findViewById(R.id.profile_photo);
         _ownerName = findViewById(R.id.ownerName);
-
+        _editDeleteView = findViewById(R.id.editDeleteView);
+        _editButton = findViewById(R.id.editButton);
+        _deleteButton = findViewById(R.id.deleteButton);
     }
 
     @SuppressLint("DefaultLocale")
@@ -122,10 +146,14 @@ public class DetailedRecipe extends AppCompatActivity {
         _likesText.setText(String.format("%d Likes", recipe.getLikesCount()));
         _dislikeText.setText(String.format("%d Dislikes", recipe.getDislikesCount()));
 
+        if (recipe.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            _editDeleteView.setVisibility(View.VISIBLE);
+        } else _editDeleteView.setVisibility(View.GONE);
+
+
     }
 
-    private void SetOwnerInfo()
-    {
+    private void SetOwnerInfo() {
         _firebaseMethods.RetrieveUserSettings(recipe.getUser_id(), new IGetUserSettings() {
             @Override
             public void getUserSettings(User userSettings) {
@@ -135,8 +163,7 @@ public class DetailedRecipe extends AppCompatActivity {
                             .placeholder(R.drawable.ic_people)
                             .error(R.drawable.ic_error)
                             .into(_ownerImage);
-                }
-                else{
+                } else {
                     _ownerImage.setImageResource(R.drawable.ic_people);
                 }
                 _ownerName.setText(userSettings.getDisplay_name());
@@ -179,8 +206,7 @@ public class DetailedRecipe extends AppCompatActivity {
         });
     }
 
-    private void UpdateLikeAndDislikesText()
-    {
+    private void UpdateLikeAndDislikesText() {
         _firebaseMethods.GetRecipeLikesCount(recipe.getRecipeId(), new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
@@ -199,6 +225,7 @@ public class DetailedRecipe extends AppCompatActivity {
             }
         });
     }
+
     private void SetLikeAndDislikeClickMethods() {
         _likeView.setOnClickListener(view ->
         {
@@ -217,6 +244,31 @@ public class DetailedRecipe extends AppCompatActivity {
                     isSuccessfulCompleted -> {
                         UpdateLikeAndDislikeState();
                     });
+        });
+    }
+
+    private void SetupEditAndDeleteButton() {
+        _editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _shouldUpdate = true;
+                Intent intent = new Intent(getBaseContext(), AddRecipeActivity.class);
+                intent.putExtra("recipe", new Gson().toJson(recipe));
+                getBaseContext().startActivity(intent);
+            }
+        });
+
+        _deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _loadingView.setVisibility(View.VISIBLE);
+                _firebaseMethods.DeleteRecipe(recipe, new ICompleteListener() {
+                    @Override
+                    public void OnComplete(boolean isSuccessfulCompleted) {
+                        finish();
+                    }
+                });
+            }
         });
     }
 }

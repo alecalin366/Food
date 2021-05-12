@@ -123,6 +123,19 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+
+        mFirebaseMethods.RetrieveUserSettings(mAuth.getCurrentUser().getUid(), new IGetUserSettings() {
+            @Override
+            public void getUserSettings(User userSettings) {
+                setProfileWidgets(userSettings);
+            }
+        });
+
+        super.onResume();
+    }
+
     private void setupAddRecipeButton() {
         addRecipeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -170,28 +183,18 @@ public class HomeFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if(user != null){
-                    //User is signed in
-                    Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
-                } else {
-                    //User is signed out
-                    Log.d(TAG, "onAuthStateChanged: signed out");
-                }
+            if(user != null){
+                //User is signed in
+                Log.d(TAG, "onAuthStateChanged: signed in" + user.getUid());
+            } else {
+                //User is signed out
+                Log.d(TAG, "onAuthStateChanged: signed out");
             }
         };
 
-
-        mFirebaseMethods.RetrieveUserSettings(mAuth.getCurrentUser().getUid(), new IGetUserSettings() {
-            @Override
-            public void getUserSettings(User userSettings) {
-                setProfileWidgets(userSettings);
-            }
-        });
     }
 
     @Override

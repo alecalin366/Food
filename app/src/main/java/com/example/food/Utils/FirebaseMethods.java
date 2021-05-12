@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IExistsListener;
 import com.example.food.Interfaces.IGetNumberListener;
+import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.LikeDislikeModel;
@@ -109,7 +110,7 @@ public class FirebaseMethods {
         });
     }
 
-    public void UpdateProfilePhoto(String photo) {
+    public void UpdateProfilePhoto(String photo, ICompleteListener listener) {
 
         Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
 
@@ -121,12 +122,7 @@ public class FirebaseMethods {
         ).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "onComplete: update is succesful");
-                } else {
-                    Log.d(TAG, "onComplete: update failed ");
-                }
-
+                listener.OnComplete(task.isSuccessful());
             }
         });
     }
@@ -545,6 +541,35 @@ public class FirebaseMethods {
                         listener.getNumber(task.getResult().getDocuments().size());
                     }
                 });
-
     }
+
+    public void GetRecipe(String recipeId, IGetRecipeData listener)
+    {
+        db.collection("Recipes").document(recipeId).get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        listener.getRecipeData(task.getResult().toObject(Recipe.class));
+                    }
+                }
+        );
+    }
+
+    public void DeleteRecipe(Recipe recipe, ICompleteListener listener)
+    {
+        db.collection("Recipes").document(recipe.recipeId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                db.collection("UsersRecipes").document(recipe.getUser_id()).collection("Recipes").document(recipe.recipeId)
+                        .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.OnComplete(true);
+                    }
+                });
+            }
+        });
+    }
+
 }

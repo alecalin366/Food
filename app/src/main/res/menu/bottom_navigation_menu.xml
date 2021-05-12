@@ -9,16 +9,6 @@
         app:cnb_textColor="#ffffff"
         app:cnb_unselectedColor="#1E0922">
     </item>
-
-    <item
-        android:id="@+id/ic_search"
-        android:icon="@drawable/ic_search"
-        android:title="Search"
-        app:cnb_iconColor="#ffffff"
-        app:cnb_textColor="#ffffff"
-        app:cnb_unselectedColor="#1E0922">
-    </item>
-
     <item
         android:id="@+id/ic_recipe"
         android:icon="@drawable/ic_recipe"

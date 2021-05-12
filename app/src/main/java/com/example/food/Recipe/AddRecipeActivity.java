@@ -1,6 +1,5 @@
 package com.example.food.Recipe;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,11 +28,6 @@ import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.R;
 import com.example.food.Utils.FirebaseMethods;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,19 +35,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class AddRecipeActivity extends AppCompatActivity {
@@ -68,7 +55,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     boolean[] selectedCategory;
     ArrayList<String> categoryList = new ArrayList<>();
-    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks","Salads", "Indian", "Chinese", "Thai","Greek","Mexican", "Sweets", "Vegan","Pasta","Pizza", "Others"};
+    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks", "Salads", "Indian", "Chinese", "Thai", "Greek", "Mexican", "Sweets", "Vegan", "Pasta", "Pizza", "Others"};
 
 
     LinearLayout layoutList;
@@ -78,11 +65,10 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     //firebase
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
-
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +76,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         setContentView(R.layout.add_recipe_layout);
 
         mFirebaseMethods = new FirebaseMethods(this);
+        Intent intent = getIntent();
+        String extraString = intent.getStringExtra("recipe");
+        if (extraString != null)
+            recipe = new Gson().fromJson(intent.getStringExtra("recipe"), Recipe.class);
 
+        SetupMeasurementsList();
         FindViews();
+        FillFieldsIfPossible();
         initializeSelectedCategory();
         SetupAddIngredientButton();
         SetupSave();
@@ -100,8 +92,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         setupFirebaseAuth();
     }
 
-    private void FindViews()
-    {
+    private void FindViews() {
         category = findViewById(R.id.category);
         _save = findViewById(R.id.saveChanges);
         backArrow = findViewById(R.id.backArrow);
@@ -120,25 +111,79 @@ public class AddRecipeActivity extends AppCompatActivity {
         //TODO ale find all objects
     }
 
-    private void SetupAddIngredientButton(){
+    private void FillFieldsIfPossible() {
+        if(recipe == null) return;
+
+        category.setText(recipe.category);
+
+        if (!recipe.photo.isEmpty()) {
+            Picasso.get()
+                    .load(recipe.photo)
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_error)
+                    .into(photo);
+        }
+        else
+        {
+            photo.setImageResource(R.drawable.food);
+        }
+
+        mRecipeName.setText(recipe.name);
+        mPreparationTime.setText(recipe.preparationTime);
+        mServingSize.setText(recipe.servingSize);
+        mDescription.setText(recipe.description);
+        mCalorii.setText(recipe.macro.getCalorii());
+        mProteine.setText(recipe.macro.getProteine());
+        mCarbo.setText(recipe.macro.getCarbo());
+        mGrasimi.setText(recipe.macro.getGrasimi());
+
+        ingredientsList.addAll(recipe.ingredients);
+        ingredientsList.forEach(ingredient -> {
+
+            View ingredientView = getLayoutInflater().inflate(R.layout.add_row_ingredients, null, false);
+            EditText ingredientName = ingredientView.findViewById(R.id.nume_ingredient);
+            EditText ingredientCantitate = ingredientView.findViewById(R.id.cantitate_ingredient);
+
+            ingredientName.setText(ingredient.getName_ingredient());
+            ingredientCantitate.setText(ingredient.getQuantity());
+
+            AppCompatSpinner spinnerMeasurements = (AppCompatSpinner) ingredientView.findViewById(R.id.spinner_measurements);
+            ImageView removeIngr = (ImageView) ingredientView.findViewById(R.id.image_remove);
+
+            ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, measurementsList);
+            spinnerMeasurements.setAdapter(arrayAdapter);
+            int index = measurementsList.indexOf(ingredient.measurements);
+            spinnerMeasurements.setSelection(index);
+            removeIngr.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeView(ingredientView);
+                }
+            });
+
+            layoutList.addView(ingredientView);
+        });
+
+    }
+
+
+    private void SetupAddIngredientButton() {
         buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addView();
             }
         });
-
-        setupSpinner();
     }
 
-    private void setupSpinner(){
-        measurementsList.add("gr");
-        measurementsList.add("l");
-        measurementsList.add("kg");
+    private void SetupMeasurementsList() {
+        measurementsList.clear();
+        measurementsList.add("  g");
+        measurementsList.add(" ml");
         measurementsList.add("buc");
     }
 
-    private void addView(){
+    private void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.add_row_ingredients, null, false);
 
         AppCompatSpinner spinnerMeasurements = (AppCompatSpinner) ingredientView.findViewById(R.id.spinner_measurements);
@@ -156,13 +201,13 @@ public class AddRecipeActivity extends AppCompatActivity {
         layoutList.addView(ingredientView);
     }
 
-    private void removeView(View view){
+    private void removeView(View view) {
         layoutList.removeView(view);
     }
 
     //============================CATEGORY===============================//
 
-    private void initializeSelectedCategory(){
+    private void initializeSelectedCategory() {
         selectedCategory = new boolean[categoryArray.length];
 
         category.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +218,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
-    private void initAlertDialog(){
+    private void initAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddRecipeActivity.this);
         builder.setTitle("Alege o categorie");
         builder.setCancelable(false);
@@ -181,7 +226,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         builder.setMultiChoiceItems(categoryArray, selectedCategory, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     //When checkbox selected, add position in cateogryList
                     categoryList.add(categoryArray[which]);
                     Collections.sort(categoryList);
@@ -196,9 +241,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 StringBuilder stringBuilder = new StringBuilder();
-                for( int j=0; j < categoryList.size(); j++){
+                for (int j = 0; j < categoryList.size(); j++) {
                     stringBuilder.append(categoryList.get(j));
-                    if(j != categoryList.size()-1){
+                    if (j != categoryList.size() - 1) {
                         stringBuilder.append(", ");
                     }
                 }
@@ -216,7 +261,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         builder.setNeutralButton("Sterge tot", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for( int j=0; j < selectedCategory.length; j++){
+                for (int j = 0; j < selectedCategory.length; j++) {
                     selectedCategory[j] = false;
                     categoryList.clear();
                     category.setText("");
@@ -228,8 +273,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     }
 
-    private void SetupSave()
-    {
+    private void SetupSave() {
         _save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,7 +282,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
-    private void setupBackButton(){
+    private void setupBackButton() {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,8 +291,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
-    private void SetupChoosePhoto()
-    {
+    private void SetupChoosePhoto() {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -307,7 +350,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                         try {
                             ReceipeBitmap = GetBitmapFromUri(selectedimageUri);
                         } catch (IOException e) {
-                            Log.d("Error",e.getMessage());
+                            Log.d("Error", e.getMessage());
                         }
                     }
             }
@@ -316,14 +359,11 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     public Bitmap GetBitmapFromUri(Uri imageUri) throws IOException {
         Bitmap bitmap;
-        if(Build.VERSION.SDK_INT < 28)
-        {
+        if (Build.VERSION.SDK_INT < 28) {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-        }
-        else
-        {
+        } else {
             ImageDecoder.Source source = ImageDecoder.createSource(
-                    this.getContentResolver(),imageUri);
+                    this.getContentResolver(), imageUri);
             bitmap = ImageDecoder.decodeBitmap(source);
         }
 
@@ -331,11 +371,11 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
 
-
     private boolean checkIngredients() {
         boolean result = true;
 
-        for(int i=1;i<layoutList.getChildCount();i++){
+        ingredientsList.clear();
+        for (int i = 1; i < layoutList.getChildCount(); i++) {
 
             View ingredientView = layoutList.getChildAt(i);
 
@@ -351,10 +391,10 @@ public class AddRecipeActivity extends AppCompatActivity {
             ingredientsList.add(ingredient);
         }
 
-        if(ingredientsList.size()==0){
+        if (ingredientsList.size() == 0) {
             result = false;
             Toast.makeText(this, "Add Ingredients First!", Toast.LENGTH_SHORT).show();
-        }else if(!result){
+        } else if (!result) {
             Toast.makeText(this, "Enter All Details Correctly!", Toast.LENGTH_SHORT).show();
         }
 
@@ -362,12 +402,11 @@ public class AddRecipeActivity extends AppCompatActivity {
         return result;
     }
 
-    public List<Ingredients> getIngredientList(){
+    public List<Ingredients> getIngredientList() {
         return ingredientsList;
     }
 
-    private void SaveRecipe()
-    {
+    private void SaveRecipe() {
         final String recipeName = mRecipeName.getText().toString();
         final String description = mDescription.getText().toString();
         final String preparationTime = mPreparationTime.getText().toString();
@@ -376,93 +415,93 @@ public class AddRecipeActivity extends AppCompatActivity {
         final String proteine = mProteine.getText().toString();
         final String carbo = mCarbo.getText().toString();
         final String grasimi = mGrasimi.getText().toString();
-        final String category = categoryList.toString();
+        final String categoryString = category.getText().toString();
         userID = mAuth.getCurrentUser().getUid();
 
-        if(!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()){
+        if (!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
         }
 
-        if(recipeName == null || recipeName.isEmpty()){
+        if (recipeName == null || recipeName.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga titlu", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(description == null || description.isEmpty()){
+        if (description == null || description.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga descriere", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(preparationTime == null || preparationTime.isEmpty()){
+        if (preparationTime == null || preparationTime.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga preparationTime", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(servingSize == null || servingSize.isEmpty()){
+        if (servingSize == null || servingSize.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga servingSize", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(calorii == null || calorii.isEmpty()){
+        if (calorii == null || calorii.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga calorii", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(proteine == null || proteine.isEmpty()){
+        if (proteine == null || proteine.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga proteine", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(carbo == null || carbo.isEmpty()){
+        if (carbo == null || carbo.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga carbo", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(grasimi == null || grasimi.isEmpty()){
+        if (grasimi == null || grasimi.isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga grasimi", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(category == null || category.isEmpty()){
+        if (categoryString == null || category.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
             return;
         }
         Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String recipeUID = UUID.randomUUID().toString();
+        if(recipe !=null) recipeUID = recipe.recipeId;
 
         _loadingView.setVisibility(View.VISIBLE);
-        if(ReceipeBitmap != null)
-        {
+        if (ReceipeBitmap != null) {
+            String finalRecipeUID = recipeUID;
             mFirebaseMethods.UploadImage(recipeUID, ReceipeBitmap, new IGetStringListener() {
                 @Override
                 public void GetString(String photoUrl) {
-                    if(!photoUrl.isEmpty())
-                    {
-                        AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,photoUrl,macro);
-                    }
-                    else finish();
+                    if (!photoUrl.isEmpty()) {
+                        AddRecipe(finalRecipeUID, recipeName, categoryString, description, preparationTime, servingSize, photoUrl, macro);
+                    } else finish();
                 }
             });
-        }
-        else
-        {
-            AddRecipe(recipeUID,recipeName,category,description,preparationTime,servingSize,"",macro);
+        } else {
+            AddRecipe(recipeUID, recipeName, categoryString, description, preparationTime, servingSize, "", macro);
         }
     }
 
-    private void AddRecipe(String recipeUID,String recipeName,String category,String description,String preparationTime,String servingSize,String photoUrl,Macronutrient macro)
-    {
+    private void AddRecipe(String recipeUID, String recipeName, String category, String description, String preparationTime, String servingSize, String photoUrl, Macronutrient macro) {
         Recipe testRecipe = new Recipe(userID, recipeName, category, description, preparationTime, servingSize, photoUrl, recipeUID, macro, ingredientsList);
-        mFirebaseMethods.AddRecipe(testRecipe,recipeUID ,new ICompleteListener() {
+        mFirebaseMethods.AddRecipe(testRecipe, recipeUID, new ICompleteListener() {
             @Override
             public void OnComplete(boolean isSuccessfulCompleted) {
-                if(isSuccessfulCompleted)
-                {
-                    Toast.makeText(getApplicationContext(),"Reteta a fost adaugata cu succes",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Reteta nu a fost adaugata cu succes",Toast.LENGTH_LONG).show();
+                if (isSuccessfulCompleted) {
+                    String successText = "Reteta a fost adaugata cu succes";
+                    if(recipe != null)
+                        successText = "Reteta a fost modificata cu succes";
+                    Toast.makeText(getApplicationContext(), successText, Toast.LENGTH_LONG).show();
+                } else {
+                    String failText = "Reteta nu a fost adaugata cu success";
+                    if(recipe != null)
+                        failText = "Reteta nu fost modificata cu succes";
+                    Toast.makeText(getApplicationContext(), failText, Toast.LENGTH_LONG).show();
                 }
                 _loadingView.setVisibility(View.GONE);
                 finish();
@@ -477,56 +516,11 @@ public class AddRecipeActivity extends AppCompatActivity {
     /**
      * Setup the firebase auth object
      */
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
-
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 }

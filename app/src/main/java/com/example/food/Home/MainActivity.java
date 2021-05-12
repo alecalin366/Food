@@ -82,9 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.ic_home:
                         fragment = new HomeFragment();
                         break;
-                    case R.id.ic_search:
-                        fragment = new SearchFragment();
-                        break;
                     case R.id.ic_recipe:
                         fragment = new RecipeFragment();
                         break;
