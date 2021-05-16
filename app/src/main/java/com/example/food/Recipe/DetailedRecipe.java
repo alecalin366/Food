@@ -3,7 +3,6 @@ package com.example.food.Recipe;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IExistsListener;
+import com.example.food.Interfaces.IGetBooleanListener;
 import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetUserSettings;
+import com.example.food.Models.CartRecipe;
+import com.example.food.Models.FavoriteRecipe;
 import com.example.food.R;
 import com.example.food.RecyclerView.IngredientRecyclerViewAdapter;
 import com.example.food.User.User;
 import com.example.food.Utils.FirebaseMethods;
-import com.google.common.io.Resources;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -43,6 +44,8 @@ public class DetailedRecipe extends AppCompatActivity {
     private View _editDeleteView;
     private Button _deleteButton, _editButton;
     private Boolean _shouldUpdate = false;
+    private Button _addToFavoriteButton, _addToCartButton;
+    private boolean _isFavorite, _isAddedCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,12 @@ public class DetailedRecipe extends AppCompatActivity {
         FindViews();
         SetOwnerInfo();
         SetViewsFields();
-        setupBackButton();
-        UpdateLikeAndDislikeState();
+        SetupBackButton();
         SetLikeAndDislikeClickMethods();
-        UpdateLikeAndDislikeState();
+        UpdateRecipeState();
         SetupEditAndDeleteButton();
+        SetAppBarButtonsClick();
+
     }
 
     @Override
@@ -72,13 +76,13 @@ public class DetailedRecipe extends AppCompatActivity {
                 recipe = recipeData;
                 SetViewsFields();
                 _shouldUpdate = false;
-                UpdateLikeAndDislikeState();
+                UpdateRecipeState();
             });
         }
         super.onResume();
     }
 
-    public void setupBackButton() {
+    public void SetupBackButton() {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +121,8 @@ public class DetailedRecipe extends AppCompatActivity {
         _editDeleteView = findViewById(R.id.editDeleteView);
         _editButton = findViewById(R.id.editButton);
         _deleteButton = findViewById(R.id.deleteButton);
+        _addToFavoriteButton = findViewById(R.id.favoriteButton);
+        _addToCartButton = findViewById(R.id.addToCart);
     }
 
     @SuppressLint("DefaultLocale")
@@ -171,37 +177,53 @@ public class DetailedRecipe extends AppCompatActivity {
         });
     }
 
-    private void UpdateLikeAndDislikeState() {
+    private void UpdateRecipeState() {
 
         _loadingView.setVisibility(View.VISIBLE);
-
-        _firebaseMethods.CheckIfILikedRecipe(recipe.getRecipeId(), new IExistsListener() {
+        _firebaseMethods.IsAFavoriteRecipe(recipe.getRecipeId(), new IGetBooleanListener() {
             @Override
-            public void Exists(boolean exists) {
-                if (exists) {
-                    _likeImage.setVisibility(View.GONE);
-                    _activeDislikeImage.setVisibility(View.GONE);
-                    _dislikeImage.setVisibility(View.VISIBLE);
-                    _activeLikeImage.setVisibility(View.VISIBLE);
-                    UpdateLikeAndDislikesText();
-                } else {
-                    _activeLikeImage.setVisibility(View.GONE);
-                    _likeImage.setVisibility(View.VISIBLE);
+            public void GetBool(Boolean bool) {
+                _isFavorite = bool;
+                SetFavoriteButtonState();
 
-                    _firebaseMethods.CheckIfIDislikedRecipe(recipe.getRecipeId(), new IExistsListener() {
-                        @Override
-                        public void Exists(boolean exists) {
-                            if (exists) {
-                                _dislikeImage.setVisibility(View.GONE);
-                                _activeDislikeImage.setVisibility(View.VISIBLE);
-                            } else {
-                                _dislikeImage.setVisibility(View.VISIBLE);
-                                _activeDislikeImage.setVisibility(View.GONE);
+                _firebaseMethods.IsAddedToCart(recipe.getRecipeId(), new IGetBooleanListener() {
+                    @Override
+                    public void GetBool(Boolean bool) {
+                        _isAddedCart = bool;
+                        SetCartButtonState();
+
+                        _firebaseMethods.CheckIfILikedRecipe(recipe.getRecipeId(), new IExistsListener() {
+                            @Override
+                            public void Exists(boolean exists) {
+                                if (exists) {
+                                    _likeImage.setVisibility(View.GONE);
+                                    _activeDislikeImage.setVisibility(View.GONE);
+                                    _dislikeImage.setVisibility(View.VISIBLE);
+                                    _activeLikeImage.setVisibility(View.VISIBLE);
+                                    UpdateLikeAndDislikesText();
+                                } else {
+                                    _activeLikeImage.setVisibility(View.GONE);
+                                    _likeImage.setVisibility(View.VISIBLE);
+
+                                    _firebaseMethods.CheckIfIDislikedRecipe(recipe.getRecipeId(), new IExistsListener() {
+                                        @Override
+                                        public void Exists(boolean exists) {
+                                            if (exists) {
+                                                _dislikeImage.setVisibility(View.GONE);
+                                                _activeDislikeImage.setVisibility(View.VISIBLE);
+                                            } else {
+                                                _dislikeImage.setVisibility(View.VISIBLE);
+                                                _activeDislikeImage.setVisibility(View.GONE);
+                                            }
+                                            UpdateLikeAndDislikesText();
+                                        }
+                                    });
+                                }
                             }
-                            UpdateLikeAndDislikesText();
-                        }
-                    });
-                }
+                        });
+
+                    }
+                });
             }
         });
     }
@@ -233,7 +255,7 @@ public class DetailedRecipe extends AppCompatActivity {
 
             _firebaseMethods.LikeRecipe(recipe.getRecipeId(),
                     isSuccessfulCompleted -> {
-                        UpdateLikeAndDislikeState();
+                        UpdateRecipeState();
                     });
         });
 
@@ -242,7 +264,7 @@ public class DetailedRecipe extends AppCompatActivity {
 
             _firebaseMethods.DislikeRecipe(recipe.getRecipeId(),
                     isSuccessfulCompleted -> {
-                        UpdateLikeAndDislikeState();
+                        UpdateRecipeState();
                     });
         });
     }
@@ -254,7 +276,7 @@ public class DetailedRecipe extends AppCompatActivity {
                 _shouldUpdate = true;
                 Intent intent = new Intent(getBaseContext(), AddRecipeActivity.class);
                 intent.putExtra("recipe", new Gson().toJson(recipe));
-                getBaseContext().startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -270,5 +292,68 @@ public class DetailedRecipe extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void SetAppBarButtonsClick() {
+        _addToCartButton.setOnClickListener(view -> {
+            _loadingView.setVisibility(View.VISIBLE);
+            if (_isAddedCart) {
+                _firebaseMethods.RemoveRecipeFromCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                    @Override
+                    public void OnComplete(boolean isSuccessfulCompleted) {
+                        _loadingView.setVisibility(View.GONE);
+                        _isAddedCart = !_isAddedCart;
+                        SetCartButtonState();
+                    }
+                });
+            } else {
+                _firebaseMethods.AddRecipeToCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                    @Override
+                    public void OnComplete(boolean isSuccessfulCompleted) {
+                        _loadingView.setVisibility(View.GONE);
+                        _isAddedCart = !_isAddedCart;
+                        SetCartButtonState();
+                    }
+
+                });
+            }
+        });
+
+        _addToFavoriteButton.setOnClickListener(view -> {
+
+            _loadingView.setVisibility(View.VISIBLE);
+            if (_isFavorite) {
+                _firebaseMethods.RemoveRecipeFromFavorites(new FavoriteRecipe(recipe.recipeId), new ICompleteListener() {
+                    @Override
+                    public void OnComplete(boolean isSuccessfulCompleted) {
+                        _loadingView.setVisibility(View.GONE);
+                        _isFavorite = !_isFavorite;
+                        SetFavoriteButtonState();
+                    }
+                });
+            } else {
+                _firebaseMethods.AddRecipeToFavorites(new FavoriteRecipe(recipe.recipeId), new ICompleteListener() {
+                    @Override
+                    public void OnComplete(boolean isSuccessfulCompleted) {
+                        _loadingView.setVisibility(View.GONE);
+                        _isFavorite = !_isFavorite;
+                        SetFavoriteButtonState();
+                    }
+
+                });
+            }
+        });
+    }
+
+    private void SetCartButtonState() {
+        if (_isAddedCart)
+            _addToCartButton.setBackgroundResource(R.drawable.ic_blue_cart);
+        else _addToCartButton.setBackgroundResource(R.drawable.ic_cart);
+    }
+
+    private void SetFavoriteButtonState() {
+        if (_isFavorite)
+            _addToFavoriteButton.setBackgroundResource(R.drawable.ic_blue_heart);
+        else _addToFavoriteButton.setBackgroundResource(R.drawable.ic_alert);
     }
 }

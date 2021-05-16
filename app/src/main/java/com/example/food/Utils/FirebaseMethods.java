@@ -10,10 +10,13 @@ import androidx.annotation.NonNull;
 
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IExistsListener;
+import com.example.food.Interfaces.IGetBooleanListener;
 import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
+import com.example.food.Models.CartRecipe;
+import com.example.food.Models.FavoriteRecipe;
 import com.example.food.Models.LikeDislikeModel;
 import com.example.food.Recipe.Recipe;
 import com.example.food.Recipe.UserRecipe;
@@ -543,8 +546,7 @@ public class FirebaseMethods {
                 });
     }
 
-    public void GetRecipe(String recipeId, IGetRecipeData listener)
-    {
+    public void GetRecipe(String recipeId, IGetRecipeData listener) {
         db.collection("Recipes").document(recipeId).get().addOnCompleteListener(
                 new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -555,8 +557,7 @@ public class FirebaseMethods {
         );
     }
 
-    public void DeleteRecipe(Recipe recipe, ICompleteListener listener)
-    {
+    public void DeleteRecipe(Recipe recipe, ICompleteListener listener) {
         db.collection("Recipes").document(recipe.recipeId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -565,11 +566,82 @@ public class FirebaseMethods {
                         .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        listener.OnComplete(true);
+                        RemoveRecipeFromFavorites(new FavoriteRecipe(recipe.recipeId), new ICompleteListener() {
+                            @Override
+                            public void OnComplete(boolean isSuccessfulCompleted) {
+
+                                RemoveRecipeFromCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                                    @Override
+                                    public void OnComplete(boolean isSuccessfulCompleted) {
+                                        listener.OnComplete(isSuccessfulCompleted);
+                                    }
+                                });
+
+                            }
+                        });
                     }
                 });
             }
         });
     }
 
+    public void AddRecipeToFavorites(FavoriteRecipe favoriteRecipe, ICompleteListener listener) {
+        db.collection("FavoritesRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Favorites").document(favoriteRecipe.get_recipeId()).set(favoriteRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.OnComplete(task.isSuccessful());
+            }
+        });
+    }
+
+    public void RemoveRecipeFromFavorites(FavoriteRecipe favoriteRecipe, ICompleteListener listener) {
+        db.collection("FavoritesRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Favorites").document(favoriteRecipe.get_recipeId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.OnComplete(task.isSuccessful());
+            }
+        });
+    }
+
+    public void IsAFavoriteRecipe(String recipeId, IGetBooleanListener listener) {
+        db.collection("FavoritesRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Favorites").document(recipeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                listener.GetBool(task.getResult().toObject(FavoriteRecipe.class) != null);
+            }
+        });
+    }
+
+    public void AddRecipeToCart(CartRecipe cartRecipe, ICompleteListener listener) {
+        db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Cart").document(cartRecipe.get_recipeId()).set(cartRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.OnComplete(task.isSuccessful());
+            }
+        });
+    }
+
+    public void RemoveRecipeFromCart(CartRecipe cartRecipe, ICompleteListener listener) {
+        db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Cart").document(cartRecipe.get_recipeId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.OnComplete(task.isSuccessful());
+            }
+        });
+    }
+
+    public void IsAddedToCart(String recipeId, IGetBooleanListener listener) {
+        db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Cart").document(recipeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                listener.GetBool(task.getResult().toObject(CartRecipe.class) != null);
+            }
+        });
+    }
 }

@@ -466,6 +466,13 @@ public class AddRecipeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (recipe == null && ReceipeBitmap == null)
+        {
+              Toast.makeText(getApplicationContext(), "Adauga imagine", Toast.LENGTH_SHORT).show();
+              return;
+        }
+
         Macronutrient macro = new Macronutrient(calorii, proteine, carbo, grasimi);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String recipeUID = UUID.randomUUID().toString();
@@ -483,7 +490,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                 }
             });
         } else {
-            AddRecipe(recipeUID, recipeName, categoryString, description, preparationTime, servingSize, "", macro);
+            String photoURL = "";
+            if(recipe.photo != null && !recipe.photo.isEmpty())
+            {
+                photoURL = recipe.photo;
+            }
+            AddRecipe(recipeUID, recipeName, categoryString, description, preparationTime, servingSize, photoURL, macro);
         }
     }
 
