@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">Food</string>
-    <string name="bun_venit">BUN VENIT!</string>
+    <string name="bun_venit">WELCOME!</string>
     <string name="descopera">DESCOPERĂ</string>
-    <string name="sari_peste">Sari peste</string>
-    <string name="logare">Logare</string>
+    <string name="sari_peste">Skip</string>
+    <string name="logare">Login</string>
     <string name="textlogin">textLogin</string>
     <string name="email">Email</string>
-    <string name="parola">Parola</string>
+    <string name="parola">Password</string>
     <string name="linkregister">linkRegister</string>
     <string name="link">link</string>
     <string name="string_link" />
-    <string name="nume">Nume</string>
-    <string name="inregistreaza">Inregistreaza-te</string>
+    <string name="nume">Name</string>
+    <string name="inregistreaza">Register</string>
 
     <string name="calling_activity">calling_activity</string>
     <string name="profile_activity">profile_activity</string>

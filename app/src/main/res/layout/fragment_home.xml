@@ -66,7 +66,7 @@
         android:layout_marginTop="35dp"
         android:background="@drawable/my_recippe"
         android:fontFamily="@font/segoe_ui_bold"
-        android:text="Retetele mele"
+        android:text="MY RECIPES"
         android:textColor="@color/purple2_DARK"
         android:textSize="19sp" />
 
@@ -88,10 +88,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/segoe_ui_bold"
-        android:text="Nu ai nicio reteta adaugata"
+        android:text="You don't have any recipe added yet"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/black"
+        android:textColor="@color/purple1_LIGHT"
         android:textSize="21sp"
         android:layout_centerInParent="true"
         />
