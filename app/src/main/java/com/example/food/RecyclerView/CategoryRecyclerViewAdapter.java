@@ -14,15 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.food.Models.Category;
 import com.example.food.R;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class CategoryRecyclerViewAdapter extends FirestoreRecyclerAdapter<Category, CategoryRecyclerViewAdapter.CategoryViewHolder>{
+
+import java.util.ArrayList;
+
+public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>{
 
     private Context mContext;
-    public CategoryRecyclerViewAdapter(Context mContext, @NonNull FirestoreRecyclerOptions<Category> options) {
-        super(options);
-        this.mContext = mContext;;
+    private ArrayList<Category> _options;
+    public CategoryRecyclerViewAdapter(Context mContext,  ArrayList<Category> options) {
+        this.mContext = mContext;
+        _options = options;
     }
 
     @NonNull
@@ -33,7 +35,9 @@ public class CategoryRecyclerViewAdapter extends FirestoreRecyclerAdapter<Catego
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position, @NonNull Category model) {
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+
+        Category model = _options.get(position);
         holder.category_text.setText(model.getName_category());
 
         Glide.with(holder.category_imageView.getContext())
@@ -46,7 +50,11 @@ public class CategoryRecyclerViewAdapter extends FirestoreRecyclerAdapter<Catego
                 Toast.makeText(mContext, model.getPictureURL(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    @Override
+    public int getItemCount() {
+        return _options.size();
     }
 
 

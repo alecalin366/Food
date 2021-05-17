@@ -98,16 +98,24 @@ public class RecipeFragment extends Fragment {
 
     public void CategoryRecyclerViewSetup() {
         //Query
-        Query query = firebaseFirestore.collection("Category").orderBy("name_category");
-        //RecyclerOptions
-        FirestoreRecyclerOptions<Category> options = new FirestoreRecyclerOptions.Builder<Category>()
-                .setQuery(query, Category.class)
-                .build();
+        firebaseFirestore.collection("Category").orderBy("name_category").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    ArrayList<Category> options = new ArrayList<Category>();
+                    task.getResult().getDocuments().forEach(documentSnapshot -> {
+                        Category model = documentSnapshot.toObject(Category.class);
+                        options.add(model);
+                    });
 
-        adapterCategory = new CategoryRecyclerViewAdapter(getContext(), options);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        _categoryRecyclerView.setLayoutManager(layoutManager);
-        _categoryRecyclerView.setAdapter(adapterCategory);
+                    adapterCategory = new CategoryRecyclerViewAdapter(getContext(), options);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                    _categoryRecyclerView.setLayoutManager(layoutManager);
+                    _categoryRecyclerView.setAdapter(adapterCategory);
+                }
+            }
+        });
 
     }
 
@@ -129,21 +137,7 @@ public class RecipeFragment extends Fragment {
                     _recipeRecyclerView.setLayoutManager(layoutManager);
                     _recipeRecyclerView.setAdapter(adapterRecipe);
                 }
-
             }
         });
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapterCategory.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapterCategory.stopListening();
     }
 }
