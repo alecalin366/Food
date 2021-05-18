@@ -19,6 +19,7 @@ import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.CartRecipe;
 import com.example.food.Models.FavoriteRecipe;
+import com.example.food.Profile.UserProfileActivity;
 import com.example.food.R;
 import com.example.food.RecyclerView.IngredientRecyclerViewAdapter;
 import com.example.food.User.User;
@@ -45,6 +46,9 @@ public class DetailedRecipe extends AppCompatActivity {
     private Button _deleteButton, _editButton;
     private Boolean _shouldUpdate = false;
     private Button _addToFavoriteButton, _addToCartButton;
+    private TextView _categoryText;
+    private View _ownerView;
+    private User _recipeUser;
     private boolean _isFavorite, _isAddedCart;
 
     @Override
@@ -64,7 +68,7 @@ public class DetailedRecipe extends AppCompatActivity {
         UpdateRecipeState();
         SetupEditAndDeleteButton();
         SetAppBarButtonsClick();
-
+        SetUserProfileClick();
     }
 
     @Override
@@ -97,7 +101,7 @@ public class DetailedRecipe extends AppCompatActivity {
         backArrow = findViewById(R.id.backArrow);
         photo = findViewById(R.id.detailed_recipe_photo);
         name = findViewById(R.id.detailed_recipe_title);
-        ownerName = findViewById(R.id.owner);
+        _ownerView = findViewById(R.id.ownerView);
         preparationTime = findViewById(R.id.detailed_recipe_time);
         servings = findViewById(R.id.portii);
         ingredientsRecyclerView = findViewById(R.id.recyclerView1);
@@ -123,11 +127,13 @@ public class DetailedRecipe extends AppCompatActivity {
         _deleteButton = findViewById(R.id.deleteButton);
         _addToFavoriteButton = findViewById(R.id.favoriteButton);
         _addToCartButton = findViewById(R.id.addToCart);
+        _categoryText = findViewById(R.id.categoryName);
     }
 
     @SuppressLint("DefaultLocale")
     private void SetViewsFields() {
         name.setText(recipe.getName());
+        _categoryText.setText(recipe.getCategory());
         description.setText(recipe.getDescription());
         preparationTime.setText(recipe.getPreparationTime());
         servings.setText(recipe.getServingSize());
@@ -163,6 +169,7 @@ public class DetailedRecipe extends AppCompatActivity {
         _firebaseMethods.RetrieveUserSettings(recipe.getUser_id(), new IGetUserSettings() {
             @Override
             public void getUserSettings(User userSettings) {
+                _recipeUser = userSettings;
                 if (!userSettings.getProfile_photo().isEmpty()) {
                     Picasso.get()
                             .load(userSettings.getProfile_photo())
@@ -276,7 +283,7 @@ public class DetailedRecipe extends AppCompatActivity {
                 _shouldUpdate = true;
                 Intent intent = new Intent(getBaseContext(), AddRecipeActivity.class);
                 intent.putExtra("recipe", new Gson().toJson(recipe));
-                startActivity(intent);
+                getBaseContext().startActivity(intent);
             }
         });
 
@@ -341,6 +348,19 @@ public class DetailedRecipe extends AppCompatActivity {
                     }
 
                 });
+            }
+        });
+    }
+
+    private void SetUserProfileClick()
+    {
+        _ownerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(_recipeUser.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) return;
+                Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+                intent.putExtra("user",new Gson().toJson(_recipeUser));
+                startActivity(intent);
             }
         });
     }

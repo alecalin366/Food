@@ -86,7 +86,6 @@ public class HomeFragment extends Fragment {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-
         setupToolbar();
         setupAddRecipeButton();
         setupFirebaseAuth();

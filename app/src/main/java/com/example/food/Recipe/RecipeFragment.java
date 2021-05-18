@@ -1,5 +1,6 @@
 package com.example.food.Recipe;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.example.food.Interfaces.IGetCategory;
 import com.example.food.Models.Category;
 import com.example.food.R;
 import com.example.food.RecyclerView.CategoryRecyclerViewAdapter;
@@ -25,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
@@ -109,7 +112,15 @@ public class RecipeFragment extends Fragment {
                         options.add(model);
                     });
 
-                    adapterCategory = new CategoryRecyclerViewAdapter(getContext(), options);
+                    adapterCategory = new CategoryRecyclerViewAdapter(getContext(), options, new IGetCategory() {
+                        @Override
+                        public void getCategory(Category category) {
+                            Intent intent = new Intent(getActivity(), RecipeFiltredByCategory.class);
+                            intent.putExtra("category",new Gson().toJson(category));
+                            getActivity().startActivity(intent);
+                        }
+                    });
+
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                     _categoryRecyclerView.setLayoutManager(layoutManager);
                     _categoryRecyclerView.setAdapter(adapterCategory);

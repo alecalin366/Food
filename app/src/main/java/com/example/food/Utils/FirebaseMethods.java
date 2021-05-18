@@ -13,6 +13,7 @@ import com.example.food.Interfaces.IExistsListener;
 import com.example.food.Interfaces.IGetBooleanListener;
 import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetRecipeData;
+import com.example.food.Interfaces.IGetStringList;
 import com.example.food.Interfaces.IGetStringListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.CartRecipe;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirebaseMethods {
@@ -615,6 +617,26 @@ public class FirebaseMethods {
         });
     }
 
+    public void GetFavoriteRecipes(IGetStringList listener)
+    {
+        db.collection("FavoritesRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Favorites").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<String> _favoritesList = new ArrayList<String>();
+
+                if(task.isSuccessful())
+                {
+                    task.getResult().getDocuments().forEach(documentSnapshot -> {
+                        FavoriteRecipe favoriteRecipe = documentSnapshot.toObject(FavoriteRecipe.class);
+                        _favoritesList.add(favoriteRecipe.get_recipeId());
+                    });
+                }
+
+                listener.GetStringList(_favoritesList);
+            }
+        });
+    }
     public void AddRecipeToCart(CartRecipe cartRecipe, ICompleteListener listener) {
         db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("Cart").document(cartRecipe.get_recipeId()).set(cartRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {

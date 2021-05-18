@@ -32,11 +32,36 @@
                 android:textColor="@color/white"
                 android:textSize="28sp"/>
 
+            <LinearLayout
+                android:id="@+id/categoryView"
+                android:layout_width="match_parent"
+                android:layout_below="@id/detailed_recipe_title"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/detailed_recipe_photo"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Categorie : "
+                    android:textColor="@color/white"
+                    android:textSize="28sp"/>
+                <TextView
+                    android:id="@+id/categoryName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/detailed_recipe_photo"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Detailed_recipe_title"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/ownerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detailed_recipe_title"
+                android:layout_below="@+id/categoryView"
                 >
                 <TextView
                     android:id="@+id/owner"
@@ -111,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/segoe_ui_bold"
-                            android:text="minutes"
+                            android:text="minute"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:layout_marginLeft="5dp"
@@ -146,7 +171,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/segoe_ui_bold"
-                            android:text="servings"
+                            android:text="portii"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:layout_marginLeft="5dp"
@@ -172,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Ingredients"
+                    android:text="Ingrediente"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
@@ -204,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:text="How to preprare"
+                    android:text="Mod de preparare"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
@@ -232,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Nutrition Info (per 100 grams)"
+                    android:text="Macronutrienti(per 100 grame)"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
@@ -240,7 +265,7 @@
                     android:id="@+id/calorii"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Calories"
+                    android:text="Calorii"
                     android:layout_below="@id/title_macro"
                     android:fontFamily="@font/segoe_ui"
                     android:textColor="@color/white"
@@ -250,7 +275,7 @@
                     android:id="@+id/cantitate_calorii"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="grams"
+                    android:text="grame"
                     android:layout_below="@+id/title_macro"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/segoe_ui"
@@ -263,7 +288,7 @@
                     android:id="@+id/proteine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Protein"
+                    android:text="Proteine"
                     android:layout_below="@+id/calorii"
                     android:fontFamily="@font/segoe_ui"
                     android:textColor="@color/white"
@@ -273,7 +298,7 @@
                     android:id="@+id/cantitate_proteine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="grams"
+                    android:text="grame"
                     android:paddingEnd="3dp"
                     android:layout_below="@+id/calorii"
                     android:layout_toStartOf="@+id/g"
@@ -297,7 +322,7 @@
                     android:id="@+id/carbo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Carbohydrates"
+                    android:text="Carbohidrati"
                     android:layout_below="@+id/proteine"
                     android:fontFamily="@font/segoe_ui"
                     android:textColor="@color/white"
@@ -331,7 +356,7 @@
                     android:id="@+id/grasimi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fat"
+                    android:text="Grasimi"
                     android:layout_below="@+id/carbo"
                     android:fontFamily="@font/segoe_ui"
                     android:textColor="@color/white"
@@ -375,8 +400,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:layout_centerHorizontal="true"
-                    android:text="If you like this recipe, please vote it :)"
+                    android:text="Daca ti-a placut aceasta reteta, da-i click mai jos"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
 
@@ -483,7 +507,6 @@
                     android:text="Delete"
                     android:textColor="@color/white"
                     android:layout_marginRight="10dp"
-                    android:fontFamily="@font/segoe_ui_bold"
                     android:backgroundTint="@android:color/holo_red_dark"/>
                 <Button
                     android:id="@+id/editButton"
@@ -492,7 +515,6 @@
                     android:layout_height="wrap_content"
                     android:text="Edit"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/segoe_ui_bold"
                     android:backgroundTint="@android:color/holo_blue_dark"/>
             </RelativeLayout>
         </RelativeLayout>

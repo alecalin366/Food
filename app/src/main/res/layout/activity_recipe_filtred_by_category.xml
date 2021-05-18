@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bkk"
     tools:context=".Recipe.RecipeFiltredByCategory">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categoryName"
-        android:text="Retete favorite"
+        tools:text="Category"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -38,7 +37,7 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Nu ai nici o reteta adaugata la favorite"
+        android:text="Nu s-a gasit nici o reteta din aceasta categorie"
         android:layout_marginBottom="10dp"
         android:textSize="27sp"
         android:textColor="@color/black"/>
@@ -55,6 +54,5 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerInParent="true"/>
-
     </RelativeLayout>
 </RelativeLayout>

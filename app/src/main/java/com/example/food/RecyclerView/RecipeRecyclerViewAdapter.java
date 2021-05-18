@@ -24,6 +24,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     private Context mContext;
     public ArrayList<Recipe>  RecipeList;
+
     public RecipeRecyclerViewAdapter(Context mContext, ArrayList<Recipe> list)
     {
         this.mContext = mContext;
