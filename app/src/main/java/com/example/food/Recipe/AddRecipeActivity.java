@@ -232,7 +232,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                     Collections.sort(categoryList);
                 } else {
                     //When checkbox unselected, remove position in cateogryList
-                    categoryList.remove(which);
+                    categoryList.remove(categoryArray[which]);
                 }
             }
         });

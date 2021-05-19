@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.R;
 import com.example.food.Recipe.Recipe;
 import com.example.food.RecyclerView.FirebaseRecipeRecyclerViewAdapter;
@@ -54,6 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
         _recipesList = new ArrayList<>();
 
         FindViews();
+        GetUserLikesCount();
         SetProfileWidgets();
         RecipeRecyclerViewSetup();
 
@@ -97,6 +99,24 @@ public class UserProfileActivity extends AppCompatActivity {
                 _loadingView.setVisibility(View.GONE);
                 if(_recipesList.size() == 0)
                     _warningText.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void GetUserLikesCount()
+    {
+        mFirebaseMethods.GetUserLikesCount(user.getUser_id(), new IGetNumberListener() {
+            @Override
+            public void getNumber(int numb) {
+
+
+                mFirebaseMethods.GetUserDislikesCount(user.getUser_id(), new IGetNumberListener() {
+                    @Override
+                    public void getNumber(int numb) {
+
+
+                    }
+                });
             }
         });
     }

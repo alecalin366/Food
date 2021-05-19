@@ -61,8 +61,9 @@ public class RecipeFiltredByCategory extends AppCompatActivity {
     public void RecipeRecyclerViewSetup() {
         //Query
         _loadingView.setVisibility(View.VISIBLE);
-        firebaseFirestore.collection("Recipes").whereEqualTo("category", _currentCategory.getName_category()).orderBy("miliseconds", Query.Direction.DESCENDING)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // firebaseFirestore.collection("Recipes").whereEqualTo("category", _currentCategory.getName_category()).orderBy("miliseconds", Query.Direction.DESCENDING)
+
+        firebaseFirestore.collection("Recipes").orderBy("miliseconds", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -70,8 +71,10 @@ public class RecipeFiltredByCategory extends AppCompatActivity {
 
                     task.getResult().getDocuments().forEach(documentSnapshot -> {
                         Recipe model = documentSnapshot.toObject(Recipe.class);
-                        _recipesList.add(model);
+                        if(model.category.contains(_currentCategory.getName_category()))
+                            _recipesList.add(model);
                     });
+
                     adapterRecipe = new RecipeRecyclerViewAdapter(getBaseContext(), _recipesList);
                     LinearLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 2);
                     _recipeRecyclerView.setLayoutManager(layoutManager);

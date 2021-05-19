@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +44,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntBinaryOperator;
 
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
@@ -684,6 +687,68 @@ public class FirebaseMethods {
                 }
 
                 listener.GetCartList(list);
+            }
+        });
+    }
+
+    private int _likesCount, _dislikesCount;
+
+    public void GetUserLikesCount(String userId, IGetNumberListener listener)
+    {
+        _likesCount = 0;
+
+        db.collection("Recipes").whereEqualTo("user_id",
+                userId).orderBy("miliseconds", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    AtomicInteger likes = new AtomicInteger();
+                    task.getResult().getDocuments().forEach(documentSnapshot -> {
+                        Recipe recipe = documentSnapshot.toObject(Recipe.class);
+
+                        GetRecipeLikesCount(recipe.getRecipeId(), new IGetNumberListener() {
+                            @Override
+                            public void getNumber(int numb) {
+                                _likesCount+=numb;
+                                if(task.getResult().getDocuments().indexOf(documentSnapshot) == task.getResult().getDocuments().size()-1)
+                                {
+                                    listener.getNumber(_likesCount);
+                                }
+                            }
+                        });
+                    });
+                }
+            }
+        });
+    }
+
+    public void GetUserDislikesCount(String userId, IGetNumberListener listener)
+    {
+        _dislikesCount = 0;
+
+        db.collection("Recipes").whereEqualTo("user_id",
+                userId).orderBy("miliseconds", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    AtomicInteger likes = new AtomicInteger();
+                    task.getResult().getDocuments().forEach(documentSnapshot -> {
+                        Recipe recipe = documentSnapshot.toObject(Recipe.class);
+
+                        GetRecipeDislikesCount(recipe.getRecipeId(), new IGetNumberListener() {
+                            @Override
+                            public void getNumber(int numb) {
+                                _dislikesCount+=numb;
+                                if(task.getResult().getDocuments().indexOf(documentSnapshot) == task.getResult().getDocuments().size()-1)
+                                {
+                                    listener.getNumber(_dislikesCount);
+                                }
+                            }
+                        });
+                    });
+                }
             }
         });
     }

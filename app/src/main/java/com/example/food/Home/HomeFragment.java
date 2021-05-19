@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.Category;
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseRecipeRecyclerViewAdapter adapterRecipe;
     private TextView _warningText;
+    private TextView _likesText, _dislikeText;
 
 
 
@@ -82,6 +84,8 @@ public class HomeFragment extends Fragment {
         mFirebaseMethods = new FirebaseMethods(getActivity());
         recyclerView = view.findViewById(R.id.recyclerView);
         _warningText = view.findViewById(R.id.warning_text);
+        _likesText = view.findViewById(R.id.likesText);
+        _dislikeText = view.findViewById(R.id.dislikesText);
         Log.d(TAG, "onCreateView: started");
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -89,6 +93,7 @@ public class HomeFragment extends Fragment {
         setupToolbar();
         setupAddRecipeButton();
         setupFirebaseAuth();
+        GetUserLikesCount();
         RecipeRecyclerViewSetup(view);
         return view;
     }
@@ -169,6 +174,24 @@ public class HomeFragment extends Fragment {
     }
 
 
+    private void GetUserLikesCount()
+    {
+        mFirebaseMethods.GetUserLikesCount(mAuth.getCurrentUser().getUid(), new IGetNumberListener() {
+            @Override
+            public void getNumber(int numb) {
+                //textView.setText(numb.toString())
+                _likesText.setText(String.valueOf(numb));
+
+                mFirebaseMethods.GetUserDislikesCount(mAuth.getCurrentUser().getUid(), new IGetNumberListener() {
+                    @Override
+                    public void getNumber(int numb) {
+                        _dislikeText.setText(String.valueOf(numb));
+
+                    }
+                });
+            }
+        });
+    }
     /*
     ----------------------------Firebase------------------------------------------
      */

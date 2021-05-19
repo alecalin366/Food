@@ -7,20 +7,20 @@
     android:background="@drawable/bkk"
     tools:context=".Recipe.RecipeFiltredByCategory">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/categoryName"
-        android:text="Retete favorite"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="27sp"
-        android:textColor="@color/black"/>
+        android:id="@+id/relLayout1">
+
+        <include layout="@layout/snippet_top_favoritebar"/>
+
+    </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_recipe"
-        android:layout_below="@id/categoryName"
+        android:layout_below="@id/relLayout1"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
