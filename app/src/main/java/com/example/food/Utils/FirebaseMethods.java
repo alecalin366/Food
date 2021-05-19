@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.example.food.Interfaces.ICompleteListener;
 import com.example.food.Interfaces.IExistsListener;
 import com.example.food.Interfaces.IGetBooleanListener;
+import com.example.food.Interfaces.IGetCartList;
 import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetRecipeData;
 import com.example.food.Interfaces.IGetStringList;
@@ -572,7 +573,7 @@ public class FirebaseMethods {
                             @Override
                             public void OnComplete(boolean isSuccessfulCompleted) {
 
-                                RemoveRecipeFromCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                                RemoveRecipeFromCart(new CartRecipe(recipe, null), new ICompleteListener() {
                                     @Override
                                     public void OnComplete(boolean isSuccessfulCompleted) {
                                         listener.OnComplete(isSuccessfulCompleted);
@@ -639,7 +640,7 @@ public class FirebaseMethods {
     }
     public void AddRecipeToCart(CartRecipe cartRecipe, ICompleteListener listener) {
         db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Cart").document(cartRecipe.get_recipeId()).set(cartRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .collection("Cart").document(cartRecipe.getRecipe().getRecipeId()).set(cartRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 listener.OnComplete(task.isSuccessful());
@@ -649,7 +650,7 @@ public class FirebaseMethods {
 
     public void RemoveRecipeFromCart(CartRecipe cartRecipe, ICompleteListener listener) {
         db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Cart").document(cartRecipe.get_recipeId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                .collection("Cart").document(cartRecipe.getRecipe().getRecipeId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 listener.OnComplete(task.isSuccessful());
@@ -663,6 +664,26 @@ public class FirebaseMethods {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 listener.GetBool(task.getResult().toObject(CartRecipe.class) != null);
+            }
+        });
+    }
+
+    public void GerUserCart(IGetCartList listener)
+    {
+        db.collection("CartRecipes").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Cart").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<CartRecipe> list = new ArrayList<>();
+                if(task.isSuccessful())
+                {
+                    task.getResult().getDocuments().forEach(documentSnapshot -> {
+
+                        list.add(documentSnapshot.toObject(CartRecipe.class));
+                    });
+                }
+
+                listener.GetCartList(list);
             }
         });
     }

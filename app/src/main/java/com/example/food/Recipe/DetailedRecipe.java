@@ -19,6 +19,7 @@ import com.example.food.Interfaces.IGetNumberListener;
 import com.example.food.Interfaces.IGetUserSettings;
 import com.example.food.Models.CartRecipe;
 import com.example.food.Models.FavoriteRecipe;
+import com.example.food.Models.SpecialIngredient;
 import com.example.food.Profile.UserProfileActivity;
 import com.example.food.R;
 import com.example.food.RecyclerView.IngredientRecyclerViewAdapter;
@@ -27,6 +28,8 @@ import com.example.food.Utils.FirebaseMethods;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +53,7 @@ public class DetailedRecipe extends AppCompatActivity {
     private View _ownerView;
     private User _recipeUser;
     private boolean _isFavorite, _isAddedCart;
+    private CartRecipe _cartRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class DetailedRecipe extends AppCompatActivity {
         recipe = new Gson().fromJson(intent.getStringExtra("recipe"), Recipe.class);
         _firebaseMethods = new FirebaseMethods(this);
 
+        FormatCartRecipe();
         FindViews();
         SetOwnerInfo();
         SetViewsFields();
@@ -305,7 +310,7 @@ public class DetailedRecipe extends AppCompatActivity {
         _addToCartButton.setOnClickListener(view -> {
             _loadingView.setVisibility(View.VISIBLE);
             if (_isAddedCart) {
-                _firebaseMethods.RemoveRecipeFromCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                _firebaseMethods.RemoveRecipeFromCart(_cartRecipe, new ICompleteListener() {
                     @Override
                     public void OnComplete(boolean isSuccessfulCompleted) {
                         _loadingView.setVisibility(View.GONE);
@@ -314,7 +319,7 @@ public class DetailedRecipe extends AppCompatActivity {
                     }
                 });
             } else {
-                _firebaseMethods.AddRecipeToCart(new CartRecipe(recipe.recipeId), new ICompleteListener() {
+                _firebaseMethods.AddRecipeToCart(_cartRecipe, new ICompleteListener() {
                     @Override
                     public void OnComplete(boolean isSuccessfulCompleted) {
                         _loadingView.setVisibility(View.GONE);
@@ -375,5 +380,15 @@ public class DetailedRecipe extends AppCompatActivity {
         if (_isFavorite)
             _addToFavoriteButton.setBackgroundResource(R.drawable.ic_blue_heart);
         else _addToFavoriteButton.setBackgroundResource(R.drawable.ic_alert);
+    }
+
+    private void FormatCartRecipe()
+    {
+        ArrayList<SpecialIngredient> ingredients = new ArrayList<SpecialIngredient>();
+        recipe.getIngredients().forEach(ingredient -> {
+            ingredients.add(new SpecialIngredient(false,recipe.recipeId ,ingredient));
+        });
+
+        _cartRecipe = new CartRecipe(recipe, ingredients);
     }
 }

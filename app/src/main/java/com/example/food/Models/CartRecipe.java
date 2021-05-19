@@ -1,17 +1,33 @@
 package com.example.food.Models;
 
+import com.example.food.Recipe.Recipe;
+
+import java.util.ArrayList;
+
 public class CartRecipe {
-    private String _recipeId;
     public CartRecipe(){}
-    public CartRecipe(String _recipeId){
-        this._recipeId = _recipeId;
+
+    private ArrayList<SpecialIngredient> ingredients;
+    private Recipe recipe;
+
+    public ArrayList<SpecialIngredient> getIngredients() {
+        return ingredients;
     }
 
-    public String get_recipeId() {
-        return _recipeId;
+    public void setIngredients(ArrayList<SpecialIngredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void set_recipeId(String _recipeId) {
-        this._recipeId = _recipeId;
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public CartRecipe(Recipe recipe, ArrayList<SpecialIngredient> ingredients) {
+        this.ingredients = ingredients;
+        this.recipe = recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }
