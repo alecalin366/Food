@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.example.food.R;
 import com.example.food.ShopActivity.ShopModels.IShopModel;
 import com.example.food.ShopActivity.ShopModels.SectionModel;
 import com.example.food.ShopActivity.ShopModels.SelectableModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,17 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
             SectionModel sectionModel = (SectionModel) list.get(position);
             sectionViewHolder._sectionName.setText(sectionModel.getRecipe().name);
+            sectionViewHolder._servings.setText(sectionModel.getRecipe().servingSize);
+
+            if(!sectionModel.getRecipe().photo.isEmpty())
+            {
+                Picasso.get()
+                        .load(sectionModel.getRecipe().photo)
+                        .placeholder(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error)
+                        .into(sectionViewHolder._photo);
+            }
+
             sectionViewHolder._removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,11 +106,14 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class SectionViewHolder extends RecyclerView.ViewHolder {
-        private TextView _sectionName;
+        private TextView _sectionName, _servings;
+        private ImageView _photo;
         private Button _removeButton;
         public SectionViewHolder(@NonNull View itemView) {
             super(itemView);
             _sectionName = itemView.findViewById(R.id.sectionName);
+            _servings = itemView.findViewById(R.id.servings);
+            _photo = itemView.findViewById(R.id.photo);
             _removeButton = itemView.findViewById(R.id.removeButton);
         }
     }
