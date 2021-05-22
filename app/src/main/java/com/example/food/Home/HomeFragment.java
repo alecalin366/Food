@@ -176,6 +176,7 @@ public class HomeFragment extends Fragment {
 
     private void GetUserLikesCount()
     {
+        if(mAuth.getCurrentUser() == null) return;
         mFirebaseMethods.GetUserLikesCount(mAuth.getCurrentUser().getUid(), new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
