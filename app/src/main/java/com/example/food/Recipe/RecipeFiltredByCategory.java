@@ -76,7 +76,7 @@ public class RecipeFiltredByCategory extends AppCompatActivity {
                     });
 
                     adapterRecipe = new RecipeRecyclerViewAdapter(getBaseContext(), _recipesList);
-                    LinearLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 2);
+                    LinearLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 1);
                     _recipeRecyclerView.setLayoutManager(layoutManager);
                     _recipeRecyclerView.setAdapter(adapterRecipe);
 

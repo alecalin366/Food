@@ -91,7 +91,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     });
 
                     adapterRecipe = new RecipeRecyclerViewAdapter(getBaseContext(), _recipesList);
-                    GridLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 2, GridLayoutManager.VERTICAL, false);
+                    GridLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 1, GridLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(adapterRecipe);
                 }

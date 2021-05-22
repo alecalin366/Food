@@ -144,7 +144,7 @@ public class RecipeFragment extends Fragment {
                         _recipesList.add(model);
                     });
                     adapterRecipe = new RecipeRecyclerViewAdapter(getContext(), _recipesList);
-                    LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+                    LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
                     _recipeRecyclerView.setLayoutManager(layoutManager);
                     _recipeRecyclerView.setAdapter(adapterRecipe);
                 }

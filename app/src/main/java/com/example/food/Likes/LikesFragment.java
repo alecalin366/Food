@@ -91,7 +91,7 @@ public class LikesFragment extends Fragment {
                             }
 
                             if (_recipesList.size() == list.size()) {
-                                LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+                                LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
                                 _recyclerView.setLayoutManager(layoutManager);
                                 _recyclerView.setAdapter(_adapter);
                                 _loadingView.setVisibility(View.GONE);

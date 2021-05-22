@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment {
                 .build();
 
         adapterRecipe = new FirebaseRecipeRecyclerViewAdapter(getContext(), options);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterRecipe);
@@ -179,7 +179,6 @@ public class HomeFragment extends Fragment {
         mFirebaseMethods.GetUserLikesCount(mAuth.getCurrentUser().getUid(), new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
-                //textView.setText(numb.toString())
                 _likesText.setText(String.valueOf(numb));
 
                 mFirebaseMethods.GetUserDislikesCount(mAuth.getCurrentUser().getUid(), new IGetNumberListener() {
