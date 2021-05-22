@@ -1,0 +1,142 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/arm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arm Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/arm"/>
+
+            <TextView
+                android:id="@+id/glutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Glutes Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/glutes"/>
+
+            <TextView
+                android:id="@+id/abs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abs Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView2"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/abs"/>
+
+            <TextView
+                android:id="@+id/full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full body Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView3"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/full"/>
+
+            <TextView
+                android:id="@+id/gym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Only gym Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView4"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/gym"/>
+
+            <TextView
+                android:id="@+id/upper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upper body Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView5"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/upper"/>
+
+
+            <TextView
+                android:id="@+id/yoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yoga Workout"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:textSize="22dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/recyclerView6"
+                android:textColor="@color/purple2_DARK"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_below="@id/yoga"/>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+</merge>

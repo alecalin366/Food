@@ -22,6 +22,7 @@ import com.example.food.Recipe.RecipeFragment;
 import com.example.food.Search.SearchFragment;
 import com.example.food.ShopActivity.ShopFragment;
 import com.example.food.Utils.UniversalImageLoader;
+import com.example.food.Workout.WorkoutFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -90,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.ic_alert:
                         fragment = new LikesFragment();
+                        break;
+                    case R.id.ic_workout:
+                        fragment = new WorkoutFragment();
                         break;
                 }
 

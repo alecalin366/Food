@@ -77,6 +77,8 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     compileOnly 'com.google.android.wearable:wearable:2.6.0'
 
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
 }
 
 apply plugin: 'com.google.gms.google-services'
