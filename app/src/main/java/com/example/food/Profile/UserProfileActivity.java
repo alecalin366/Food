@@ -43,6 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView _warningText;
     private FirebaseFirestore firebaseFirestore;
     private ArrayList<Recipe> _recipesList;
+    private TextView _likesText, _dislikeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,8 @@ public class UserProfileActivity extends AppCompatActivity {
         _loadingView = findViewById(R.id.loadingView);
         recyclerView = findViewById(R.id.recyclerView);
         _warningText = findViewById(R.id.warning_text);
+        _likesText = findViewById(R.id.likesText);
+        _dislikeText = findViewById(R.id.dislikesText);
     }
 
     private void SetProfileWidgets(){
@@ -108,12 +111,12 @@ public class UserProfileActivity extends AppCompatActivity {
         mFirebaseMethods.GetUserLikesCount(user.getUser_id(), new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
-
+                _likesText.setText(String.valueOf(numb));
 
                 mFirebaseMethods.GetUserDislikesCount(user.getUser_id(), new IGetNumberListener() {
                     @Override
                     public void getNumber(int numb) {
-
+                        _dislikeText.setText(String.valueOf(numb));
 
                     }
                 });

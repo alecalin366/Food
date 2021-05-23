@@ -30,6 +30,31 @@
         android:layout_below="@id/profile_photo"
         android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:id="@+id/likesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:text="--"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:layout_below="@id/display_name"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/dislikesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:text="----"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:layout_below="@id/display_name"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"/>
+
 
     <TextView
         android:id="@+id/my_recipes_title"
