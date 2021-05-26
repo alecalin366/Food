@@ -42,6 +42,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         Recipe model = RecipeList.get(position);
         holder.titlu_recipe.setText(model.getName());
         holder.date.setText(new Date(model.getMiliseconds()).toString());
+        holder.time.setText(model.getPreparationTime());
+        holder.likes.setText(String.valueOf(model.getLikesCount()));
+        holder.dislikes.setText(String.valueOf(model.getDislikesCount()));
 
         if(!model.photo.isEmpty())
         {
@@ -57,6 +60,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, DetailedRecipe.class);
                 intent.putExtra("recipe",new Gson().toJson(model));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
@@ -70,12 +74,19 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
         private ImageView recipe_photo;
         private TextView titlu_recipe, date;
+        //        private CircleImageView ownerPhoto;
+//        private TextView ownerName;
+        private TextView time;
+        private TextView likes, dislikes;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             recipe_photo = itemView.findViewById(R.id.recipe_photo);
             titlu_recipe = itemView.findViewById(R.id.titlu_recipe);
             date = itemView.findViewById(R.id.date);
+            time = itemView.findViewById(R.id.detailed_recipe_time);
+            likes = itemView.findViewById(R.id.likes);
+            dislikes = itemView.findViewById(R.id.dislikes);
         }
     }
 }

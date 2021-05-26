@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 if (isStringNull(email) || isStringNull(password)) {
-                    Toast.makeText(LoginActivity.this, "Completeaza toate campurile", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Please compleate all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     mProgressBar.setVisibility(View.VISIBLE);
 
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 }else {
-                                                    Toast.makeText(LoginActivity.this, "Email-ul nu este verificat \n Te rog, verifica-ti casuta de email ", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(LoginActivity.this, "Email is not verified \n Please check your email imbox", Toast.LENGTH_SHORT).show();
                                                     mProgressBar.setVisibility(View.GONE);
                                                     mAuth.signOut();
                                                 }
@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                         mAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(LoginActivity.this, "Reset Link Sent To Your Email.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

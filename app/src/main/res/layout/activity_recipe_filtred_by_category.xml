@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Recipe.RecipeFiltredByCategory">
+    tools:context=".Recipe.RecipeFiltredByCategory"
+    android:background="@drawable/bkk">
 
     <TextView
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Nu s-a gasit nici o reteta din aceasta categorie"
+        android:text="There are currently no recipes added to this category"
         android:layout_marginBottom="10dp"
         android:textSize="27sp"
         android:textColor="@color/black"/>

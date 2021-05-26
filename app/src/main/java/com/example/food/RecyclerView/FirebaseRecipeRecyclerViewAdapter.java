@@ -23,6 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, FirebaseRecipeRecyclerViewAdapter.RecipeViewHolder>{
 
     private Context mContext;
@@ -42,6 +44,9 @@ public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position, @NonNull Recipe model) {
         holder.titlu_recipe.setText(model.getName());
         holder.date.setText(new Date(model.getMiliseconds()).toString());
+        holder.time.setText(model.getPreparationTime());
+        holder.likes.setText(String.valueOf(model.getLikesCount()));
+        holder.dislikes.setText(String.valueOf(model.getDislikesCount()));
 
         if(!model.photo.isEmpty())
         {
@@ -67,12 +72,19 @@ public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
         private ImageView recipe_photo;
         private TextView titlu_recipe, date;
+        //        private CircleImageView ownerPhoto;
+//        private TextView ownerName;
+        private TextView time;
+        private TextView likes, dislikes;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             recipe_photo = itemView.findViewById(R.id.recipe_photo);
             titlu_recipe = itemView.findViewById(R.id.titlu_recipe);
             date = itemView.findViewById(R.id.date);
+            time = itemView.findViewById(R.id.detailed_recipe_time);
+            likes = itemView.findViewById(R.id.likes);
+            dislikes = itemView.findViewById(R.id.dislikes);
         }
     }
 

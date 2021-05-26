@@ -57,7 +57,7 @@
         android:fontFamily="@font/segoe_ui_bold"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:text="All recipes"
+        android:text="Recently added recipes"
         android:textColor="@color/purple2_DARK"
         android:textSize="22dp"
         />

@@ -54,6 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
         user = new Gson().fromJson(intent.getStringExtra("user"), User.class);
         firebaseFirestore = FirebaseFirestore.getInstance();
         _recipesList = new ArrayList<>();
+        mFirebaseMethods = new FirebaseMethods(getBaseContext());
 
         FindViews();
         GetUserLikesCount();

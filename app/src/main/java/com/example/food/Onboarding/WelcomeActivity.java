@@ -69,7 +69,7 @@ public class WelcomeActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         } else {
-            backToast = Toast.makeText(getBaseContext(), "Apasa inca o data pentru a iesi", Toast.LENGTH_SHORT);
+            backToast = Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT);
             backToast.show();
         }
         backPressedTime = System.currentTimeMillis();

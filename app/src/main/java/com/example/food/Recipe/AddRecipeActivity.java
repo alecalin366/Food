@@ -419,57 +419,57 @@ public class AddRecipeActivity extends AppCompatActivity {
         userID = mAuth.getCurrentUser().getUid();
 
         if (!checkIngredients() || ingredientsList == null || ingredientsList.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga ingrediente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add ingredients", Toast.LENGTH_SHORT).show();
         }
 
         if (recipeName == null || recipeName.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga titlu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add title", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (description == null || description.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga descriere", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add description", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (preparationTime == null || preparationTime.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga preparationTime", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add preparation time", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (servingSize == null || servingSize.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga servingSize", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add serving size", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (calorii == null || calorii.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga calorii", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add calories", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (proteine == null || proteine.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga proteine", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add protein", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (carbo == null || carbo.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga carbo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add carbohydrates", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (grasimi == null || grasimi.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga grasimi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add fat", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (categoryString == null || category.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "adauga category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Add category", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (recipe == null && ReceipeBitmap == null)
         {
-              Toast.makeText(getApplicationContext(), "Adauga imagine", Toast.LENGTH_SHORT).show();
+              Toast.makeText(getApplicationContext(), "Add photo", Toast.LENGTH_SHORT).show();
               return;
         }
 

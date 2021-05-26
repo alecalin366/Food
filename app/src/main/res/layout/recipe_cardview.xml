@@ -7,14 +7,15 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/category_cardView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="-3dp"
         android:layout_marginEnd="-3dp"
         app:cardPreventCornerOverlap="false"
         app:cardElevation="2dp"
-        app:cardCornerRadius="12dp">
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#F8EAFF">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,24 +28,128 @@
                 android:contentDescription="@string/poza_eteta"
                 android:src="@drawable/food"
                 android:layout_marginLeft="3dp"
+                android:paddingLeft="4dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:layout_below="@+id/owner"
                 />
+
 
             <TextView
                 android:id="@+id/titlu_recipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="0dp"
                 android:layout_toRightOf="@+id/recipe_photo"
                 android:fontFamily="@font/segoe_ui_bold"
                 android:gravity="center_vertical"
-                android:layout_alignParentTop="true"
+                android:paddingLeft="5dp"
                 android:paddingTop="15dp"
-                android:paddingLeft="15dp"
                 android:text="SECTION"
                 android:textColor="@color/purple1_DARK"
                 android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titlu_recipe"
+                android:layout_marginTop="-2dp"
+                android:orientation="horizontal"
+                android:layout_toRightOf="@+id/recipe_photo"
+                android:paddingLeft="3dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_time_b"
+                    />
+
+                <TextView
+                    android:id="@+id/detailed_recipe_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="timp"
+                    android:textColor="#3C404B"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="minutes"
+                    android:textColor="#3C404B"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/time"
+                android:layout_marginTop="-2dp"
+                android:layout_toRightOf="@+id/recipe_photo"
+                android:paddingLeft="3dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_like_b"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="like"
+                    android:textColor="#3C404B"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/likes"/>/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/time"
+                android:layout_marginTop="-2dp"
+                android:layout_toRightOf="@+id/linearLike"
+                android:paddingLeft="8dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_dislike_b"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="dislike"
+                    android:textColor="#3C404B"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/dislikes"/>/>
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/date"
