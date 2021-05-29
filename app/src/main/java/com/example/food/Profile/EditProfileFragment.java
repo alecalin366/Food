@@ -188,7 +188,6 @@ public class EditProfileFragment extends Fragment implements
             return;
         }
 
-        _loadingView.setVisibility(View.VISIBLE);
         mFirebaseMethods.updateDisplayName(displayName);
         mFirebaseMethods.updatePhoneNumber(phoneNumber);
 
@@ -204,6 +203,7 @@ public class EditProfileFragment extends Fragment implements
                                 public void OnComplete(boolean isSuccessfulCompleted) {
                                     Toast.makeText(getActivity(), "Account settings saved", Toast.LENGTH_SHORT).show();
                                     getActivity().finish();
+
                                 }
                             });
                         }

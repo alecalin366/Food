@@ -7,22 +7,22 @@ public class Recipe {
     private String user_id;
     public String name, category, description, photo, recipeId;
     public String preparationTime, servingSize;
-    private int LikesCount,DislikesCount;
+    private int likesCount, dislikesCount;
 
     public int getLikesCount() {
-        return LikesCount;
+        return likesCount;
     }
 
     public int getDislikesCount() {
-        return DislikesCount;
+        return dislikesCount;
     }
 
     public void setDislikesCount(int dislikesCount) {
-        DislikesCount = dislikesCount;
+        this.dislikesCount = dislikesCount;
     }
 
     public void setLikesCount(int likesCount) {
-        LikesCount = likesCount;
+        this.likesCount = likesCount;
     }
 
     Macronutrient macro;

@@ -31,7 +31,6 @@
                 android:paddingLeft="4dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:layout_below="@+id/owner"
                 />
 
 
@@ -50,7 +49,7 @@
                 android:paddingTop="15dp"
                 android:text="SECTION"
                 android:textColor="@color/purple1_DARK"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:id="@id/time"

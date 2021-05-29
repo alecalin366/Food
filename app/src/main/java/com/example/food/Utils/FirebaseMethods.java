@@ -504,7 +504,7 @@ public class FirebaseMethods {
         GetRecipeLikesCount(recipeId, new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
-                db.collection("Recipes").document(recipeId).update("LikesCount", numb).addOnCompleteListener(
+                db.collection("Recipes").document(recipeId).update("likesCount", numb).addOnCompleteListener(
                         new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -520,7 +520,7 @@ public class FirebaseMethods {
         GetRecipeDislikesCount(recipeId, new IGetNumberListener() {
             @Override
             public void getNumber(int numb) {
-                db.collection("Recipes").document(recipeId).update("DislikesCount", numb).addOnCompleteListener(
+                db.collection("Recipes").document(recipeId).update("dislikesCount", numb).addOnCompleteListener(
                         new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

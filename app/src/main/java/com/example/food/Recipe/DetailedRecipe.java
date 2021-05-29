@@ -288,6 +288,7 @@ public class DetailedRecipe extends AppCompatActivity {
                 _shouldUpdate = true;
                 Intent intent = new Intent(getBaseContext(), AddRecipeActivity.class);
                 intent.putExtra("recipe", new Gson().toJson(recipe));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getBaseContext().startActivity(intent);
             }
         });

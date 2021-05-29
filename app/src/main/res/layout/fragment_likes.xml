@@ -44,7 +44,7 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Nu ai nici o reteta adaugata la favorite"
+        android:text="You don't have any recipe added to favorite"
         android:layout_marginBottom="10dp"
         android:textSize="27sp"
         android:textColor="@color/black"/>
