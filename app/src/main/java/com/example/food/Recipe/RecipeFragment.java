@@ -71,7 +71,6 @@ public class RecipeFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 firebaseFirestore.collection("Recipes")
-                        .whereGreaterThanOrEqualTo("name", charSequence.toString().toLowerCase())
                         .orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -80,7 +79,7 @@ public class RecipeFragment extends Fragment {
 
                             task.getResult().getDocuments().forEach(documentSnapshot -> {
                                 Recipe model = documentSnapshot.toObject(Recipe.class);
-                                if(model.name.contains(charSequence.toString().toLowerCase()))
+                                if(model.name.toLowerCase().contains(charSequence.toString().toLowerCase()))
                                     _recipesList.add(model);
                             });
 

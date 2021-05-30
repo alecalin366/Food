@@ -55,7 +55,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     boolean[] selectedCategory;
     ArrayList<String> categoryList = new ArrayList<>();
-    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks", "Salads", "Indian", "Chinese", "Thai", "Greek", "Mexican", "Sweets", "Vegan", "Pasta", "Pizza", "Others"};
+    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks", "Salads", "Indian", "Chinese", "Thai", "Greek", "Mexican", "Sweets", "Vegan", "Pasta", "Pizza", "Diabetic", "Dairy-Free", "Gluten-Free", "Heart-healthy", "Others"};
 
 
     LinearLayout layoutList;
@@ -178,9 +178,14 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void SetupMeasurementsList() {
         measurementsList.clear();
-        measurementsList.add("  g");
-        measurementsList.add(" ml");
-        measurementsList.add("buc");
+        measurementsList.add("         g");
+        measurementsList.add("        kg");
+        measurementsList.add("        ml");
+        measurementsList.add("         l");
+        measurementsList.add("       cup");
+        measurementsList.add("    pieces");
+        measurementsList.add("tablespoon");
+        measurementsList.add("  teaspoon");
     }
 
     private void addView() {
@@ -220,7 +225,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void initAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddRecipeActivity.this);
-        builder.setTitle("Alege o categorie");
+        builder.setTitle("Choose a category");
         builder.setCancelable(false);
 
         builder.setMultiChoiceItems(categoryArray, selectedCategory, new DialogInterface.OnMultiChoiceClickListener() {
@@ -251,14 +256,14 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Anuleaza", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        builder.setNeutralButton("Sterge tot", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 for (int j = 0; j < selectedCategory.length; j++) {
@@ -505,14 +510,14 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void OnComplete(boolean isSuccessfulCompleted) {
                 if (isSuccessfulCompleted) {
-                    String successText = "Reteta a fost adaugata cu succes";
+                    String successText = "The recipe was added successfully";
                     if(recipe != null)
-                        successText = "Reteta a fost modificata cu succes";
+                        successText = "The recipe has been successfully modified";
                     Toast.makeText(getApplicationContext(), successText, Toast.LENGTH_LONG).show();
                 } else {
-                    String failText = "Reteta nu a fost adaugata cu success";
+                    String failText = "The recipe was not added successfully";
                     if(recipe != null)
-                        failText = "Reteta nu fost modificata cu succes";
+                        failText = "The recipe hasn't been successfully modified";
                     Toast.makeText(getApplicationContext(), failText, Toast.LENGTH_LONG).show();
                 }
                 _loadingView.setVisibility(View.GONE);
