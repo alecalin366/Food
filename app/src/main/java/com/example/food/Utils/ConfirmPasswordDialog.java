@@ -14,12 +14,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.food.R;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ConfirmPasswordDialog extends DialogFragment {
 
     private static final String TAG = "ConfirmPasswordDialog";
 
     public interface OnConfirmPasswordListener{
-        public void onConfirmPassword(String password);
+        void onConfirmPassword(String password);
     }
     OnConfirmPasswordListener mOnConfirmPasswordListener;
 
@@ -67,7 +69,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try{
             mOnConfirmPasswordListener = (OnConfirmPasswordListener) getTargetFragment();

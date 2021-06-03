@@ -51,23 +51,21 @@ public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
 
     //firebase
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private Context mContext;
+    private final Context mContext;
     private String userID;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
-    private FirebaseFirestore db;
-    private FirebaseStorage firebaseStorage;
+    private final FirebaseFirestore db;
+    private final FirebaseStorage firebaseStorage;
     DocumentReference userRef;
     FirebaseAuth firebaseAuth;
 
     public FirebaseMethods(Context context) {
         mAuth = FirebaseAuth.getInstance();
         mContext = context;
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
         db = FirebaseFirestore.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        DatabaseReference myRef = mFirebaseDatabase.getReference();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 

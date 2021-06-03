@@ -116,16 +116,11 @@ public class EditProfileFragment extends Fragment implements
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
-    private String userID;
 
     //EditProfile Fragment widgets
     private EditText mDisplayName, mEmail, mPhoneNumber;
-    private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
-    private View _loadingView;
     private Bitmap ReceipeBitmap;
 
     //var
@@ -139,8 +134,8 @@ public class EditProfileFragment extends Fragment implements
         mDisplayName = (EditText) view.findViewById(R.id.display_name);
         mEmail = (EditText) view.findViewById(R.id.email);
         mPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
-        mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
-        _loadingView = view.findViewById(R.id.loadingView);
+        TextView mChangeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
+        View _loadingView = view.findViewById(R.id.loadingView);
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
 
@@ -317,9 +312,9 @@ public class EditProfileFragment extends Fragment implements
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase");
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
-        userID = mAuth.getCurrentUser().getUid();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = mFirebaseDatabase.getReference();
+        String userID = mAuth.getCurrentUser().getUid();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

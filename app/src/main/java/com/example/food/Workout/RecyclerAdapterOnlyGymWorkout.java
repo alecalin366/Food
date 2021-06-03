@@ -51,7 +51,7 @@ public class RecyclerAdapterOnlyGymWorkout extends RecyclerView.Adapter<Recycler
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterOnlyGymWorkout(Context context) {

@@ -27,10 +27,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<Recipe, FirebaseRecipeRecyclerViewAdapter.RecipeViewHolder>{
 
-    private Context mContext;
+    private final Context mContext;
     public FirebaseRecipeRecyclerViewAdapter(Context mContext, @NonNull FirestoreRecyclerOptions<Recipe> options) {
         super(options);
-        this.mContext = mContext;;
+        this.mContext = mContext;
     }
 
     @NonNull
@@ -70,12 +70,14 @@ public class FirebaseRecipeRecyclerViewAdapter extends FirestoreRecyclerAdapter<
 
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
-        private ImageView recipe_photo;
-        private TextView titlu_recipe, date;
+        private final ImageView recipe_photo;
+        private final TextView titlu_recipe;
+        private final TextView date;
         //        private CircleImageView ownerPhoto;
 //        private TextView ownerName;
-        private TextView time;
-        private TextView likes, dislikes;
+        private final TextView time;
+        private final TextView likes;
+        private final TextView dislikes;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);

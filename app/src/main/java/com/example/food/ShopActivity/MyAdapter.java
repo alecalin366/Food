@@ -26,8 +26,8 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public ArrayList<IShopModel> list;
-    private IGetSelectedIngredient iGetSelectedIngredient;
-    private IGetRecipeData getRecipe;
+    private final IGetSelectedIngredient iGetSelectedIngredient;
+    private final IGetRecipeData getRecipe;
 
     public MyAdapter(ArrayList<IShopModel> list, IGetSelectedIngredient iGetSelectedIngredient, IGetRecipeData getRecipe)
     {
@@ -106,9 +106,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class SectionViewHolder extends RecyclerView.ViewHolder {
-        private TextView _sectionName, _servings;
-        private ImageView _photo;
-        private Button _removeButton;
+        private final TextView _sectionName;
+        private final TextView _servings;
+        private final ImageView _photo;
+        private final Button _removeButton;
         public SectionViewHolder(@NonNull View itemView) {
             super(itemView);
             _sectionName = itemView.findViewById(R.id.sectionName);
@@ -119,8 +120,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class SelectableModelViewHolder extends RecyclerView.ViewHolder {
-        private TextView _ingredientName,_ingredientCantitate;
-        private CheckBox _checkBox;
+        private final TextView _ingredientName;
+        private final TextView _ingredientCantitate;
+        private final CheckBox _checkBox;
         public SelectableModelViewHolder(@NonNull View itemView) {
             super(itemView);
             _ingredientName = itemView.findViewById(R.id.ingredientName);

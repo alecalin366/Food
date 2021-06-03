@@ -51,7 +51,7 @@ public class RecyclerAdapterFullBodyWorkout extends RecyclerView.Adapter<Recycle
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterFullBodyWorkout(Context context) {

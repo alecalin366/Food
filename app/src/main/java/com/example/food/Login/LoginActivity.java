@@ -58,12 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isStringNull(String string){
         Log.d(TAG, "isStringNull: checking string if null.");
 
-        if(string.equals("")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return string.equals("");
     }
 
      /*

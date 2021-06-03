@@ -19,6 +19,8 @@ import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,13 +53,14 @@ public class RecyclerAdapterAbsWorkout extends RecyclerView.Adapter<RecyclerAdap
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterAbsWorkout(Context context) {
         this.ctx = context;
     }
 
+    @NotNull
     @Override
     public VideoInfoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_list_item, parent, false);
@@ -137,13 +140,6 @@ public class RecyclerAdapterAbsWorkout extends RecyclerView.Adapter<RecyclerAdap
     @Override
     public int getItemCount() {
         return VideoID.length;
-
-    }
-    public void ReleaseLoaders() {
-
-//            for (YouTubeThumbnailLoader loader : loaders.values()) {
-//                loader.release();
-//            }
 
     }
 

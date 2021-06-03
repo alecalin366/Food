@@ -51,7 +51,7 @@ public class RecyclerAdapterGlutesWorkout extends RecyclerView.Adapter<RecyclerA
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterGlutesWorkout(Context context) {

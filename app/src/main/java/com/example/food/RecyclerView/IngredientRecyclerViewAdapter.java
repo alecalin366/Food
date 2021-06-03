@@ -39,7 +39,8 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder{
-        private TextView ingr_text,ingr_value;
+        private final TextView ingr_text;
+        private final TextView ingr_value;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);

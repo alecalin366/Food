@@ -51,7 +51,7 @@ public class RecyclerAdapterYogaWorkout extends RecyclerView.Adapter<RecyclerAda
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterYogaWorkout(Context context) {

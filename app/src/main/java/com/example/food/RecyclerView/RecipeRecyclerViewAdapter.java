@@ -22,7 +22,7 @@ import java.util.Date;
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder>{
 
-    private Context mContext;
+    private final Context mContext;
     public ArrayList<Recipe>  RecipeList;
 
     public RecipeRecyclerViewAdapter(Context mContext, ArrayList<Recipe> list)
@@ -72,12 +72,14 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder{
-        private ImageView recipe_photo;
-        private TextView titlu_recipe, date;
+        private final ImageView recipe_photo;
+        private final TextView titlu_recipe;
+        private final TextView date;
         //        private CircleImageView ownerPhoto;
 //        private TextView ownerName;
-        private TextView time;
-        private TextView likes, dislikes;
+        private final TextView time;
+        private final TextView likes;
+        private final TextView dislikes;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);

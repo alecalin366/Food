@@ -20,12 +20,10 @@ import java.util.ArrayList;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>{
 
-    private Context mContext;
-    private ArrayList<Category> _options;
-    private IGetCategory GetCategory;
+    private final ArrayList<Category> _options;
+    private final IGetCategory GetCategory;
 
     public CategoryRecyclerViewAdapter(Context mContext, ArrayList<Category> options, IGetCategory category) {
-        this.mContext = mContext;
         _options = options;
         GetCategory = category;
     }
@@ -57,9 +55,9 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
-        private ImageView category_imageView;
-        private TextView category_text;
-        private View _parentView;
+        private final ImageView category_imageView;
+        private final TextView category_text;
+        private final View _parentView;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);

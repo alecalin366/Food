@@ -55,7 +55,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     boolean[] selectedCategory;
     ArrayList<String> categoryList = new ArrayList<>();
-    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks", "Salads", "Indian", "Chinese", "Thai", "Greek", "Mexican", "Sweets", "Vegan", "Pasta", "Pizza", "Diabetic", "Dairy-Free", "Gluten-Free", "Heart-healthy", "Others"};
+    String[] categoryArray = {"Appetizers", "BBQ", "Breakfast", "Soups", "Snacks", "Salads", "Indian", "Chinese", "Thai", "Greek", "Mexican", "Sweets", "Vegan", "Pasta", "Pizza", "Diabetic", "Dairy Free", "Gluten Free", "Heart Healthy", "Others"};
 
 
     LinearLayout layoutList;
@@ -65,8 +65,6 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     //firebase
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
     private Recipe recipe;
 
@@ -178,14 +176,14 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void SetupMeasurementsList() {
         measurementsList.clear();
-        measurementsList.add("         g");
-        measurementsList.add("        kg");
-        measurementsList.add("        ml");
-        measurementsList.add("         l");
-        measurementsList.add("       cup");
-        measurementsList.add("    pieces");
+        measurementsList.add("g");
+        measurementsList.add("kg");
+        measurementsList.add("ml");
+        measurementsList.add("l");
+        measurementsList.add("cup");
+        measurementsList.add("pieces");
         measurementsList.add("tablespoon");
-        measurementsList.add("  teaspoon");
+        measurementsList.add("teaspoon");
     }
 
     private void addView() {
@@ -536,8 +534,8 @@ public class AddRecipeActivity extends AppCompatActivity {
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = mFirebaseDatabase.getReference();
 
     }
 }

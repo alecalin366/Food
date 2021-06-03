@@ -51,7 +51,7 @@ public class RecyclerAdapterUpperBodyWorkout extends RecyclerView.Adapter<Recycl
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterUpperBodyWorkout(Context context) {

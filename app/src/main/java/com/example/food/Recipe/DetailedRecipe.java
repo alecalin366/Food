@@ -63,7 +63,7 @@ public class DetailedRecipe extends AppCompatActivity {
         Intent intent = getIntent();
         recipe = new Gson().fromJson(intent.getStringExtra("recipe"), Recipe.class);
         _firebaseMethods = new FirebaseMethods(this);
-
+//https://www.youtube.com/watch?v=f-kcvxYZrB4
         FormatCartRecipe();
         FindViews();
         SetOwnerInfo();

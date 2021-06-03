@@ -51,7 +51,7 @@ public class RecyclerAdapterArmsWorkout extends RecyclerView.Adapter<RecyclerAda
     }
 
 
-    private Context ctx;
+    private final Context ctx;
 
 
     public RecyclerAdapterArmsWorkout(Context context) {
